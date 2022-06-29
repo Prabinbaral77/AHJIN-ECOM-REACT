@@ -10,11 +10,13 @@ import {
   UserRemoveIcon,
   UsersIcon,
 } from "@heroicons/react/outline";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [userInfo, setuserInfo] = useState(false);
   const [nav, setNav] = useState(false);
+  const cartProductDetails = useSelector((state) => state.products).cart;
   const isUserPresent = JSON.parse(localStorage.getItem("isUserPresent"));
 
   const logOutHandler = () => {
@@ -23,11 +25,11 @@ const Navbar = () => {
   };
   return (
     <nav className=" w-full sticky top-0 z-50 select-none  bg-gray-800 text-gray-100 shadow-md h-14 flex items-center justify-between px-4 ">
-      <a href="/">
+      <Link to="/">
         <p className="text-2xl font-mono text-yellow-600 hover:opacity-80 cursor-pointer ml-6 ">
           AHJIN
         </p>
-      </a>
+      </Link>
       <div className="flex items-center border border-gray-500 shadow-sm shadow-gray-100 rounded-lg px-3 md:w-[700px] w-[500px] mx-3 h-[60%]">
         <input
           type="text"
@@ -98,7 +100,7 @@ const Navbar = () => {
                           className="h-6 w-6 cursor-pointer text-gray-100"
                         />
 
-                        <p className="">Cart (0)</p>
+                        <p className="">Cart ({cartProductDetails.length})</p>
                       </Link>
                       <Link
                         className="flex items-center space-x-2 hover:bg-yellow-600 transition-all px-2 py-2"

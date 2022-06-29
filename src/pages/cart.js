@@ -15,7 +15,6 @@ function Cart() {
     return price;
   };
 
-  console.log(cartProductDetails);
   return (
     <div className="bg-gray-800 font-Roboto">
       <Navbar />
@@ -37,7 +36,10 @@ function Cart() {
             </div>
           </div>
           {cartProductDetails.map(({ product, quantity }) => (
-            <div className="text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  ">
+            <div
+              key={product.id}
+              className="text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  "
+            >
               <div className="lg:col-span-6 col-span-5 flex lg:items-center flex-col lg:flex-row space-y-3  lg:space-x-3  ">
                 <div className="w-40 h-36 relative">
                   <img
