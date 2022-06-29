@@ -1,17 +1,35 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import ReactImageZoom from "react-image-zoom";
-// import axios from "axios";
 import Footer from "../components/Footer";
 import StarRatings from "react-star-ratings";
+import axios from "axios";
 import { ToastsContainer, ToastsStore } from "react-toasts";
+import { useHistory, useParams } from "react-router-dom";
 
 function SingleProduct() {
+  const [product, setProduct] = useState();
+  const [image, setImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
   const [category] = useState("kids");
   const [tobeseencatgeory, settobeseencatgeory] = useState("");
   const [selectedColor, setSelectedColor] = useState("red");
-  //   const [image, setImage] = useState("");
+  const { id } = useParams();
+
+  const fetchProduct = async () => {
+    axios
+      .get(`http://0.0.0.0:8000/api/products/${id}`)
+      .then((res) => {
+        setProduct(res.data);
+        setImage(res.data.image);
+      })
+      .catch((error) => {
+        console.log(error.response?.data);
+      });
+  };
+  useEffect(() => {
+    fetchProduct();
+  }, []);
 
   const addToCartHandler = () => {};
 
@@ -56,9 +74,13 @@ function SingleProduct() {
         <section className="w-full md:h-screen h-[60vh]  col-span-5 flex flex-col space-y-5  ">
           <div className="lg:min-h-[70%] min-h-[65%]  w-full relative">
             <img
-              src="https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              src={
+                image
+                  ? image
+                  : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              }
               layout="fill"
-              objectPosition="cover"
+              className="object-cover"
               alt="productImage"
             />
 
@@ -67,33 +89,45 @@ function SingleProduct() {
 
           <div className="w-full grid md:grid-cols-4 grid-cols-3 gap-x-6 md:gap-x-2 gap-y-4 overflow-scroll md:min-h-[20%] min-h-[20%] scrollbar-hide">
             <div
-              //   onClick={() => setImage(product?.image)}
+              onClick={() => setImage(product?.image)}
               className="w-28 h-20 relative cursor-pointer"
             >
               <img
-                src="https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={
+                  image
+                    ? image
+                    : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                }
                 layout="fill"
                 className="object-cover"
                 alt="productImage"
               />
             </div>
             <div
-              //   onClick={() => setImage(product?.image2)}
+              onClick={() => setImage(product?.image2)}
               className="w-28 h-20 relative cursor-pointer"
             >
               <img
-                src="https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={
+                  image
+                    ? image
+                    : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                }
                 layout="fill"
                 className="object-cover"
                 alt="productImage"
               />
             </div>
             <div
-              //   onClick={() => setImage(product?.image3)}
+              onClick={() => setImage(product?.image3)}
               className="w-28 h-20 relative cursor-pointer"
             >
               <img
-                src="https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={
+                  image
+                    ? image
+                    : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                }
                 layout="fill"
                 className="object-cover"
                 alt="productImage"
@@ -104,7 +138,7 @@ function SingleProduct() {
 
         <section className="col-span-6 bg-gray-700 h-auto px-3 py-6 flex flex-col  justify-evenly space-y-6">
           <h1 className="tracking-wider text-xl font-bold text-gray-100 ">
-            J.Fisher Piping T-shirt For Men
+            {product?.name}
           </h1>
           <div className="flex items-center space-x-3  text-gray-100 text-xs">
             <StarRatings
@@ -118,16 +152,13 @@ function SingleProduct() {
           </div>
           <div className="flex items-center space-x-3">
             <p className="text-orange-600 font-bold text-xl tracking-wider">
-              Rs. 150
+              Rs. {product?.price_m - product?.discount}
             </p>
-            <p className="text-gray-400 line-through text-sm">Rs. 100</p>
+            <p className="text-gray-400 line-through text-sm">
+              Rs. {product?.price_m}
+            </p>
           </div>
-          <p className="text-gray-300 text-sm ">
-            Also keep in mind that the required width and height props can
-            interact with your styling. If you use styling to modify an image's
-            width, you must set the height="auto" style as well, or your image
-            will be distorted.
-          </p>
+          <p className="text-gray-300 text-sm ">{product?.description}</p>
           {/* //!category anusar change hune thau */}
           <div className="flex flex-col justify-center space-y-3">
             <h1 className="text-lg font-bold text-gray-100">
@@ -143,7 +174,7 @@ function SingleProduct() {
                       setSelectedColor("red");
                     }}
                     className={`bg-red-600 cursor-pointer h-8 w-8 rounded-md ${
-                      selectedColor === "red" ? "border-2 border-white" : null
+                      selectedColor == "red" ? "border-2 border-white" : null
                     }`}
                   ></p>
                   <p
@@ -151,7 +182,7 @@ function SingleProduct() {
                       setSelectedColor("blue");
                     }}
                     className={`bg-blue-600 cursor-pointer h-8 w-8 rounded-md ${
-                      selectedColor === "blue" ? "border-2 border-white" : null
+                      selectedColor == "blue" ? "border-2 border-white" : null
                     }`}
                   ></p>
                   <p
@@ -159,7 +190,7 @@ function SingleProduct() {
                       setSelectedColor("green");
                     }}
                     className={`bg-green-600 cursor-pointer h-8 w-8 rounded-md ${
-                      selectedColor === "green" ? "border-2 border-white" : null
+                      selectedColor == "green" ? "border-2 border-white" : null
                     }`}
                   ></p>
                   <p
@@ -167,9 +198,7 @@ function SingleProduct() {
                       setSelectedColor("yellow");
                     }}
                     className={`bg-yellow-600 cursor-pointer h-8 w-8 rounded-md ${
-                      selectedColor === "yellow"
-                        ? "border-2 border-white"
-                        : null
+                      selectedColor == "yellow" ? "border-2 border-white" : null
                     }`}
                   ></p>
                 </div>
@@ -247,7 +276,11 @@ function SingleProduct() {
           height={400}
           offset={{ vertical: 1, horizontal: 1 }}
           zoomWidth={652}
-          img="https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          img={
+            image
+              ? image
+              : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          }
           className="z-50"
         />
       </div>
