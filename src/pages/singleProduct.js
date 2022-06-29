@@ -17,8 +17,9 @@ function SingleProduct() {
   const [category] = useState("kids");
   const [tobeseencatgeory, settobeseencatgeory] = useState("");
   const [selectedColor, setSelectedColor] = useState("red");
+  const [cartData, setCartData] = useState([]);
   const { id } = useParams();
-
+  console.log(cartData);
   const fetchProduct = async () => {
     axios
       .get(`http://0.0.0.0:8000/api/products/${id}`)
@@ -35,7 +36,11 @@ function SingleProduct() {
   }, []);
 
   const addToCartHandler = () => {
-    dispatch(setCartProduct(product, quantityInput));
+    // dispatch(setCartProduct(product, quantityInput));
+    setCartData((prevData) => [
+      ...prevData,
+      { product: product, quantity: quantityInput },
+    ]);
   };
 
   useEffect(() => {
