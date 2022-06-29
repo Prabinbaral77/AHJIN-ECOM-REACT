@@ -1,16 +1,16 @@
 import "./App.css";
-import Categories from "./component/Categories";
-import FeaturedProducts from "./component/FeaturedProducts";
-import Footer from "./component/Footer";
-import Navbar from "./component/Navbar";
-import NewProducts from "./component/NewProducts";
-import Newsletter from "./component/Newsletter";
-import Products from "./component/Products";
-import Slider from "./component/Slider";
+import Categories from "./components/Categories";
+import FeaturedProducts from "./components/FeaturedProducts";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
+import NewProducts from "./components/NewProducts";
+import Newsletter from "./components/Newsletter";
+import Products from "./components/Products";
+import Slider from "./components/Slider";
 
 function App() {
   return (
-    <div>
+    <div className="bg-gray-800">
       <Navbar />
       <Slider />
       <NewProducts />

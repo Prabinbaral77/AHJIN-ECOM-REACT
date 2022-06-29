@@ -1,7 +1,7 @@
 import React from "react";
 import { ShoppingBagIcon } from "@heroicons/react/outline";
-import Footer from "./component/Footer";
-import Navbar from "./component/Navbar";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
 function Cart() {
   return (

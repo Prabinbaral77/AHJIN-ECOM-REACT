@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./component/Navbar";
+import Navbar from "./components/Navbar";
 import ReactImageZoom from "react-image-zoom";
 // import axios from "axios";
-import Footer from "./component/Footer";
+import Footer from "./components/Footer";
 import StarRatings from "react-star-ratings";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 

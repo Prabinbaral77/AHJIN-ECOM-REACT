@@ -7,6 +7,8 @@ import Login from "./login";
 import Register from "./register";
 import Account from "./account";
 import Admin from "./admin/admin";
+import Electronics from "./pages/categories/Electronics";
+import Clothes from "./pages/categories/Clothes";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/account" element={<Account />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/electronics" element={<Electronics />} />
+        <Route path="/clothes" element={<Clothes />} />
       </Routes>
     </div>
   );
