@@ -8,9 +8,11 @@ import Register from "./pages/register";
 import Account from "./pages/account";
 import Admin from "./pages/admin/admin";
 
+
 function App() {
+  
   return (
-    <div>
+    <div className="bg-gray-800">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path={`/product/:id`} element={<SingleProduct />} />

@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Categories from "../components/Categories";
 import FeaturedProducts from "../components/FeaturedProducts";
 import Footer from "../components/Footer";
@@ -8,14 +10,23 @@ import Products from "../components/Products";
 import Slider from "../components/Slider";
 
 function App() {
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    const getProducts = async() => {
+      const res =  await axios.get("http://localhost:8000/api/products/")
+     setProducts(res.data)
+    }
+    getProducts()
+  }, [])
   return (
     <div>
       <Navbar />
       <Slider />
-      <NewProducts />
-      <FeaturedProducts />
+      <NewProducts products = {products} />
+      <FeaturedProducts products = {products} />
       <Categories />
-      <Products />
+      <Products  products = {products} />
       <Newsletter />
       <Footer />
     </div>

@@ -11,15 +11,14 @@ function ProductCard({ img, name, price_m, price_a, discount, rating, id }) {
       to={`/product/${id}`}
       className="lg:w-[280px] w-[195px] h-auto bg-slate-800  rounded-md cursor-pointer shadow-sm shadow-gray-100/70 lg:hover:scale-105 transition-transform duration-700 delay-300 ease-in-out"
     >
-      <div className="w-full lg:h-40 h-32 relative">
+     
         <img
           src={img}
           layout={"fill"}
-          className="object-cover"
-          objectPosition="50% 30%"
+          className="object-cover h-40 w-full"
+
           alt="product"
         />
-      </div>
 
       <section className="w-full  px-3 flex flex-col justify-center space-y-1 py-4">
         <h1 className="text-gray-100 font-Roboto lg:text-sm text-xs font-semibold transition-colors duration-500 cursor-pointer ">
