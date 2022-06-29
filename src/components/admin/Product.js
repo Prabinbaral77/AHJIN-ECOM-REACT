@@ -1,46 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { Fade } from "react-reveal";
 import { XIcon } from "@heroicons/react/outline";
+import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 function Product() {
   const [products, setProducts] = useState([]);
   const [idToBeUpdated, setidToBeUpdated] = useState("");
 
-  // const fetchProducts = async () => {
-  //   axios
-  //     .get("http://0.0.0.0:8000/api/products/")
-  //     .then((res) => {
-  //       setProducts(res.data);
-  //       dispatch(setAllProducts(res.data));
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response?.data);
-  //     });
-  // };
+  const fetchProducts = async () => {
+    axios
+      .get("http://0.0.0.0:8000/api/products/")
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((error) => {
+        console.log(error.response?.data);
+      });
+  };
 
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-  // const handleProductDelete = async(id) => {
-  //  try {
-  //   await axios.delete(`http://0.0.0.0:8000/api/products/${id}`, {
-  //     headers: {
-  //       authorization: `Bearer ${access_token}`
-  //     },
-  //   })
-  //   fetchProducts()
-  //   toast.success('Product Deleted', {
-  //     id: 'delete',
-  //   });
-  //  } catch (error) {
-  //   console.log(error);
-  //  }
-  // }
+  const access_token = JSON.parse(
+    localStorage.getItem("userDetails")
+  ).access_token;
 
-  // const handleEditClick = (id) => {
-  //   setidToBeUpdated(id)
-  // }
+  const handleProductDelete = async (id) => {
+    try {
+      await axios.delete(`http://0.0.0.0:8000/api/products/${id}`, {
+        headers: {
+          authorization: `Bearer ${access_token}`,
+        },
+      });
+      fetchProducts();
+      toast.success("Product Deleted", {
+        id: "delete",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEditClick = (id) => {
+    setidToBeUpdated(id);
+  };
 
   const category = "E";
 
@@ -59,29 +63,41 @@ function Product() {
         </button>
       </nav>
       {/* Users */}
-      <div className="max-h-screen overflow-scroll scrollbar-hide flex flex-col space-y-4 py-4">
-        <section className="grid grid-cols-12 place-items-center text-sm text-center text-gray-100 px-4 py-4">
-          <p className="col-span-1">{1 + 1}</p>
-          <p className="col-span-2">
-            <img
-              src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"
-              className="h-28 w-32 object-cover"
-              alt=""
-            />
-          </p>
-          <p className="col-span-2">Laptop dell</p>
-          <p className="col-span-2"></p>
-          <p className="col-span-2">Category</p>
-          <p className="col-span-1 text-yellow-500">$150</p>
-          <button className="border-b max-w-fit border-green-600 text-green-600 font-semibold">
-            Edit
-          </button>
-          <button className="border-b max-w-fit border-red-600 text-red-600 font-semibold">
-            Delete
-          </button>
-        </section>
-        <hr className="w-[90%] mx-auto" />
-      </div>
+      {products.map((product, index) => (
+        <div className="max-h-screen overflow-scroll scrollbar-hide flex flex-col space-y-4 py-4">
+          <section className="grid grid-cols-12 place-items-center text-sm text-center text-gray-100 px-4 py-4">
+            <p className="col-span-1">{index + 1}</p>
+            <p className="col-span-2">
+              <img
+                src={product.image}
+                className="h-28 w-32 object-cover"
+                alt=""
+              />
+            </p>
+            <p className="col-span-2">{product.name}</p>
+            <p className="col-span-2">
+              {product?.cat == "E" && "Electronics"}
+              {product?.cat == "C" && "Clothes"}
+              {product?.cat == "O" && "Others"}
+            </p>
+            <p className="col-span-2">{product.d_cat}</p>
+            <p className="col-span-1 text-yellow-500">${product?.price_m}</p>
+            <button
+              onClick={() => handleEditClick(product.id)}
+              className="border-b max-w-fit border-green-600 text-green-600 font-semibold"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => handleProductDelete(product.id)}
+              className="border-b max-w-fit border-red-600 text-red-600 font-semibold"
+            >
+              Delete
+            </button>
+          </section>
+          <hr className="w-[90%] mx-auto" />
+        </div>
+      ))}
 
       {idToBeUpdated && (
         <div className="absolute  top-0 w-full h-screen bg-black/40 py-20">

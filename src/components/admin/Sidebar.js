@@ -5,6 +5,7 @@ import {
   ShoppingBagIcon,
   PlusCircleIcon,
 } from "@heroicons/react/outline";
+import { Link } from "react-router-dom";
 
 function Sidebar({ setadminNumber, adminNumber }) {
   return (
@@ -53,7 +54,10 @@ function Sidebar({ setadminNumber, adminNumber }) {
       </section>
       <div className="text-cyan-600 text-sm absolute bottom-5 left-8 flex items-center space-x-2">
         <p className="cursor-pointer">Home</p>
-        &nbsp; /<p className="cursor-pointer">Back</p>
+        &nbsp; /
+        <Link to="/" className="cursor-pointer">
+          Back
+        </Link>
       </div>
     </main>
   );

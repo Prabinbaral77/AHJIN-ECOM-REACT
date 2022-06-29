@@ -7,7 +7,7 @@ import axios from "axios";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import { useParams } from "react-router-dom";
 import { setCartProduct } from "../redux/products/action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function SingleProduct() {
   const dispatch = useDispatch();
@@ -36,11 +36,11 @@ function SingleProduct() {
   }, []);
 
   const addToCartHandler = () => {
-    // dispatch(setCartProduct(product, quantityInput));
-    setCartData((prevData) => [
-      ...prevData,
-      { product: product, quantity: quantityInput },
-    ]);
+    dispatch(setCartProduct(product, quantityInput));
+    // setCartData((prevData) => [
+    //   ...prevData,
+    //   { product: product, quantity: quantityInput },
+    // ]);
   };
 
   useEffect(() => {

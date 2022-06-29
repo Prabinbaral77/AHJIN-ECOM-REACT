@@ -10,9 +10,21 @@ import { Fade } from "react-reveal";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import styles from "./account.module.css";
+import { shortenAddress } from "../utils/shortenAddress";
+import { AjhinContext } from "../context/ahjinContext";
 
 function Account() {
   const [accountNumber, setaccountNumber] = useState(1);
+  const {
+    connectWallet,
+    currentAccount,
+    setBuyModal,
+    buyModal,
+    closeBuyModal,
+    tokenBalance,
+  } = useContext(AjhinContext);
+
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
   return (
     <div className="bg-gray-800">
@@ -94,21 +106,31 @@ function Account() {
                 <section className="bg-transparent h-auto max-w-4xl mx-auto my-6    py-8 px-8    flex justify-between flex-wrap">
                   <div className="flex flex-col space-y-4  max-w-fit px-10 py-10 items-cente ">
                     <p className="text-sm text-cyan-500">Username</p>
-                    <p className="text-sm font-semibold">Sankalpa</p>
+                    <p className="text-sm font-semibold">
+                      {userDetails?.user?.name
+                        ? userDetails?.user?.name
+                        : "No userName Provided."}
+                    </p>
                   </div>
                   <div className="flex flex-col space-y-4  max-w-fit  px-10 py-10 items-cente ">
                     <p className="text-sm text-cyan-500">Email Address</p>
                     <p className="text-sm font-semibold">
-                      sankalpa115@gmail.com
+                      {userDetails?.user?.email
+                        ? userDetails?.user?.email
+                        : " Email Not Provided."}
                     </p>
                   </div>
                   <div className="flex flex-col space-y-4  max-w-fit px-10 py-10 items-cente ">
                     <p className="text-sm text-cyan-500">Phone</p>
-                    <p className="text-sm font-semibold">986474646</p>
+                    <p className="text-sm font-semibold">
+                      {userDetails?.user?.phone
+                        ? userDetails?.user?.phone
+                        : "No PhoneNo Provided."}
+                    </p>
                   </div>
                   <div className="flex flex-col space-y-4 items-center max-w-fit px-10 py-10 ">
                     <p className="text-sm text-cyan-500">Ahjin Coin</p>
-                    <p className="text-sm font-semibold">10</p>
+                    <p className="text-sm font-semibold">{tokenBalance} AC</p>
                   </div>
                 </section>
               </Fade>
@@ -130,7 +152,9 @@ function Account() {
                     </div>
                   </div>
                   <p className="text-white font-semibold text-sm -mt-14">
-                    jgkdjfjdjfkdjfkjdjfd
+                    {currentAccount
+                      ? shortenAddress(currentAccount)
+                      : "No accounts connected!"}
                   </p>
                   <p className="text-white font-semibold text-lg mt-1">
                     Ethereum
@@ -140,11 +164,10 @@ function Account() {
 
               <div className="flex w-[30%] mx-auto">
                 <button
-                  // onClick={connectWallet}
+                  onClick={connectWallet}
                   className="bg-cyan-500 text-white text-sm py-3 px-8 max-w-fit rounded-full hover:bg-cyan-600 transition-all duration-300 mt-[2rem] flex items-center justify-center mx-auto"
                 >
-                  {/* {currentAccount ? "Connected" : "Connect Wallet"} */}{" "}
-                  Connected
+                  {currentAccount ? "Connected" : "Connect Wallet"}
                 </button>
                 <button
                   // onClick={() => setBuyModal(true)}
