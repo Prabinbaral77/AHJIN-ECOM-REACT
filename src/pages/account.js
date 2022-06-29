@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import Navbar from "./component/Navbar";
+import Navbar from "../components/Navbar";
 import {
   UserCircleIcon,
   ShoppingBagIcon,
