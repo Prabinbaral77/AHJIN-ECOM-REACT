@@ -5,9 +5,12 @@ import Footer from "../components/Footer";
 import StarRatings from "react-star-ratings";
 import axios from "axios";
 import { ToastsContainer, ToastsStore } from "react-toasts";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { setCartProduct } from "../redux/products/action";
+import { useDispatch } from "react-redux";
 
 function SingleProduct() {
+  const dispatch = useDispatch();
   const [product, setProduct] = useState();
   const [image, setImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
@@ -31,7 +34,9 @@ function SingleProduct() {
     fetchProduct();
   }, []);
 
-  const addToCartHandler = () => {};
+  const addToCartHandler = () => {
+    dispatch(setCartProduct(product, quantityInput));
+  };
 
   useEffect(() => {
     // eslint-disable-next-line
