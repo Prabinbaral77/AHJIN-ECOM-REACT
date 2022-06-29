@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ShoppingBagIcon } from "@heroicons/react/outline";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import { useSelector } from "react-redux";
 
 function Cart() {
+  const cartProductDetails = useSelector((state) => state.products).cart;
+
+  const totalPriceOfCart = () => {
+    let price = 0;
+    cartProductDetails.forEach(({ product, quantity }) => {
+      price += (product.price_m - product.discount) * quantity;
+    });
+    return price;
+  };
+
+  console.log(cartProductDetails);
   return (
     <div className="bg-gray-800 font-Roboto">
       <Navbar />
@@ -24,57 +36,68 @@ function Cart() {
               <h1>TOTAL</h1>
             </div>
           </div>
-          <div className="text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  ">
-            <div className="lg:col-span-6 col-span-5 flex lg:items-center flex-col lg:flex-row space-y-3  lg:space-x-3  ">
-              <div className="w-40 h-36 relative">
-                <img
-                  src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1468&q=80"
-                  className="object-cover"
-                  layout="fill"
-                  alt="product"
-                />
-              </div>
-              <div className="pr-2 flex flex-col space-y-2 py-2">
-                <h1 className="font-bold lg:w-60 w-44 text-left text-cyan-100 pb-3">
-                  Laptop dell
-                </h1>
-                {/* //todo:check d_cat */}
+          {cartProductDetails.map(({ product, quantity }) => (
+            <div className="text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  ">
+              <div className="lg:col-span-6 col-span-5 flex lg:items-center flex-col lg:flex-row space-y-3  lg:space-x-3  ">
+                <div className="w-40 h-36 relative">
+                  <img
+                    src={product.image}
+                    className="object-cover"
+                    layout="fill"
+                    alt="product"
+                  />
+                </div>
+                <div className="pr-2 flex flex-col space-y-2 py-2">
+                  <h1 className="font-bold lg:w-60 w-44 text-left text-cyan-100 pb-3">
+                    {product.name}
+                  </h1>
+                  {/* //todo:check d_cat */}
 
-                <>
+                  {product.d_cat === "laptop" && (
+                    <>
+                      <div className="flex items-center space-x-2">
+                        <p>RAM: 4GB</p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <p>SSD:</p>
+                        <p>256</p>
+                      </div>
+                    </>
+                  )}
+                  {product.cat === "C" && (
+                    <>
+                      <div className="flex items-center space-x-2">
+                        <p className="uppercase">Color: red</p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <p>Size:</p>
+                        <p>XL</p>
+                      </div>
+                    </>
+                  )}
                   <div className="flex items-center space-x-2">
-                    <p>RAM: 4GB</p>
+                    <p>Product code:</p>
+                    <p>1a5rgd</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <p>SSD:</p>
-                    <p>256</p>
-                  </div>
-                </>
-
-                <>
-                  <div className="flex items-center space-x-2">
-                    <p className="uppercase">Color: red</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <p>Size:</p>
-                    <p>XL</p>
-                  </div>
-                </>
-
-                <div className="flex items-center space-x-2">
-                  <p>Product code:</p>
-                  <p>1a5rgd</p>
                 </div>
               </div>
+              <div className="flex items-center justify-between lg:col-span-4 col-span-5 text-xs lg:text-sm ">
+                <h1 className="pl-10">{quantity}</h1>
+                <h1 className="pl-3">
+                  Rs.{product.price_m - product.discount}
+                </h1>
+                <h1 className="pr-2 flex flex-col space-y-2 items-center">
+                  <p>Rs.{quantity * (product.price_m - product.discount)}</p>
+                  <p>
+                    {/* {ahjinCoinCalculator(
+                      quantity * (product.price_m - product.discount)
+                    )}{" "} */}
+                    AC
+                  </p>
+                </h1>
+              </div>
             </div>
-            <div className="flex items-center justify-between lg:col-span-4 col-span-5 text-xs lg:text-sm ">
-              <h1 className="pl-10">10</h1>
-              <h1 className="pl-3">Rs.150</h1>
-              <h1 className="pr-2 flex flex-col space-y-2 items-center">
-                <p>Rs.20000</p>
-                <p>10 AC</p>
-              </h1>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* //!checkout wala */}
@@ -100,7 +123,9 @@ function Cart() {
               </div>
               <div className="flex items-center justify-between lg:w-3/4">
                 <h1 className="text-xl text-gray-100">Estimated Total</h1>
-                <p className="text-xl text-yellow-500 tracking-wider">Rs.10</p>
+                <p className="text-xl text-yellow-500 tracking-wider">
+                  Rs.{totalPriceOfCart()}
+                </p>
               </div>
 
               <button
