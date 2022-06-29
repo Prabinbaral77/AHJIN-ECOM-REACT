@@ -15,8 +15,12 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const [userInfo, setuserInfo] = useState(false);
   const [nav, setNav] = useState(false);
-  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  const isUserPresent = JSON.parse(localStorage.getItem("isUserPresent"));
 
+  const logOutHandler = () => {
+    localStorage.removeItem("userDetails");
+    localStorage.removeItem("isUserPresent");
+  };
   return (
     <nav className=" w-full sticky top-0 z-50 select-none  bg-gray-800 text-gray-100 shadow-md h-14 flex items-center justify-between px-4 ">
       <a href="/">
@@ -44,20 +48,20 @@ const Navbar = () => {
             <li>Others</li>
           </div>
 
-          {!true ? (
+          {!isUserPresent ? (
             <div className="flex items-center space-x-10">
-              <li
+              <Link
                 className="text-cyan-600 hover:text-cyan-700 transition-colors"
-                onClick={() => console.log("Register page")}
+                to="/register"
               >
                 Register
-              </li>
-              <li
+              </Link>
+              <Link
                 className="text-cyan-600 hover:text-cyan-700 transition-colors"
-                onClick={() => console.log("Login Page")}
+                to="/login"
               >
                 Login
-              </li>
+              </Link>
             </div>
           ) : (
             <div
@@ -112,7 +116,7 @@ const Navbar = () => {
                       </Link>
                       <div
                         className="flex items-center space-x-2 hover:bg-yellow-600 transition-all px-2 py-2"
-                        //  onClick={logOutHandler}
+                        onClick={logOutHandler}
                       >
                         <UserRemoveIcon className="h-6 w-6 cursor-pointer text-gray-100" />
                         <p>Logout</p>
