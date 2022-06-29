@@ -1,12 +1,12 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import Home from "./home";
-import SingleProduct from "./singleProduct";
-import Cart from "./cart";
-import Login from "./login";
-import Register from "./register";
-import Account from "./account";
-import Admin from "./admin/admin";
+import Home from "./pages/home";
+import SingleProduct from "./pages/singleProduct";
+import Cart from "./pages/cart";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import Account from "./pages/account";
+import Admin from "./pages/admin/admin";
 
 function App() {
   return (
