@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const [userInfo, setuserInfo] = useState(false);
   const [nav, setNav] = useState(false);
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
   return (
     <nav className=" w-full sticky top-0 z-50 select-none  bg-gray-800 text-gray-100 shadow-md h-14 flex items-center justify-between px-4 ">

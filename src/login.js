@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import Navbar from "./component/Navbar";
 import { ToastsContainer, ToastsStore } from "react-toasts";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  let navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -21,35 +25,33 @@ function Login() {
     e.preventDefault();
     const loginUrl = "http://0.0.0.0:8000/api/user/login/";
 
-    // await axios
-    //   .post(loginUrl, {
-    //     email: formData?.email,
-    //     password: formData?.password,
-    //   })
-    //   .then((res) => {
-    //     dispatch(loggedUserDetail(res.data));
-    //     localStorage.setItem("userDetails", JSON.stringify(res.data));
-    //     localStorage.setItem("isUserPresent", true);
-    //     console.log(res.data);
-    //     const accessToken = res?.data?.access_token;
-    //     axios
-    //       .get("http://0.0.0.0:8000/api/user/detail/", {
-    //         headers: {
-    //           authorization: `Bearer ${accessToken}`,
-    //         },
-    //       })
-    //       .then((res) => {
-    //         if (res.data.is_admin) {
-    //           router.push("/admin");
-    //         } else {
-    //           router.push("/");
-    //         }
-    //       });
-    //   })
-    //   .catch((error) => {
-    //     ToastsStore.success("Hey, it worked !");
-    //     console.log(error.response?.data);
-    //   });
+    await axios
+      .post(loginUrl, {
+        email: formData?.email,
+        password: formData?.password,
+      })
+      .then((res) => {
+        localStorage.setItem("userDetails", JSON.stringify(res.data));
+        localStorage.setItem("isUserPresent", true);
+        const accessToken = res?.data?.access_token;
+        axios
+          .get("http://0.0.0.0:8000/api/user/detail/", {
+            headers: {
+              authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then((res) => {
+            if (res.data.is_admin) {
+              navigate("/admin");
+            } else {
+              navigate("/");
+            }
+          });
+      })
+      .catch((error) => {
+        ToastsStore.success("Something went wrong !");
+        console.log(error.response?.data);
+      });
   };
 
   return (

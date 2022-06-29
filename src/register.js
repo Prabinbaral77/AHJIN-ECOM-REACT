@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import Navbar from "./component/Navbar";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  let navigate = useNavigate();
+  const [error, setError] = useState(null);
   const [formData, setformData] = useState({
     username: "",
     email: "",
@@ -23,61 +27,68 @@ function Register() {
   const [checkBox, setcheckBox] = useState(false);
 
   const handleRegister = async (e) => {
-    // e.preventDefault();
-    // const registerUrl = "http://0.0.0.0:8000/api/user/register/";
-    // if (
-    //   !formData?.username ||
-    //   !formData?.email ||
-    //   !formData?.password ||
-    //   !formData?.confirmPassword ||
-    //   !formData?.phone
-    // ) {
-    //   toast.error(" Please fill in all the fields");
-    //   return;
-    // }
-    // if (formData?.password.length < 8) {
-    //   toast.error("Password must contain at least 8 characters");
-    //   return;
-    // }
-    // if (formData?.password !== formData?.confirmPassword) {
-    //   toast.error("passwords don't match.");
-    //   return;
-    // }
-    // await axios
-    //   .post(registerUrl, {
-    //     username: formData?.username,
-    //     email: formData?.email,
-    //     password1: formData?.password,
-    //     password2: formData?.confirmPassword,
-    //     phone_number: formData?.phone,
-    //     ahjin_coin: 0,
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     router.push("/login");
-    //     toast.success("registered successfully.");
-    //   })
-    //   .catch((err) => {
-    //     if (err) {
-    //       let errArr = [];
-    //       setError(err.response?.data);
-    //       console.log(error);
-    //       Object.entries(error && error).forEach(([key, value]) =>
-    //         errArr.push(value)
-    //       );
-    //       console.log(errArr);
-    //       errArr.map((m) => {
-    //         m.map((n) => {
-    //           toast.error(n, { id: "common" });
-    //         });
-    //       });
-    //     }
-    //   });
+    e.preventDefault();
+    const registerUrl = "http://0.0.0.0:8000/api/user/register/";
+    if (
+      !formData?.username ||
+      !formData?.email ||
+      !formData?.password ||
+      !formData?.confirmPassword ||
+      !formData?.phone
+    ) {
+      toast.error(" Please fill in all the fields");
+      return;
+    }
+    if (formData?.password.length < 8) {
+      toast.error("Password must contain at least 8 characters");
+      return;
+    }
+    if (formData?.password !== formData?.confirmPassword) {
+      toast.error("passwords don't match.");
+      return;
+    }
+    await axios
+      .post(registerUrl, {
+        username: formData?.username,
+        email: formData?.email,
+        password1: formData?.password,
+        password2: formData?.confirmPassword,
+        phone_number: formData?.phone,
+        ahjin_coin: 0,
+      })
+      .then((res) => {
+        console.log(res);
+        navigate("/login");
+        toast.success("registered successfully.");
+      })
+      .catch((err) => {
+        if (err) {
+          let errArr = [];
+          setError(err.response?.data);
+          console.log(error);
+          if (error) {
+            Object.entries(error && error).forEach(([key, value]) =>
+              errArr.push(value)
+            );
+          }
+          console.log(errArr);
+
+          errArr.map((m) => {
+            m.map((n) => {
+              toast.error(n, { id: "common" });
+            });
+          });
+        }
+      });
+  };
+
+  const RedirectLoginHandler = () => {
+    // navigate("/home");
   };
 
   return (
     <main>
-      {/* <Toaster /> */}
+      <Toaster />
       <Navbar />
       <div
         className="w-full h-screen bg-no-repeat bg-cover bg-right  flex  items-center pt-20 justify-center"
@@ -156,7 +167,10 @@ function Register() {
               CREATE
             </button>
           </form>
-          <div className="text-white text-[0.8rem] cursor-pointer">
+          <div
+            className="text-white text-[0.8rem] cursor-pointer"
+            onClick={RedirectLoginHandler}
+          >
             Already have an account? Login
           </div>
         </div>
