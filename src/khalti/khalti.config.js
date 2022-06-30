@@ -2,13 +2,12 @@ import axios from "axios";
 
 let config = {
   // replace this key with yours
-  publicKey: "test_public_key_498f69f02b8f4eada26339a6add4a976",
+  publicKey: "test_public_key_ad21e5a28b0c4a46bec1e93f7144d126",
   productIdentity: "1857",
   productName: "AHJIN Ecommerce",
   productUrl: "http://localhost:3000",
   eventHandler: {
     onSuccess(payload) {
-      // hit merchant api for initiating verfication
       let data = {
         token: payload.token,
         amount: payload.amount,
@@ -16,27 +15,26 @@ let config = {
 
       let config = {
         headers: {
-          Authorization: "test_secret_key_03be0d8b8acd4e099a4a95bf5caa1fc0",
+          Authorization: "test_secret_key_2207b50cd52144c1b0e7fffdf8158f23",
         },
       };
 
-      axios
-        .post("http://localhost:8000/api/orders/khalti/pay/", data, config)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
       // axios
-      //   .post(`/api/orders/khalti/pay/`, data)
+      //   .post("https://khalti.com/api/v2/payment/verify/", data, config)
       //   .then((response) => {
-      //     payOrder({ paymentResult: payload, paymentMethod: "Khalti" });
-      //     console.log("WOW SUCCESS", response.data);
+      //     console.log(response.data);
       //   })
       //   .catch((error) => {
-      //     console.log("UFF", error);
+      //     console.log(error);
       //   });
+      axios
+        .post(`http://0.0.0.0:8000/api/khalti/pay`, data)
+        .then((response) => {
+          console.log("WOW SUCCESS", response);
+        })
+        .catch((error) => {
+          console.log("WTF", error);
+        });
     },
     // onError handler is optional
     onError(error) {

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { AjhinContext } from "../../context/AjhinContext";
+import { AjhinContext } from "../../context/ahjinContext";
 
 const BuyTokenModal = ({ open, handleModal }) => {
   const { tokenAmount, setTokenAmount, amountDue, setAmountDue, buyToken } =
@@ -11,7 +11,7 @@ const BuyTokenModal = ({ open, handleModal }) => {
   }, [tokenAmount]);
 
   const calculatePrice = () => {
-    const price = parseFloat(tokenAmount * 0.0001);
+    let price = parseFloat(tokenAmount * 0.0001);
     price = price.toFixed(4);
     setAmountDue(price);
   };
@@ -27,7 +27,7 @@ const BuyTokenModal = ({ open, handleModal }) => {
         toggle={handleModal}
         className="w-full rounded-full "
       >
-        <ModalHeader className="font-bold text-xl flex text-center mx-auto">
+        <ModalHeader className=" font-bold text-xl flex text-center mx-auto">
           AHJIN COIN Details:
         </ModalHeader>
         <ModalBody>
@@ -37,7 +37,7 @@ const BuyTokenModal = ({ open, handleModal }) => {
           <div className="flex text-xl justify-center mt-4 mb-4">
             Select How many token you want to buy.
           </div>
-          <div className="w-[50%]  bg-[#1F2937] rounded-lg p-[10px] flex mx-auto mb-4">
+          <div className="w-[50%]   rounded-lg p-[10px] flex mx-auto mb-4">
             <input
               type="text"
               placeholder="Token Amount"
