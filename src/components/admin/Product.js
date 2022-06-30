@@ -5,7 +5,25 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 function Product() {
   const [products, setProducts] = useState([]);
+  const [price, setPrice] = useState("");
+  const [discount, setDiscount] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("E");
   const [idToBeUpdated, setidToBeUpdated] = useState("");
+  const [availableColors, setavailableColors] = useState([]);
+  const [uniqueFeatures, setuniqueFeatures] = useState({
+    RAM: 0,
+    SSD: 0,
+    count: 0,
+    color: [],
+    priceAdd: 0,
+  });
+  const [clothesUniqueFeatures, setclothesUniqueFeatures] = useState({
+    available_colors: [],
+    available_sizes: [],
+    count: 2,
+  });
 
   const fetchProducts = async () => {
     axios
@@ -42,11 +60,23 @@ function Product() {
     }
   };
 
+  const handleChange = (e) => {
+    if (e.target.name !== "color") {
+      setuniqueFeatures({
+        ...uniqueFeatures,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setuniqueFeatures({
+        ...uniqueFeatures,
+        [e.target.name]: e.target.value.split(","),
+      });
+    }
+  };
+
   const handleEditClick = (id) => {
     setidToBeUpdated(id);
   };
-
-  const category = "E";
 
   return (
     <div className="col-span-10 relative text-sm ">
@@ -112,15 +142,15 @@ function Product() {
                 className="file:bg-purple-500 text-sm file:py-1.5 file:rounded-full file:border-none file:cursor-pointer file:text-white text-white"
               />
               <input
-                // value={title}
-                // onChange={(e) => setTitle(e.target.value)}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 type="text"
                 className="form-inputs"
                 placeholder="title"
               />
               <textarea
-                // value={description}
-                // onChange={(e) => setDescription(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 name=""
                 id=""
                 cols="30"
@@ -133,7 +163,7 @@ function Product() {
                 className="form-inputs"
                 name=""
                 id=""
-                // onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => setCategory(e.target.value)}
               >
                 <option className="cursor-not-allowed">Select Category</option>
                 <option value="E">Electronics</option>
@@ -149,7 +179,7 @@ function Product() {
                     placeholder="RAM"
                     name="RAM"
                     id="RAM"
-                    // onChange={handleChange}
+                    onChange={handleChange}
                   />
                   <input
                     type="text"
@@ -158,7 +188,7 @@ function Product() {
                     placeholder="SSD"
                     name="SSD"
                     id="SSD"
-                    // onChange={handleChange}
+                    onChange={handleChange}
                   />
                   <input
                     type="text"
@@ -167,7 +197,7 @@ function Product() {
                     placeholder="Color"
                     name="Color"
                     id="Color"
-                    // onChange={handleChange}
+                    onChange={handleChange}
                   />
                 </>
               )}
@@ -180,7 +210,9 @@ function Product() {
                   />
                   <input
                     type="text"
-                    // onChange={(e) => setavailableColors(e.target.value.split(","))}
+                    onChange={(e) =>
+                      setavailableColors(e.target.value.split(","))
+                    }
                     className="form-inputs"
                     placeholder="red,yellow,..."
                   />
@@ -191,16 +223,16 @@ function Product() {
                 min={1}
                 className="form-inputs"
                 placeholder="price"
-                // value={price}
-                // onChange={(e) => setPrice(e.target.value)}
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
               />
               <input
                 type="number"
                 min={0}
                 className="form-inputs"
                 placeholder="discount %"
-                // value={discount}
-                // onChange={(e) => setDiscount(e.target.value)}
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
               />
               <button
                 className="max-w-fit bg-cyan-500 text-white rounded-lg py-1.5 px-8 hover:bg-cyan-600 transition-all duration-500"

@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { ShoppingBagIcon } from "@heroicons/react/outline";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import KhaltiCheckout from "khalti-checkout-web";
 import config from "../khalti/khalti.config";
+import { AjhinContext } from "../context/ahjinContext";
+import { ToastsContainer, ToastsStore } from "react-toasts";
+import { ahjinCoinCalculator } from "../utils/ahjinCoinCalculator";
 
 function Cart() {
+  const { currentAccount, tokenBalance, buyAssets, sendEthInReward } =
+    useContext(AjhinContext);
   const cartProductDetails = useSelector((state) => state.products).cart;
 
   const totalPriceOfCart = () => {
@@ -25,16 +30,13 @@ function Cart() {
 
   //DO NOT DELETE THIS WHOLE FUNCTION
   const ahjinCoinBurnHandler = async () => {
-    // if (
-    //   currentAccount &&
-    //   tokenBalance > ahjinCoinCalculator(totalPriceOfCart())
-    // ) {
-    //   await buyAssets(2);
-    // } else if (currentAccount == undefined) {
-    //   ToastsStore.warning("Please connect with your metamask wallet.");
-    // } else if (tokenBalance < ahjinCoinCalculator(totalPriceOfCart())) {
-    //   ToastsStore.error("Sorry, You does not have sufficient AC.");
-    // }
+    if (currentAccount) {
+      await buyAssets(2);
+    } else if (currentAccount == undefined) {
+      ToastsStore.warning("Please connect with your metamask wallet.");
+    } else if (tokenBalance < ahjinCoinCalculator(totalPriceOfCart())) {
+      ToastsStore.error("Sorry, You does not have sufficient AC.");
+    }
   };
 
   return (
@@ -156,7 +158,7 @@ function Cart() {
               </button>
               <button
                 className="bg-red-500 py-3 hover:bg-red-600 transition-all active:scale-90 duration-500 ease-in-out "
-                // onClick={ahjinCoinBurnHandler}
+                onClick={ahjinCoinBurnHandler}
               >
                 Checkout From AC
               </button>
@@ -165,6 +167,7 @@ function Cart() {
         </div>
       </main>
       <Footer />
+      <ToastsContainer store={ToastsStore} />
     </div>
   );
 }
