@@ -13,9 +13,12 @@ function SingleProduct() {
   const dispatch = useDispatch();
   const [product, setProduct] = useState();
   const [image, setImage] = useState("");
+  const [image2, setImage2] = useState("");
+  const [image3, setImage3] = useState("");
+  const [displayImage, setdisplayImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
-  const [category] = useState("kids");
-  const [tobeseencatgeory, settobeseencatgeory] = useState("");
+  const [uniquefea, setuniquefea] = useState(null)
+
   const [selectedColor, setSelectedColor] = useState("red");
   const [cartData, setCartData] = useState([]);
   const { id } = useParams();
@@ -26,6 +29,10 @@ function SingleProduct() {
       .then((res) => {
         setProduct(res.data);
         setImage(res.data.image);
+        setImage2(res.data.image2);
+        setImage3(res.data.image3);
+        setdisplayImage(res.data.image);
+        setuniquefea(res.data.unique_feature[0])
       })
       .catch((error) => {
         console.log(error.response?.data);
@@ -43,23 +50,8 @@ function SingleProduct() {
     // ]);
   };
 
-  useEffect(() => {
-    // eslint-disable-next-line
-    switch (category) {
-      case "kids":
-        settobeseencatgeory("kids");
-        break;
-      case "mens":
-        settobeseencatgeory("mens");
-        break;
-      case "makeup":
-        settobeseencatgeory("makeup");
-        break;
-      case "laptops":
-        settobeseencatgeory("laptops");
-        break;
-    }
-  }, [category]);
+  console.log(product);
+  console.log(uniquefea)
 
   const handleQuantityIncrease = () => {
     if (quantityInput === 20) {
@@ -82,15 +74,15 @@ function SingleProduct() {
 
       <main className="h-auto md:max-w-6xl w-[90%] mx-auto flex flex-col justify-center lg:grid gap-6 grid-cols-11 md:py-12 pb-20">
         <section className="w-full md:h-screen h-[60vh]  col-span-5 flex flex-col space-y-5  ">
-          <div className="lg:min-h-[70%] min-h-[65%]  w-full relative">
+          <div className="h-[65%] bg-red-400  w-full relative">
             <img
               src={
-                image
-                  ? image
+                displayImage
+                  ? displayImage
                   : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
               }
               layout="fill"
-              className="object-cover"
+              className="object-cover h-full w-full"
               alt="productImage"
             />
 
@@ -99,8 +91,8 @@ function SingleProduct() {
 
           <div className="w-full grid md:grid-cols-4 grid-cols-3 gap-x-6 md:gap-x-2 gap-y-4 overflow-scroll md:min-h-[20%] min-h-[20%] scrollbar-hide">
             <div
-              onClick={() => setImage(product?.image)}
-              className="w-28 h-20 relative cursor-pointer"
+              onClick={() => setdisplayImage(product?.image)}
+              className="w-28 h-20  cursor-pointer"
             >
               <img
                 src={
@@ -109,44 +101,44 @@ function SingleProduct() {
                     : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                 }
                 layout="fill"
-                className="object-cover"
+                className="object-cover h-full w-full"
                 alt="productImage"
               />
             </div>
             <div
-              onClick={() => setImage(product?.image2)}
-              className="w-28 h-20 relative cursor-pointer"
+              onClick={() => setdisplayImage(product?.image2)}
+              className="w-28 h-20 cursor-pointer"
             >
               <img
                 src={
-                  image
-                    ? image
+                  image2
+                    ? image2
                     : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                 }
                 layout="fill"
-                className="object-cover"
+                className="object-cover h-full w-full"
                 alt="productImage"
               />
             </div>
             <div
-              onClick={() => setImage(product?.image3)}
-              className="w-28 h-20 relative cursor-pointer"
+              onClick={() => setdisplayImage(product?.image3)}
+              className="w-28 h-20  cursor-pointer"
             >
               <img
                 src={
-                  image
-                    ? image
+                  image3
+                    ? image3
                     : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                 }
                 layout="fill"
-                className="object-cover"
+                className="object-cover h-full w-full"
                 alt="productImage"
               />
             </div>
           </div>
         </section>
 
-        <section className="col-span-6 bg-gray-700 h-auto px-3 py-6 flex flex-col  justify-evenly space-y-6">
+        <section className="col-span-6 bg-gray-700 h-[600px] px-3 py-6 flex flex-col space-y-6">
           <h1 className="tracking-wider text-xl font-bold text-gray-100 ">
             {product?.name}
           </h1>
@@ -162,7 +154,7 @@ function SingleProduct() {
           </div>
           <div className="flex items-center space-x-3">
             <p className="text-orange-600 font-bold text-xl tracking-wider">
-              Rs. {product?.price_m - product?.discount}
+              Rs. {(product?.price_m + parseInt(uniquefea.priceAdd)) - product?.discount}
             </p>
             <p className="text-gray-400 line-through text-sm">
               Rs. {product?.price_m}
@@ -179,65 +171,66 @@ function SingleProduct() {
               <div className="flex flex-col space-y-2">
                 <h1 className="text-gray-100 text-sm">Color</h1>
                 <div className="flex items-center space-x-2">
-                  <p
-                    onClick={() => {
-                      setSelectedColor("red");
-                    }}
-                    className={`bg-red-600 cursor-pointer h-8 w-8 rounded-md ${
-                      selectedColor == "red" ? "border-2 border-white" : null
-                    }`}
-                  ></p>
-                  <p
-                    onClick={() => {
-                      setSelectedColor("blue");
-                    }}
-                    className={`bg-blue-600 cursor-pointer h-8 w-8 rounded-md ${
-                      selectedColor == "blue" ? "border-2 border-white" : null
-                    }`}
-                  ></p>
-                  <p
-                    onClick={() => {
-                      setSelectedColor("green");
-                    }}
-                    className={`bg-green-600 cursor-pointer h-8 w-8 rounded-md ${
-                      selectedColor == "green" ? "border-2 border-white" : null
-                    }`}
-                  ></p>
-                  <p
-                    onClick={() => {
-                      setSelectedColor("yellow");
-                    }}
-                    className={`bg-yellow-600 cursor-pointer h-8 w-8 rounded-md ${
-                      selectedColor == "yellow" ? "border-2 border-white" : null
-                    }`}
-                  ></p>
+                  {product?.cat === "C" &&
+                    product?.unique_feature[0]?.available_colors?.map((m) => (
+                      <p
+                        onClick={() => {
+                          setSelectedColor(m);
+                        }}
+                        style={{ backgroundColor: m }}
+                        className={`cursor-pointer h-8 w-8 rounded-md ${
+                          selectedColor == m ? "border-2 border-white" : null
+                        }`}
+                      ></p>
+                    ))}
+                  {product?.cat === "E" &&
+                    uniquefea?.color?.map((m) => (
+                      <p
+                        onClick={() => {
+                          setSelectedColor(m);
+                        }}
+                        style={{ backgroundColor: m }}
+                        className={`cursor-pointer h-8 w-8 rounded-md ${
+                          selectedColor == m ? "border-2 border-white" : null
+                        }`}
+                      ></p>
+                    ))}
                 </div>
               </div>
               {/* //todo: This should be dynamic according to the category */}
-              {tobeseencatgeory === "kids" && (
+
+              {product?.cat === "C" && (
                 <div className="flex flex-col space-y-2">
                   <h1 className="text-gray-100 text-sm">Size</h1>
                   <div className="flex space-x-2">
                     <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1 ">
                       S
                     </p>
-                    <p className="bg-gray-600 h-8 w-10 text-gray-100 text-center pt-1">
+                    <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1">
                       M
                     </p>
-                    <p className="bg-gray-600 h-8 w-10 text-gray-100 text-center pt-1">
+                    <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1">
                       L
                     </p>
-                    <p className="bg-gray-600 h-8 w-10 text-gray-100 text-center pt-1">
+                    <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1">
                       XL
                     </p>
-                    <p className="bg-gray-600 h-8 w-10 text-gray-100 text-center pt-1 ">
+                    <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1 ">
                       XXL
                     </p>
                   </div>
                 </div>
               )}
-              {tobeseencatgeory === "makeup" && <h1>makeup</h1>}
-              {tobeseencatgeory === "laptops" && <div>sdfsdf</div>}
+
+              <div className="flex items-center space-x-2">
+                {product?.d_cat === "laptop" &&
+                  product?.unique_feature.map((m,index) => (
+                    <div onClick ={()=>setuniquefea(product?.unique_feature[index])} className={`h-20  w-32 bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}>
+                      <p>{m.RAM}GB RAM</p>
+                      <p>{m.SSD} SSD</p>
+                    </div>
+                  ))}
+              </div>
             </main>
           </div>
           {/* //!Quantity Section */}
@@ -283,40 +276,18 @@ function SingleProduct() {
           width={500}
           ZoomPosition="right"
           ZoomScale={100}
-          height={400}
+          height={500}
           offset={{ vertical: 1, horizontal: 1 }}
           zoomWidth={652}
           img={
-            image
-              ? image
+            displayImage
+              ? displayImage
               : "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           }
-          className="z-50"
+          className="z-50 object-cover"
         />
       </div>
-      {/* //!specs section */}
-      <div className="my-6  px-4 lg:px-0 max-w-6xl mx-auto flex flex-col space-y-4 ">
-        <h1 className="text-gray-100 text-xl font-semibold underline ">
-          About this item
-        </h1>
 
-        <ol className="text-sm w-full flex flex-col space-y-2">
-          <li className="hover:text-gray-100 cursor-auto">
-            Quick access to Siri by saying “ Hey Siri ”
-          </li>
-          <li className="hover:text-gray-100 cursor-auto">
-            More than 24 hours total listening time with the Charging Case
-          </li>
-          <li className="hover:text-gray-100 cursor-auto">
-            Effortless setup, in-ear detection, and automatic switching for a
-            magical experience
-          </li>
-          <li className="hover:text-gray-100 cursor-auto">
-            Easily share audio between two sets of AirPods on your iPhone, iPad,
-            iPod touch, or Apple TV
-          </li>
-        </ol>
-      </div>
       {/* //todo: add reviews section */}
       <Footer />
       <ToastsContainer store={ToastsStore} />
