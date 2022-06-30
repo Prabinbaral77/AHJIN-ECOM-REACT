@@ -157,28 +157,28 @@ function AddProduct() {
   };
 
   return (
-    <main className="col-span-10 flex items-center justify-center pt-20  max-h-screen overflow-scroll">
+    <main className="lg:col-span-10 col-span-12 w-full flex items-center justify-center lg:pt-20  max-h-screen overflow-scroll">
       <Toaster position="top-center" reverseOrder={false} />
       <form
         onSubmit={handleSubmit}
-        className="w-[65%] mx-auto bg-gray-900  rounded-md flex flex-col space-y-8 p-8 shadow-lg shadow-cyan-400/40"
+        className="lg:w-[65%] w-[90%] mx-auto bg-gray-900  rounded-md flex flex-col space-y-8 p-8 shadow-lg shadow-cyan-400/40"
       >
         <div className="flex items-center  justify-between space-x-2 px-2">
           <div className="flex  space-x-2 items-center justify-around">
             <input
               onChange={(e) => setImage(e.target.files[0])}
               type="file"
-              className="file:bg-purple-500 w-1/3 text-xs file:py-1.5 file:rounded-full file:border-none file:cursor-pointer file:text-white text-white"
+              className="file:bg-purple-500 lg:w-1/3 w-1/2 text-xs file:py-1.5 file:rounded-full file:border-none file:cursor-pointer file:text-white text-white"
             />
             <input
               onChange={(e) => setImage2(e.target.files[0])}
               type="file"
-              className="file:bg-blue-500 text-xs w-1/3 file:py-1.5 file:rounded-full file:border-none file:cursor-pointer file:text-white text-white"
+              className="file:bg-blue-500 text-xs lg:w-1/3 w-1/2 file:py-1.5 file:rounded-full file:border-none file:cursor-pointer file:text-white text-white"
             />
             <input
               onChange={(e) => setImage3(e.target.files[0])}
               type="file"
-              className="file:bg-teal-500 text-xs w-1/3 file:py-1.5 file:rounded-full file:border-none file:cursor-pointer file:text-white text-white"
+              className="file:bg-teal-500 text-xs lg:w-1/3 w-1/2 file:py-1.5 file:rounded-full file:border-none file:cursor-pointer file:text-white text-white"
             />
           </div>
           <button

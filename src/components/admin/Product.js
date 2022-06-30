@@ -79,32 +79,30 @@ function Product() {
   };
 
   return (
-    <div className="col-span-10 relative text-sm max-h-screen overflow-scroll scrollbar-hide  ">
+    <div className="lg:col-span-10 col-span-12 relative  max-h-screen overflow-scroll scrollbar-hide text-[10px] lg:text-sm  ">
       <Toaster />
       <nav className="  text-cyan-500 text-center font-semibold grid grid-cols-12 px-4 bg-gray-800 shadow-md py-4 sticky top-0 z-50">
         <p className=" uppercase col-span-1">SN</p>
-        <p className="col-span-2 uppercase">Image</p>
-        <p className="col-span-2 uppercase ">Title</p>
+        <p className="lg:col-span-2 col-span-3 uppercase">Image</p>
+        <p className="lg:col-span-2 col-span-3 uppercase ">Title</p>
         <p className="col-span-2 uppercase">Category</p>
         <p className="col-span-2 uppercase">D_Cat</p>
         <p className="col-span-1 uppercase">Price</p>
-        <button className=" uppercase text-gray-100 bg-yellow-600 hover:bg-yellow-700 transition-all  flex-1 w-20 py-1 absolute top-2 right-3 text-xs">
-          Add product{" "}
-        </button>
+       
       </nav>
       {/* Users */}
       {products.map((product, index) => (
         <div className=" flex flex-col space-y-4 py-4">
-          <section className="grid grid-cols-12 place-items-center text-sm text-center text-gray-100 px-4 py-4">
+          <section className="grid grid-cols-12 place-items-center  text-center text-gray-100 px-4 py-4">
             <p className="col-span-1">{index + 1}</p>
-            <p className="col-span-2">
+            <p className="lg:col-span-2 col-span-3">
               <img
                 src={product.image}
                 className="h-28 w-32 object-cover"
                 alt=""
               />
             </p>
-            <p className="col-span-2">{product.name}</p>
+            <p className="lg:col-span-2 col-span-3">{product.name}</p>
             <p className="col-span-2">
               {product?.cat == "E" && "Electronics"}
               {product?.cat == "C" && "Clothes"}
@@ -112,6 +110,7 @@ function Product() {
             </p>
             <p className="col-span-2">{product.d_cat}</p>
             <p className="col-span-1 text-yellow-500">${product?.price_m}</p>
+            <div className="flex space-x-3 pl-8 w-full py-4">
             <button
               onClick={() => handleEditClick(product.id)}
               className="border-b max-w-fit border-green-600 text-green-600 font-semibold"
@@ -124,13 +123,14 @@ function Product() {
             >
               Delete
             </button>
+            </div>
           </section>
           <hr className="w-[90%] mx-auto" />
         </div>
       ))}
 
       {idToBeUpdated && (
-        <div className="absolute  top-0 w-full h-screen bg-black/40 py-20">
+        <div className="fixed lg:right-10 lg:top-0 top-10 lg:w-3/4 w-full text-sm h-screen bg-black/40 py-20">
           <Fade top>
             <form className="h-auto relative  w-3/4 mx-auto flex flex-col space-y-3 p-6 shadow-lg shadow-cyan-400/40  bg-gray-500 rounded-lg">
               <XIcon
@@ -243,7 +243,9 @@ function Product() {
             </form>
           </Fade>
         </div>
+        
       )}
+
     </div>
   );
 }

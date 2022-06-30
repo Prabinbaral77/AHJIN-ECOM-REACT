@@ -8,6 +8,9 @@ import { ToastsContainer, ToastsStore } from "react-toasts";
 import { useParams } from "react-router-dom";
 import { setCartProduct } from "../redux/products/action";
 import { useDispatch, useSelector } from "react-redux";
+import Reviews from "../components/Reviews";
+
+//! reviews
 
 function SingleProduct() {
   const dispatch = useDispatch();
@@ -18,12 +21,29 @@ function SingleProduct() {
   const [displayImage, setdisplayImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
   const [uniquefea, setuniquefea] = useState(null);
-  console.log(uniquefea);
 
   const [selectedColor, setSelectedColor] = useState("red");
   const [cartData, setCartData] = useState([]);
+  const [runUseEffect, setrunUseEffect] = useState(1)
   const { id } = useParams();
   console.log(cartData);
+
+  // !reviews
+  const item = JSON.parse(localStorage.getItem("userDetails"));
+  const access_token = item?.access_token;
+
+  const [reviewInputValue, setreviewInputValue] = useState("");
+  const [rating, setRating] = useState(0);
+
+  const [reviews, setReviews] = useState([])
+
+  const changeRating = (rate) => {
+    setRating(rate);
+  };
+
+  console.log(id)
+
+
   const fetchProduct = async () => {
     axios
       .get(`http://0.0.0.0:8000/api/products/${id}`)
@@ -62,11 +82,39 @@ function SingleProduct() {
     }
   };
 
+
+  const handleReviewSubmit =async(e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post(`http://localhost:8000/api/products/${id}/reviews/`, {
+        rating:rating,
+        comment: reviewInputValue
+      }, {
+        headers:{
+          Authorization: `Bearer ${access_token}`
+        }
+      })
+      setrunUseEffect(runUseEffect + 1)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  useEffect(() => {
+    const getReviews = async() => {
+      const res = await axios.get(`http://localhost:8000/api/products/${id}/reviews/`)
+     setReviews(res.data)
+    }
+    getReviews()
+  }, [runUseEffect])
+  
   return (
     <div className="bg-gray-800 select-none">
       <Navbar />
 
-      <main className="h-auto md:max-w-6xl w-[90%] mx-auto flex flex-col justify-center lg:grid gap-6 grid-cols-11 md:py-12 pb-20">
+      <main className="h-auto md:max-w-6xl w-[90%] mx-auto flex flex-col  justify-center lg:grid gap-6 grid-cols-11 md:py-12 pb-20">
         <section className="w-full md:h-screen h-[60vh]  col-span-5 flex flex-col space-y-5  ">
           <div className="h-[65%] bg-red-400  w-full relative">
             <img
@@ -231,7 +279,6 @@ function SingleProduct() {
                       className={`h-20 ${
                         uniquefea?.RAM == m?.RAM ? "bg-cyan-900" : "bg-gray-800"
                       }  w-32 bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
-
                     >
                       <p>{m.RAM}GB RAM</p>
                       <p>{m.SSD} SSD</p>
@@ -274,7 +321,7 @@ function SingleProduct() {
           <p className="text-sm text-red-600 mx-3">Not available in stock</p>
         </section>
       </main>
-      <h1 className="max-w-6xl mx-auto text-xl px-4 lg:px-0 text-gray-100 underline my-4">
+      <h1 className="max-w-6xl mx-auto hidden lg:inline-block text-xl px-4 lg:px-0 text-gray-100 underline my-4">
         View Product
       </h1>
       {/* //! Image zoom section */}
@@ -296,6 +343,54 @@ function SingleProduct() {
       </div>
 
       {/* //todo: add reviews section */}
+
+      <form
+        className='w-full lg:w-[60%] lg:px-8 px-4 overflow-x-hidden my-8'
+        onSubmit={handleReviewSubmit}
+      >
+        <div className="flex flex-col space-y-3">
+          <label className={"font-bold text-white "} htmlFor="comment">
+            Want to review the product?
+          </label>
+          <div className="my-3">
+            <StarRatings
+              rating={rating}
+              starRatedColor="goldenrod"
+              starHoverColor="goldenrod"
+              changeRating={changeRating}
+              numberOfStars={5}
+              starDimension="25px"
+              name="rating"
+            />
+          </div>
+          <textarea
+            value={reviewInputValue}
+            onChange={(e) => setreviewInputValue(e.target.value)}
+            className={
+              rating !== 0
+                ? "border   text-sm bg-gray-800 text-white mb-3  rounded-lg p-2 outline-none"
+                : "hidden"
+            }
+            rows={4}
+            type="text"
+            placeholder="Your review here.."
+            name="comment"
+            id="comment"
+          />
+        </div>
+        <button
+          disabled={reviewInputValue === ""}
+          className={
+            reviewInputValue === ""
+              ? "cursor-not-allowed border-2 h-10 hover:text-gray-800 hover:bg-white text-center border-black  select-none text-sm   text-gray-200 font-mono rounded-lg p-2 mt-2  transition-all"
+              : "border-2 border-gray-200 h-10  select-none text-sm hover:text-black hover:bg-white   text-gray-200 font-mono rounded-lg p-2 mt-2  transition-all"
+          }
+          type="submit"
+        >
+          Submit
+        </button>
+      </form>
+      <Reviews reviews={reviews}/>
       <Footer />
       <ToastsContainer store={ToastsStore} />
     </div>
