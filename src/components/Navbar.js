@@ -57,12 +57,18 @@ const Navbar = () => {
       </div>
       <section className="hidden md:flex space-x-10 items-center">
         <ul className="text-xs text-cyan-600 flex items-center space-x-10">
-          <div className="relative flex flex-col items-center justify-center h-14 cursor-pointer ">
-            <li onClick={() => console.log("Electronics")}>Electronics</li>
-          </div>
-          <div className="relative flex flex-col items-center justify-center h-14 cursor-pointer">
-            <li onClick={() => console.log("Clothes")}>Clothes</li>
-          </div>
+          <Link
+            to="/categories/electronics"
+            className="relative flex flex-col items-center justify-center h-14 cursor-pointer "
+          >
+            <li>Electronics</li>
+          </Link>
+          <Link
+            to="/categories/clothes"
+            className="relative flex flex-col items-center justify-center h-14 cursor-pointer"
+          >
+            <li>Clothes</li>
+          </Link>
           <div className="relative flex flex-col items-center justify-center h-14 cursor-pointer">
             <li>Others</li>
           </div>
@@ -149,23 +155,23 @@ const Navbar = () => {
         </ul>
       </section>
       {searchInput && (
-     <div
-       className={`h-auto lg:w-[500px] w-[300px] bg-gray-600 shadow-md absolute lg:left-[25%] left-[15%] top-14 rounded-b-md transition-all duration-500 ease-in-out delay-700 z-50 ${
-         filteredProducts.length !== 0 ? "flex" : "hidden"
-       } flex-col lg:space-y-2 space-y-1 py-4 px-4 text-sm`}
-     >
-       {filteredProducts.slice(0, 8).map((m) => (
-         <Link to={`/product/${m.id}`}>
-           <p
-             onClick={() => setsearchInput("")}
-             className="hover:bg-red-600 px-2 py-3 rounded-sm transition-colors duration-300 ease-out cursor-pointer font-light"
-           >
-             {m.name}
-           </p>
-         </Link>
-       ))}
-     </div>
-   )}
+        <div
+          className={`h-auto lg:w-[500px] w-[300px] bg-gray-600 shadow-md absolute lg:left-[25%] left-[15%] top-14 rounded-b-md transition-all duration-500 ease-in-out delay-700 z-50 ${
+            filteredProducts.length !== 0 ? "flex" : "hidden"
+          } flex-col lg:space-y-2 space-y-1 py-4 px-4 text-sm`}
+        >
+          {filteredProducts.slice(0, 8).map((m) => (
+            <Link to={`/product/${m.id}`}>
+              <p
+                onClick={() => setsearchInput("")}
+                className="hover:bg-red-600 px-2 py-3 rounded-sm transition-colors duration-300 ease-out cursor-pointer font-light"
+              >
+                {m.name}
+              </p>
+            </Link>
+          ))}
+        </div>
+      )}
       <MenuIcon
         //  onClick={handleNavClick}
         className="h-10 w-10 cursor-pointer text-gray-100 md:hidden "
