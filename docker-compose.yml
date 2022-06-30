@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  front:
+    image: docker-nextjs-dev
+    build: .
+    ports:
+    - 127.0.0.1:3000:3000
+    networks:
+      - ahjin_network
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+networks:
+  ahjin_network:
+    name: ahjin_network

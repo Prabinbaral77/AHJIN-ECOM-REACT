@@ -2,14 +2,14 @@ import React from "react";
 import { Fade } from "react-reveal";
 
 function NewProducts() {
-  //   const [products, setProducts] = useState([]);
-  //   useEffect(() => {
-  //     const getNewProducts = async () => {
-  //       const res = await axios.get("http://0.0.0.0:8000/api/products/");
-  //       setProducts(res.data);
-  //     };
-  //     getNewProducts();
-  //   }, []);
+    // const [products, setProducts] = useState([]);
+    // useEffect(() => {
+    //   const getNewProducts = async () => {
+    //     const res = await axios.get("http://0.0.0.0:8000/api/products/");
+    //     setProducts(res.data);
+    //   };
+    //   getNewProducts();
+    // }, []);
 
   return (
     <main className="lg:px-6 px-4 flex flex-col space-y-6 pb-10 bg-[#1E293B]">
