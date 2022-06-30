@@ -18,6 +18,7 @@ function SingleProduct() {
   const [displayImage, setdisplayImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
   const [uniquefea, setuniquefea] = useState(null);
+  console.log(uniquefea);
 
   const [selectedColor, setSelectedColor] = useState("red");
   const [cartData, setCartData] = useState([]);
@@ -227,7 +228,10 @@ function SingleProduct() {
                       onClick={() =>
                         setuniquefea(product?.unique_feature[index])
                       }
-                      className={`h-20  w-32 bg-gray-600 cursor-pointer  hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
+                      className={`h-20 ${
+                        uniquefea?.RAM == m?.RAM ? "bg-cyan-900" : "bg-gray-800"
+                      }  w-32 bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
+
                     >
                       <p>{m.RAM}GB RAM</p>
                       <p>{m.SSD} SSD</p>
