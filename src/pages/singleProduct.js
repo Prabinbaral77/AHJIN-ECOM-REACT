@@ -17,7 +17,7 @@ function SingleProduct() {
   const [image3, setImage3] = useState("");
   const [displayImage, setdisplayImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
-  const [uniquefea, setuniquefea] = useState(null)
+  const [uniquefea, setuniquefea] = useState(null);
 
   const [selectedColor, setSelectedColor] = useState("red");
   const [cartData, setCartData] = useState([]);
@@ -32,7 +32,7 @@ function SingleProduct() {
         setImage2(res.data.image2);
         setImage3(res.data.image3);
         setdisplayImage(res.data.image);
-        setuniquefea(res.data.unique_feature[0])
+        setuniquefea(res.data.unique_feature[0]);
       })
       .catch((error) => {
         console.log(error.response?.data);
@@ -44,14 +44,7 @@ function SingleProduct() {
 
   const addToCartHandler = () => {
     dispatch(setCartProduct(product, quantityInput));
-    // setCartData((prevData) => [
-    //   ...prevData,
-    //   { product: product, quantity: quantityInput },
-    // ]);
   };
-
-  console.log(product);
-  console.log(uniquefea)
 
   const handleQuantityIncrease = () => {
     if (quantityInput === 20) {
@@ -154,7 +147,12 @@ function SingleProduct() {
           </div>
           <div className="flex items-center space-x-3">
             <p className="text-orange-600 font-bold text-xl tracking-wider">
-              Rs. {(product?.price_m + parseInt(uniquefea.priceAdd)) - product?.discount}
+              Rs.{" "}
+              {uniquefea?.priceAdd
+                ? product?.price_m +
+                  parseInt(uniquefea?.priceAdd) -
+                  product?.discount
+                : product?.price_m - product?.discount}
             </p>
             <p className="text-gray-400 line-through text-sm">
               Rs. {product?.price_m}
@@ -224,8 +222,13 @@ function SingleProduct() {
 
               <div className="flex items-center space-x-2">
                 {product?.d_cat === "laptop" &&
-                  product?.unique_feature.map((m,index) => (
-                    <div onClick ={()=>setuniquefea(product?.unique_feature[index])} className={`h-20  w-32 bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}>
+                  product?.unique_feature.map((m, index) => (
+                    <div
+                      onClick={() =>
+                        setuniquefea(product?.unique_feature[index])
+                      }
+                      className={`h-20  w-32 bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
+                    >
                       <p>{m.RAM}GB RAM</p>
                       <p>{m.SSD} SSD</p>
                     </div>
