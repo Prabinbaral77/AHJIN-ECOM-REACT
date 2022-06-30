@@ -3,6 +3,8 @@ import { ShoppingBagIcon } from "@heroicons/react/outline";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
+import KhaltiCheckout from "khalti-checkout-web";
+import config from "../khalti/khalti.config";
 
 function Cart() {
   const cartProductDetails = useSelector((state) => state.products).cart;
@@ -13,6 +15,26 @@ function Cart() {
       price += (product.price_m - product.discount) * quantity;
     });
     return price;
+  };
+
+  const khaltiCheckoutHandler = async () => {
+    let checkout = await new KhaltiCheckout(config);
+    const price = await totalPriceOfCart();
+    checkout.show({ amount: 1000 });
+  };
+
+  //DO NOT DELETE THIS WHOLE FUNCTION
+  const ahjinCoinBurnHandler = async () => {
+    // if (
+    //   currentAccount &&
+    //   tokenBalance > ahjinCoinCalculator(totalPriceOfCart())
+    // ) {
+    //   await buyAssets(2);
+    // } else if (currentAccount == undefined) {
+    //   ToastsStore.warning("Please connect with your metamask wallet.");
+    // } else if (tokenBalance < ahjinCoinCalculator(totalPriceOfCart())) {
+    //   ToastsStore.error("Sorry, You does not have sufficient AC.");
+    // }
   };
 
   return (
@@ -128,7 +150,7 @@ function Cart() {
 
               <button
                 className="bg-red-500 py-3 hover:bg-red-600 transition-all active:scale-90 duration-500 ease-in-out "
-                // onClick={sendEthInReward}
+                onClick={khaltiCheckoutHandler}
               >
                 Checkout Now
               </button>
