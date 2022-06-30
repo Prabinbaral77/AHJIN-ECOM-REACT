@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Fade } from "react-reveal";
 import {
   MenuIcon,
@@ -12,17 +12,32 @@ import {
 } from "@heroicons/react/outline";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Navbar = () => {
   const [userInfo, setuserInfo] = useState(false);
   const [nav, setNav] = useState(false);
   const cartProductDetails = useSelector((state) => state.products).cart;
   const isUserPresent = JSON.parse(localStorage.getItem("isUserPresent"));
+  const [products, setProducts] = useState([]);
+  const [searchInput, setsearchInput] = useState("");
 
   const logOutHandler = () => {
     localStorage.removeItem("userDetails");
     localStorage.removeItem("isUserPresent");
   };
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const res = await axios.get("http://0.0.0.0:8000/api/products/");
+      setProducts(res.data);
+    };
+    getProducts();
+  }, []);
+
+  const filteredProducts = products.filter((m) => {
+    return m.name.toLowerCase().includes(searchInput.toLowerCase());
+  });
   return (
     <nav className=" w-full sticky top-0 z-50 select-none  bg-gray-800 text-gray-100 shadow-md h-14 flex items-center justify-between px-4 ">
       <Link to="/">
@@ -35,17 +50,25 @@ const Navbar = () => {
           type="text"
           placeholder="Search"
           className="outline-none bg-transparent flex-1 text-gray-100 px-2"
+          value={searchInput}
+          onChange={(e) => setsearchInput(e.target.value)}
         />
         <SearchIcon className="h-4 w-4 text-gray-100" />
       </div>
       <section className="hidden md:flex space-x-10 items-center">
         <ul className="text-xs text-cyan-600 flex items-center space-x-10">
-          <div className="relative flex flex-col items-center justify-center h-14 cursor-pointer ">
-            <li onClick={() => console.log("Electronics")}>Electronics</li>
-          </div>
-          <div className="relative flex flex-col items-center justify-center h-14 cursor-pointer">
-            <li onClick={() => console.log("Clothes")}>Clothes</li>
-          </div>
+          <Link
+            to="/categories/electronics"
+            className="relative flex flex-col items-center justify-center h-14 cursor-pointer "
+          >
+            <li>Electronics</li>
+          </Link>
+          <Link
+            to="/categories/clothes"
+            className="relative flex flex-col items-center justify-center h-14 cursor-pointer"
+          >
+            <li>Clothes</li>
+          </Link>
           <div className="relative flex flex-col items-center justify-center h-14 cursor-pointer">
             <li>Others</li>
           </div>
@@ -131,24 +154,24 @@ const Navbar = () => {
           )}
         </ul>
       </section>
-      {/* {false && (
-     <div
-       className={`h-auto lg:w-[500px] w-[300px] bg-gray-600 shadow-md absolute lg:left-[25%] left-[15%] top-14 rounded-b-md transition-all duration-500 ease-in-out delay-700 z-50 ${
-         filteredProducts.length !== 0 ? "flex" : "hidden"
-       } flex-col lg:space-y-2 space-y-1 py-4 px-4 text-sm`}
-     >
-       {filteredProducts.slice(0, 8).map((m) => (
-         <Link href={`/products/${m.id}`}>
-           <p
-             onClick={() => setsearchInput("")}
-             className="hover:bg-red-600 px-2 py-3 rounded-sm transition-colors duration-300 ease-out cursor-pointer font-light"
-           >
-             {m.name}
-           </p>
-         </Link>
-       ))}
-     </div>
-   )} */}
+      {searchInput && (
+        <div
+          className={`h-auto lg:w-[500px] w-[300px] bg-gray-600 shadow-md absolute lg:left-[25%] left-[15%] top-14 rounded-b-md transition-all duration-500 ease-in-out delay-700 z-50 ${
+            filteredProducts.length !== 0 ? "flex" : "hidden"
+          } flex-col lg:space-y-2 space-y-1 py-4 px-4 text-sm`}
+        >
+          {filteredProducts.slice(0, 8).map((m) => (
+            <Link to={`/product/${m.id}`}>
+              <p
+                onClick={() => setsearchInput("")}
+                className="hover:bg-red-600 px-2 py-3 rounded-sm transition-colors duration-300 ease-out cursor-pointer font-light"
+              >
+                {m.name}
+              </p>
+            </Link>
+          ))}
+        </div>
+      )}
       <MenuIcon
         //  onClick={handleNavClick}
         className="h-10 w-10 cursor-pointer text-gray-100 md:hidden "

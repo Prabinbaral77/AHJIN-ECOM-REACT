@@ -41,10 +41,10 @@ function Cart() {
               className="text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  "
             >
               <div className="lg:col-span-6 col-span-5 flex lg:items-center flex-col lg:flex-row space-y-3  lg:space-x-3  ">
-                <div className="w-40 h-36 relative">
+                <div className="w-40 h-32">
                   <img
                     src={product.image}
-                    className="object-cover"
+                    className="object-cover h-full w-full"
                     layout="fill"
                     alt="product"
                   />
@@ -77,10 +77,6 @@ function Cart() {
                       </div>
                     </>
                   )}
-                  <div className="flex items-center space-x-2">
-                    <p>Product code:</p>
-                    <p>1a5rgd</p>
-                  </div>
                 </div>
               </div>
               <div className="flex items-center justify-between lg:col-span-4 col-span-5 text-xs lg:text-sm ">
