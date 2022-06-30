@@ -227,7 +227,7 @@ function SingleProduct() {
                       onClick={() =>
                         setuniquefea(product?.unique_feature[index])
                       }
-                      className={`h-20  w-32 bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
+                      className={`h-20  w-32 bg-gray-600 cursor-pointer  hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
                     >
                       <p>{m.RAM}GB RAM</p>
                       <p>{m.SSD} SSD</p>
