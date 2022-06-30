@@ -96,7 +96,7 @@ const Navbar = () => {
             >
               <div className="h-10 w-10 relative ">
                 <img
-                  src={`https://avatars.dicebear.com/api/adventurer/hello.svg`}
+                  src={`https://avatars.dicebear.com/api/adventurer/sankalpa.svg`}
                   className=" rounded-full bg-black hover:opacity-80 object-cover"
                   alt="product"
                 />

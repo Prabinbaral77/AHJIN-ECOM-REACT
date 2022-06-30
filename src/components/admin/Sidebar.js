@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 function Sidebar({ setadminNumber, adminNumber }) {
   return (
-    <main className="bg-gray-900 col-span-2 max-h-screen">
+    <main className="hidden lg:inline-block bg-gray-900 col-span-2 max-h-screen">
       <h1 className="text-center my-4 text-2xl animate-pulse font-semibold text-cyan-500 font-mono">
         AHJIN DASHBOARD
       </h1>

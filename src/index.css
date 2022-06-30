@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base{
+    li{
+      @apply cursor-pointer hover:text-gray-300 text-gray-100
+    }
+  }
+  @layer components{
+    .form-inputs{ 
+      @apply px-2 py-2 rounded-sm bg-gray-700 outline-none text-gray-100 text-sm border-cyan-500 border
+    }
+  }
+  
