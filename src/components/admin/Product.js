@@ -49,7 +49,7 @@ function Product() {
   const category = "E";
 
   return (
-    <div className="col-span-10 relative text-sm ">
+    <div className="col-span-10 relative text-sm max-h-screen overflow-scroll scrollbar-hide  ">
       <Toaster />
       <nav className="  text-cyan-500 text-center font-semibold grid grid-cols-12 px-4 bg-gray-800 shadow-md py-4 sticky top-0 z-50">
         <p className=" uppercase col-span-1">SN</p>
@@ -64,7 +64,7 @@ function Product() {
       </nav>
       {/* Users */}
       {products.map((product, index) => (
-        <div className="max-h-screen overflow-scroll scrollbar-hide flex flex-col space-y-4 py-4">
+        <div className=" flex flex-col space-y-4 py-4">
           <section className="grid grid-cols-12 place-items-center text-sm text-center text-gray-100 px-4 py-4">
             <p className="col-span-1">{index + 1}</p>
             <p className="col-span-2">

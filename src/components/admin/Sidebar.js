@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 function Sidebar({ setadminNumber, adminNumber }) {
   return (
-    <main className="bg-gray-900 col-span-2">
+    <main className="bg-gray-900 col-span-2 max-h-screen">
       <h1 className="text-center my-4 text-2xl animate-pulse font-semibold text-cyan-500 font-mono">
         AHJIN DASHBOARD
       </h1>
@@ -53,10 +53,12 @@ function Sidebar({ setadminNumber, adminNumber }) {
         </div>
       </section>
       <div className="text-cyan-600 text-sm absolute bottom-5 left-8 flex items-center space-x-2">
-        <p className="cursor-pointer">Home</p>
+      <Link to="/" className="cursor-pointer">
+          <p className="cursor-pointer">Home</p>
+        </Link>
         &nbsp; /
         <Link to="/" className="cursor-pointer">
-          Back
+          <p className="cursor-pointer">Back</p>
         </Link>
       </div>
     </main>
