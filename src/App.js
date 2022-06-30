@@ -7,10 +7,10 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Account from "./pages/account";
 import Admin from "./pages/admin/admin";
-
+import Electronics from "./pages/categories/electronics";
+import Clothes from "./pages/categories/clothes";
 
 function App() {
-  
   return (
     <div className="bg-gray-800">
       <Routes>
@@ -21,6 +21,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/account" element={<Account />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/categories/electronics" element={<Electronics />} />
+        <Route path="/categories/clothes" element={<Clothes />} />
       </Routes>
     </div>
   );
