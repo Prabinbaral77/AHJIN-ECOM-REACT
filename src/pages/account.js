@@ -12,6 +12,7 @@ import { BsInfoCircle } from "react-icons/bs";
 import styles from "./account.module.css";
 import { shortenAddress } from "../utils/shortenAddress";
 import { AjhinContext } from "../context/ahjinContext";
+import BuyTokenModal from "../utils/modal/BuyToken";
 
 function Account() {
   const [accountNumber, setaccountNumber] = useState(1);
@@ -170,7 +171,7 @@ function Account() {
                   {currentAccount ? "Connected" : "Connect Wallet"}
                 </button>
                 <button
-                  // onClick={() => setBuyModal(true)}
+                  onClick={() => setBuyModal(true)}
                   className="bg-cyan-500 text-white text-sm py-3 px-8 max-w-fit rounded-full hover:bg-cyan-600 transition-all duration-300 mt-[2rem] flex items-center justify-center mx-auto"
                 >
                   Buy Token
@@ -473,7 +474,7 @@ function Account() {
           )}
         </section>
       </main>
-      {/* <BuyTokenModal open={buyModal} handleModal={closeBuyModal} /> */}
+      <BuyTokenModal open={buyModal} handleModal={closeBuyModal} />
     </div>
   );
 }
