@@ -87,7 +87,7 @@ function SingleProduct() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`http://localhost:8000/api/products/${id}/reviews/`, {
+      await axios.post(`http://localhost:8000/api/products/${id}/reviews/`, {
         rating:rating,
         comment: reviewInputValue
       }, {
@@ -96,6 +96,7 @@ function SingleProduct() {
         }
       })
       setrunUseEffect(runUseEffect + 1)
+      setreviewInputValue("")
     } catch (error) {
       console.log(error)
     }
@@ -180,7 +181,7 @@ function SingleProduct() {
           </div>
         </section>
 
-        <section className="col-span-6 bg-gray-700 h-[600px] px-3 py-6 flex flex-col space-y-6">
+        <section className="col-span-6 bg-gray-700 max-h-[700px] px-3 py-6 flex flex-col space-y-6">
           <h1 className="tracking-wider text-xl font-bold text-gray-100 ">
             {product?.name}
           </h1>

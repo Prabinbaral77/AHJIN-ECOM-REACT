@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import moment from "moment";
 import StarRatings from "react-star-ratings";
 import { Offcanvas } from "react-bootstrap";
+import TimeAgo from "timeago-react";
 
-function Reviews({
-  reviews,
-  setrunUseEffect,
-  runUseEffect,
-}) {
-//   const user = useSelector((state) => state.user.currentUser);
-//   const mode = useSelector((state) => state.theme.theme);
-  const handleDeleteReview =  (id) => {
+function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
+  //   const user = useSelector((state) => state.user.currentUser);
+  //   const mode = useSelector((state) => state.theme.theme);
+  const handleDeleteReview = (id) => {
     // try {
     //   await userRequest.delete(`/reviews/${id}`);
     //   setrunUseEffect(runUseEffect + 1);
@@ -47,7 +44,7 @@ function Reviews({
     setstarRating(rate);
   };
 
-  const handleEditReviewSubmit =  () => {
+  const handleEditReviewSubmit = () => {
     // e.preventDefault();
     // try {
     //   await userRequest.put(`/reviews/${editId}`, {
@@ -55,50 +52,42 @@ function Reviews({
     //     starRating: starRating,
     //   });
     //   setrunUseEffect(runUseEffect + 1);
-      
     //   handleClose();
     // } catch (error) {
-     
     //   console.log(error);
     // }
   };
 
-
-  const user = true
+  const user = true;
 
   return (
     <>
       <div
         id="#componentToScrollTo"
         className={
-         
-             "flex flex-col transition-all text-white bg-gray-800  justify-center items-center font-Lora"
+          "flex flex-col transition-all text-white bg-gray-800  justify-center items-center font-Lora"
         }
       >
         <h1 className="m-4  font-bold text-2xl text-yellow-600 border-b-2 mt-10  md:my-6 border-yellow-600 ">
-          {"Reviews"}
+          {`Reviews`}
         </h1>
         {reviews.slice(0, sliceNumber).map((r) => (
           <div
             key={r.id}
-            className="flex md:flex-row pr-3 flex-col space-x-3  pb-2  justify-between items-start mt-8 mb-4   h-auto w-screen   px-4"
+            className="flex md:flex-row pr-3 flex-col lg:space-x-3 space-x-0 space-y-3 lg:space-y-0  pb-2  justify-between lg:items-center items-start mt-8 mb-4   h-auto w-screen   px-4"
           >
             <div className="flex items-center w-48 ml-4 md:mt-0 mt-2 md:mb-0 mb-2  h-full  space-x-2">
-              {/* <img
+              <img
                 className="h-10 select-none  w-10 rounded-full object-cover object-top"
-                src={
-                  r.postedBy.img
-                    ? r.postedBy.img
-                    : "https://st.depositphotos.com/2101611/3925/v/600/depositphotos_39258143-stock-illustration-businessman-avatar-profile-picture.jpg"
-                }
+                src={`https://avatars.dicebear.com/api/adventurer/${r.user}.svg`}
                 alt=""
-              /> */}
+              />
 
               <h1 className="font-bold text-sm   select-none">
                 {"Sankalpa Neupane"}
               </h1>
             </div>
-            <p className=" w-[90%]   md:w-[60%]  h-auto mx-4 mt-2 text-xs   md:text-sm text-justify">
+            <p className=" w-[90%]   md:w-[60%]  h-auto mx-4 mt-2 text-xs text-justify">
               {r.comment}
             </p>
 
@@ -113,8 +102,8 @@ function Reviews({
                     starSpacing="2px"
                   />
                 </span>
-                <p className=" select-none mb-3 font-bold text-xs">
-                  {moment(r.createdAt).format("LL")}
+                <p className=" select-none mb-3  text-xs">
+                  <TimeAgo datetime={r.createdAt} />
                 </p>
               </div>
 

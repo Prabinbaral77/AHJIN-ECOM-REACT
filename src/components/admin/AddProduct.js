@@ -111,6 +111,7 @@ function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (category === "E") {
+      uniqueFeatureArray.pop()
       uniqueFeatureArray.push(uniqueFeatures);
       if (checked) {
         uniqueFeatureArray.push(uniqueFeatures2);
@@ -202,7 +203,7 @@ function AddProduct() {
           id=""
           cols="30"
           rows="5"
-          className="rounded-sm text-sm bg-gray-700 outline-none text-gray-100 px-2 py-1 border border-cyan-600"
+          className="text-area"
           placeholder="description"
         ></textarea>
 
@@ -407,7 +408,17 @@ function AddProduct() {
         >
           Add
         </button>
-        <img src={imageUrl} alt="" />
+        <div className="flex items-center space-x-6 w-full ">
+      {imageUrl && (
+          <img className="h-24 w-24 object-cover" src={imageUrl} alt="" />
+      )}
+       {imageUrl2 && (
+          <img className="h-24 w-24 object-cover" src={imageUrl2} alt="" />
+      )}
+      {imageUrl3 && (
+          <img className="h-24 w-24 object-cover" src={imageUrl3} alt="" />
+      )}
+        </div>
       </form>
     </main>
   );
