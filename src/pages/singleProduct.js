@@ -112,11 +112,15 @@ function SingleProduct() {
     getReviews();
   }, [runUseEffect]);
 
+
+  const total = reviews?.reduce((tot, item) => tot + item.rating, 0);
+  const averageRating = parseFloat((total/reviews.length).toFixed(2))
+ 
   return (
     <div className="bg-gray-800 select-none">
       <Navbar />
 
-      <main className="h-auto md:max-w-6xl w-[90%] mx-auto flex flex-col  justify-center lg:grid gap-6 grid-cols-11 md:py-12 pb-20">
+      <main className="h-auto md:max-w-6xl w-[90%] mx-auto flex flex-col  justify-center lg:grid gap-6  grid-cols-11 md:py-12 pb-20">
         <section className="w-full md:h-screen h-[60vh]  col-span-5 flex flex-col space-y-5  ">
           <div className="h-[65%] bg-red-400  w-full relative">
             <img
@@ -182,19 +186,19 @@ function SingleProduct() {
           </div>
         </section>
 
-        <section className="col-span-6 bg-gray-700 max-h-[700px] px-3 py-6 flex flex-col space-y-6">
+        <section className="col-span-6 bg-gray-700 lg:max-h-[700px] h-auto px-3 py-6 flex flex-col space-y-6">
           <h1 className="tracking-wider text-xl font-bold text-gray-100 ">
             {product?.name}
           </h1>
           <div className="flex items-center space-x-3  text-gray-100 text-xs">
             <StarRatings
-              rating={4.5}
+              rating={averageRating?averageRating :1}
               starRatedColor="goldenrod"
               readonly={true}
               starDimension="15px"
               starSpacing="2px"
             />
-            <p className="text-gray-400"> (102) Review</p>
+            <p className="text-gray-400"> ({reviews.length} {reviews.length === 1? "Review":"Reviews"})</p>
           </div>
           <div className="flex items-center space-x-3">
             <p className="text-orange-600 font-bold text-xl tracking-wider">
@@ -278,9 +282,9 @@ function SingleProduct() {
                       onClick={() =>
                         setuniquefea(product?.unique_feature[index])
                       }
-                      className={`h-20 ${
+                      className={`h-auto ${
                         uniquefea?.RAM == m?.RAM ? "bg-cyan-900" : "bg-gray-800"
-                      }  w-32 bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
+                      }  w-32  bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
                     >
                       <p>{m.RAM}GB RAM</p>
                       <p>{m.SSD} SSD</p>
@@ -323,7 +327,7 @@ function SingleProduct() {
           <p className="text-sm text-red-600 mx-3">Not available in stock</p>
         </section>
       </main>
-      <h1 className="max-w-6xl mx-auto hidden lg:inline-block text-xl px-4 lg:px-0 text-gray-100 underline my-4">
+      <h1 className="max-w-6xl mx-auto hidden w-full lg:inline-block text-xl lg:px-36 text-cyan-100 underline my-4">
         View Product
       </h1>
       {/* //! Image zoom section */}
@@ -347,11 +351,11 @@ function SingleProduct() {
       {/* //todo: add reviews section */}
 
       <form
-        className="w-full lg:w-[60%] lg:px-8 px-4 overflow-x-hidden my-8"
+        className="w-full lg:w-[60%] lg:px-8 lg:ml-28   px-8 py-4 overflow-x-hidden lg:my-16"
         onSubmit={handleReviewSubmit}
       >
         <div className="flex flex-col space-y-3">
-          <label className={"font-bold text-white "} htmlFor="comment">
+          <label className={"font-bold text-white my-4 "} htmlFor="comment">
             Want to review the product?
           </label>
           <div className="my-3">
@@ -392,7 +396,7 @@ function SingleProduct() {
           Submit
         </button>
       </form>
-      <Reviews reviews={reviews} />
+      <Reviews reviews={reviews} setrunUseEffect = {setrunUseEffect} runUseEffect = {runUseEffect} />
       <Footer />
       <ToastsContainer store={ToastsStore} />
     </div>
