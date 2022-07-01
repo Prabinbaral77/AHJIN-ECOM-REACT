@@ -27,9 +27,10 @@ function Product() {
 
   const fetchProducts = async () => {
     axios
-      .get("http://0.0.0.0:8000/api/products/")
+      .get("http://localhost:8000/api/products/")
       .then((res) => {
         setProducts(res.data);
+        console.log(res.data)
       })
       .catch((error) => {
         console.log(error.response?.data);
@@ -46,7 +47,7 @@ function Product() {
 
   const handleProductDelete = async (id) => {
     try {
-      await axios.delete(`http://0.0.0.0:8000/api/products/${id}`, {
+      await axios.delete(`http://localhost:8000/api/products/${id}`, {
         headers: {
           authorization: `Bearer ${access_token}`,
         },
