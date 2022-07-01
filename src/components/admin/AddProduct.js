@@ -67,6 +67,13 @@ function AddProduct() {
     }
   };
 
+  const handleClothesUniqueChange = (e) => {
+    setclothesUniqueFeatures({
+      ...clothesUniqueFeatures,
+      [e.target.name]: e.target.value.split(","),
+    });
+  };
+
   // Perform localStorage action
   const item = JSON.parse(localStorage.getItem("userDetails"));
   const access_token = item?.access_token;
@@ -110,8 +117,8 @@ function AddProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    uniqueFeatureArray.pop();
     if (category === "E") {
-
       uniqueFeatureArray.push(uniqueFeatures);
       if (checked) {
         uniqueFeatureArray.push(uniqueFeatures2);
@@ -151,12 +158,7 @@ function AddProduct() {
       console.log(error);
     }
   };
-  const handleClothesUniqueChange = (e) => {
-    setclothesUniqueFeatures({
-      ...clothesUniqueFeatures,
-      [e.target.name]: e.target.value.split(","),
-    });
-  };
+  
 
   return (
     <main className="lg:col-span-10 col-span-12 w-full flex items-center justify-center lg:pt-20  max-h-screen overflow-scroll">

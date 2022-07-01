@@ -23,7 +23,8 @@ function SingleProduct() {
   const [uniquefea, setuniquefea] = useState(null);
   const [uniquefeatureIndex, setuniquefeatureIndex] = useState(1);
 
-  const [selectedColor, setSelectedColor] = useState("red");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [size, setSize] = useState("s")
   const [cartData, setCartData] = useState([]);
   const [runUseEffect, setrunUseEffect] = useState(1);
   const { id } = useParams();
@@ -116,6 +117,8 @@ function SingleProduct() {
 
   const total = reviews?.reduce((tot, item) => tot + item.rating, 0);
   const averageRating = parseFloat((total/reviews.length).toFixed(2))
+
+  console.log(size,selectedColor)
  
   return (
     <div className="bg-gray-800 select-none">
@@ -257,21 +260,13 @@ function SingleProduct() {
                 <div className="flex flex-col space-y-2">
                   <h1 className="text-gray-100 text-sm">Size</h1>
                   <div className="flex space-x-2">
-                    <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1 ">
-                      S
-                    </p>
-                    <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1">
-                      M
-                    </p>
-                    <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1">
-                      L
-                    </p>
-                    <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1">
-                      XL
-                    </p>
-                    <p className="bg-gray-600 cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1 ">
-                      XXL
-                    </p>
+                    {product?.unique_feature[0]?.available_sizes?.map((m)=>(
+                        <p value={m} onClick={()=>setSize(m)} className={`bg-gray-600 ${m===size && "bg-gray-500"} uppercase cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1`} >
+                        {m}
+                      </p>
+                    ))}
+                    
+                   
                   </div>
                 </div>
               )}
