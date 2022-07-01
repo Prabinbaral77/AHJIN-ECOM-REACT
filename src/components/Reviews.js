@@ -86,6 +86,7 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
                 alt=""
               />
 
+
               <h1 className="font-bold text-sm   select-none">{r.user}</h1>
             </div>
             <p className=" w-[90%]   md:w-[60%]  h-auto mx-4 mt-2 text-xs text-justify">
