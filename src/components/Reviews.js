@@ -18,6 +18,9 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
     // }
   };
 
+  const userDetails = JSON.parse(localStorage.getItem("userDetails")).user;
+
+  console.log(userDetails?.username);
   const [sliceNumber, setsliceNumber] = useState(5);
   const [show, setShow] = useState(false);
 
@@ -83,9 +86,8 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
                 alt=""
               />
 
-              <h1 className="font-bold text-sm  select-none">
-                {r.user}
-              </h1>
+
+              <h1 className="font-bold text-sm   select-none">{r.user}</h1>
             </div>
             <p className=" w-[90%]   md:w-[60%]  h-auto mx-4 mt-2 text-xs text-justify">
               {r.comment}
@@ -108,29 +110,21 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
               </div>
 
               <div className="flex items-center justify-evenly w-1/2">
-                {user && (
+                {userDetails?.username == r?.user && (
                   <p
                     onClick={() => handleDeleteReview(r.id)}
-                    // className={
-                    //   user.isAdmin === true || user._id === r.user
-                    //     ? "text-red-600  mb-3 font-bold text-xs underline cursor-pointer hover:text-red-700 active:scale-90 duration-300 transform transition ease-out "
-                    //     : "hidden"
-                    // }
+                    className="text-red-600  mb-3 font-bold text-xs underline cursor-pointer hover:text-red-700 active:scale-90 duration-300 transform transition ease-out "
                   >
                     Delete
                   </p>
                 )}
 
-                {user && (
+                {userDetails?.username == r?.user && (
                   <p
                     onClick={() =>
                       handleEditReview(r._id, r.starRating, r.review)
                     }
-                    // className={
-                    //   user.isAdmin === true || user._id === r.user
-                    //     ? "text-green-600  mb-3 font-bold text-xs underline cursor-pointer hover:text-green-700 active:scale-90 duration-300 transform transition ease-out "
-                    //     : "hidden"
-                    // }
+                    className="text-green-600  mb-3 font-bold text-xs underline cursor-pointer hover:text-green-700 active:scale-90 duration-300 transform transition ease-out "
                   >
                     Edit
                   </p>

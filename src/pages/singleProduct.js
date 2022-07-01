@@ -24,9 +24,9 @@ function SingleProduct() {
 
   const [selectedColor, setSelectedColor] = useState("red");
   const [cartData, setCartData] = useState([]);
-  const [runUseEffect, setrunUseEffect] = useState(1)
+  const [runUseEffect, setrunUseEffect] = useState(1);
   const { id } = useParams();
-  console.log(cartData);
+  console.log(product);
 
   // !reviews
   const item = JSON.parse(localStorage.getItem("userDetails"));
@@ -35,14 +35,11 @@ function SingleProduct() {
   const [reviewInputValue, setreviewInputValue] = useState("");
   const [rating, setRating] = useState(0);
 
-  const [reviews, setReviews] = useState([])
+  const [reviews, setReviews] = useState([]);
 
   const changeRating = (rate) => {
     setRating(rate);
   };
-
-  console.log(id)
-
 
   const fetchProduct = async () => {
     axios
@@ -82,35 +79,39 @@ function SingleProduct() {
     }
   };
 
-
-  const handleReviewSubmit =async(e) => {
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post(`http://localhost:8000/api/products/${id}/reviews/`, {
-        rating:rating,
-        comment: reviewInputValue
-      }, {
-        headers:{
-          Authorization: `Bearer ${access_token}`
+      await axios.post(
+        `http://localhost:8000/api/products/${id}/reviews/`,
+        {
+          rating: rating,
+          comment: reviewInputValue,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
         }
-      })
-      setrunUseEffect(runUseEffect + 1)
-      setreviewInputValue("")
+      );
+      setrunUseEffect(runUseEffect + 1);
+      setreviewInputValue("");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-
+  };
 
   useEffect(() => {
-    const getReviews = async() => {
-      const res = await axios.get(`http://localhost:8000/api/products/${id}/reviews/`)
-     setReviews(res.data)
-    }
-    getReviews()
-  }, [runUseEffect])
-  
+    const getReviews = async () => {
+      const res = await axios.get(
+        `http://localhost:8000/api/products/${id}/reviews/`
+      );
+      setReviews(res.data);
+    };
+    getReviews();
+  }, [runUseEffect]);
+
   return (
     <div className="bg-gray-800 select-none">
       <Navbar />
@@ -346,7 +347,7 @@ function SingleProduct() {
       {/* //todo: add reviews section */}
 
       <form
-        className='w-full lg:w-[60%] lg:px-8 px-4 overflow-x-hidden my-8'
+        className="w-full lg:w-[60%] lg:px-8 px-4 overflow-x-hidden my-8"
         onSubmit={handleReviewSubmit}
       >
         <div className="flex flex-col space-y-3">
@@ -391,7 +392,7 @@ function SingleProduct() {
           Submit
         </button>
       </form>
-      <Reviews reviews={reviews}/>
+      <Reviews reviews={reviews} />
       <Footer />
       <ToastsContainer store={ToastsStore} />
     </div>
