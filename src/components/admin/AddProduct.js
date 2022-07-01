@@ -111,12 +111,13 @@ function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (category === "E") {
-      uniqueFeatureArray.pop();
+
       uniqueFeatureArray.push(uniqueFeatures);
       if (checked) {
         uniqueFeatureArray.push(uniqueFeatures2);
       }
     } else if (category === "C") {
+     
       uniqueFeatureArray.push(clothesUniqueFeatures);
     }
     console.log(uniqueFeatureArray);
