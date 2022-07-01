@@ -21,12 +21,13 @@ function SingleProduct() {
   const [displayImage, setdisplayImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
   const [uniquefea, setuniquefea] = useState(null);
+  const [uniquefeatureIndex, setuniquefeatureIndex] = useState(1);
 
   const [selectedColor, setSelectedColor] = useState("red");
   const [cartData, setCartData] = useState([]);
   const [runUseEffect, setrunUseEffect] = useState(1);
   const { id } = useParams();
-  console.log(product);
+  console.log(uniquefeatureIndex, "uniquefea");
 
   // !reviews
   const item = JSON.parse(localStorage.getItem("userDetails"));
@@ -61,7 +62,7 @@ function SingleProduct() {
   }, []);
 
   const addToCartHandler = () => {
-    dispatch(setCartProduct(product, quantityInput));
+    dispatch(setCartProduct(product, quantityInput, uniquefeatureIndex));
   };
 
   const handleQuantityIncrease = () => {
@@ -283,6 +284,7 @@ function SingleProduct() {
                         setuniquefea(product?.unique_feature[index])
                       }
                       className={`h-auto ${
+
                         uniquefea?.RAM == m?.RAM ? "bg-cyan-900" : "bg-gray-800"
                       }  w-32  bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
                     >

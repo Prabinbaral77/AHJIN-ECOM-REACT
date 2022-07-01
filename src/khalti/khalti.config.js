@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 let config = {
   // replace this key with yours
@@ -19,18 +20,22 @@ let config = {
         },
       };
 
-      // axios
-      //   .post("https://khalti.com/api/v2/payment/verify/", data, config)
-      //   .then((response) => {
-      //     console.log(response.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
       axios
         .post(`http://0.0.0.0:8000/api/khalti/pay`, data)
         .then((response) => {
-          console.log("WOW SUCCESS", response);
+          console.log("WOW SUCCESS");
+          const paymentMethod = "K";
+          // axios.post(
+          //   "http://0.0.0.0:8000/api/user/login/",
+          //   {
+          //     // ...data
+          //   },
+          //   {
+          //     headers: {
+          //       authorization: `Bearer ${accessToken}`,
+          //     },
+          //   }
+          // );
         })
         .catch((error) => {
           console.log("WTF", error);

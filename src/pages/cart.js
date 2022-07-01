@@ -4,12 +4,17 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import KhaltiCheckout from "khalti-checkout-web";
-import config from "../khalti/khalti.config";
+import axios from "axios";
+// import config from "../khalti/khalti.config";
 import { AjhinContext } from "../context/ahjinContext";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import { ahjinCoinCalculator } from "../utils/ahjinCoinCalculator";
 
 function Cart() {
+  const [orderItemArray, setOrderItemArray] = useState([]);
+  const userDetail = JSON.parse(localStorage.getItem("userDetails"));
+  const accessToken = userDetail?.access_token;
+  const userId = userDetail?.user?.pk;
   const { currentAccount, tokenBalance, buyAssets, sendEthInReward } =
     useContext(AjhinContext);
   const cartProductDetails = useSelector((state) => state.products).cart;
@@ -22,10 +27,103 @@ function Cart() {
     return price;
   };
 
+  const formatDataToOrder = async () => {
+    cartProductDetails.forEach((singleProduct) => {
+      setOrderItemArray((prevData) => [
+        ...prevData,
+        {
+          productChosen: singleProduct?.uniquefeatureIndex,
+          quantity: singleProduct?.quantity,
+          paymentMethod: "K",
+          delivered: false,
+          product: singleProduct?.product?.id,
+          user: userId,
+        },
+      ]);
+    });
+  };
+
+  console.log(orderItemArray);
+
+  useEffect(() => {
+    formatDataToOrder();
+  }, []);
+
+  let config = {
+    // replace this key with yours
+    publicKey: "test_public_key_ad21e5a28b0c4a46bec1e93f7144d126",
+    productIdentity: "1857",
+    productName: "AHJIN Ecommerce",
+    productUrl: "http://localhost:3000",
+    eventHandler: {
+      onSuccess(payload) {
+        let data = {
+          token: payload.token,
+          amount: payload.amount,
+        };
+
+        axios
+          .post(`http://0.0.0.0:8000/api/khalti/pay`, data)
+          .then((response) => {
+            console.log("WOW SUCCESS");
+            // axios
+            //   .post(
+            //     "http://0.0.0.0:8000/api/orders/",
+            //     {
+            //       orderItemArray,
+            //     },
+            //     {
+            //       headers: {
+            //         authorization: `Bearer ${accessToken}`,
+            //       },
+            //     }
+            //   )
+            //   .then((res) => {
+            //     console.log(res);
+            //   })
+            //   .catch((error) => console.log(error));
+          })
+          .catch((error) => {
+            console.log("Error", error);
+          });
+      },
+      // onError handler is optional
+      onError(error) {
+        // handle errors
+        console.log(error);
+      },
+      onClose() {
+        console.log("widget is closing");
+      },
+    },
+    paymentPreference: [
+      "KHALTI",
+      "EBANKING",
+      "MOBILE_BANKING",
+      "CONNECT_IPS",
+      "SCT",
+    ],
+  };
   const khaltiCheckoutHandler = async () => {
-    let checkout = await new KhaltiCheckout(config);
-    const price = await totalPriceOfCart();
-    checkout.show({ amount: 1000 });
+    // let checkout = await new KhaltiCheckout(config);
+    // const price = await totalPriceOfCart();
+    // checkout.show({ amount: 1000 });
+    axios
+      .post(
+        "http://0.0.0.0:8000/api/orders/",
+        {
+          orderItemArray,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => console.log(error));
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
