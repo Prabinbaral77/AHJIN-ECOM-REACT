@@ -111,7 +111,7 @@ function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (category === "E") {
-      
+
       uniqueFeatureArray.push(uniqueFeatures);
       if (checked) {
         uniqueFeatureArray.push(uniqueFeatures2);
@@ -410,15 +410,15 @@ function AddProduct() {
           Add
         </button>
         <div className="flex items-center space-x-6 w-full ">
-      {imageUrl && (
-          <img className="h-24 w-24 object-cover" src={imageUrl} alt="" />
-      )}
-       {imageUrl2 && (
-          <img className="h-24 w-24 object-cover" src={imageUrl2} alt="" />
-      )}
-      {imageUrl3 && (
-          <img className="h-24 w-24 object-cover" src={imageUrl3} alt="" />
-      )}
+          {imageUrl && (
+            <img className="h-24 w-24 object-cover" src={imageUrl} alt="" />
+          )}
+          {imageUrl2 && (
+            <img className="h-24 w-24 object-cover" src={imageUrl2} alt="" />
+          )}
+          {imageUrl3 && (
+            <img className="h-24 w-24 object-cover" src={imageUrl3} alt="" />
+          )}
         </div>
       </form>
     </main>
