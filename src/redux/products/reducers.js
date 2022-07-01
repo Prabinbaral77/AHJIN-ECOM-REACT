@@ -10,7 +10,11 @@ export default function (state = initialState, action) {
         ...state,
         cart: [
           ...state.cart,
-          { product: action.payload, quantity: action.quantity },
+          {
+            product: action.payload,
+            quantity: action.quantity,
+            uniquefeatureIndex: action.uniquefeatureIndex,
+          },
         ],
       };
 
