@@ -1,21 +1,30 @@
 import React, { useState } from "react";
-import moment from "moment";
+
 import StarRatings from "react-star-ratings";
 import { Offcanvas } from "react-bootstrap";
 import TimeAgo from "timeago-react";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
-  //   const user = useSelector((state) => state.user.currentUser);
-  //   const mode = useSelector((state) => state.theme.theme);
-  const handleDeleteReview = (id) => {
-    // try {
-    //   await userRequest.delete(`/reviews/${id}`);
-    //   setrunUseEffect(runUseEffect + 1);
-    //   showAlert("Review removed.", "success", "Success");
-    // } catch (error) {
-    //   showAlert("You cannot perform this action", "danger", "Error");
-    //   console.log(error);
-    // }
+
+  const item = JSON.parse(localStorage.getItem("userDetails"));
+  const access_token = item?.access_token;
+
+  const handleDeleteReview = async(id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/products/reviews/${id}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      setrunUseEffect(runUseEffect + 1);
+    toast.success("Review Deleted", {id:"delete_toast"})
+    } catch (error) {
+      toast.error("Error deleting review", {id:"delete_toast"})
+      console.log(error);
+    }
+  
   };
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails")).user;
@@ -47,37 +56,45 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
     setstarRating(rate);
   };
 
-  const handleEditReviewSubmit = () => {
-    // e.preventDefault();
-    // try {
-    //   await userRequest.put(`/reviews/${editId}`, {
-    //     review: review,
-    //     starRating: starRating,
-    //   });
-    //   setrunUseEffect(runUseEffect + 1);
-    //   handleClose();
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const handleEditReviewSubmit = async(e) => {
+    e.preventDefault();
+    try {
+      await axios.patch(`http://localhost:8000/api/products/reviews/${editId}`, {
+        comment: review,
+        rating: starRating,
+      },{
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      setrunUseEffect(runUseEffect + 1);
+      handleClose();
+      toast.success("Review edited.")
+    } catch (error) {
+      console.log(error);
+      toast.error("Error editing review.")
+    }
   };
 
   const user = true;
 
   return (
-    <>
+    <div className="lg:px-4 ">
+       <Toaster position="top-center" reverseOrder={false} />
+            
       <div
         id="#componentToScrollTo"
         className={
-          "flex flex-col transition-all text-white bg-gray-800  justify-center items-center font-Lora"
+          "flex flex-col transition-all text-white bg-gray-800  justify-center items-center font-Lora mb-4"
         }
       >
-        <h1 className="m-4  font-bold text-2xl text-yellow-600 border-b-2 mt-10  md:my-6 border-yellow-600 ">
-          {`Reviews`}
+          <h1 className="m-4  font-bold text-2xl font-Cursive text-yellow-600 border-b-2 mt-10 w-fit  md:my-6 border-yellow-600 ">
+          {`Reviews (${reviews.length})`}
         </h1>
         {reviews.slice(0, sliceNumber).map((r) => (
           <div
             key={r.id}
-            className="flex md:flex-row pr-3 flex-col lg:space-x-3 space-x-0 space-y-3 lg:space-y-0  pb-2  justify-between lg:items-center items-start mt-8 mb-4   h-auto w-screen   px-4"
+            className="flex md:flex-row pr-3 flex-col  lg:space-x-3 space-x-0 space-y-3 lg:space-y-0  pb-2  justify-between lg:items-center items-start mt-8 mb-4   h-auto w-screen   px-4"
           >
             <div className="flex items-center w-48 ml-4 md:mt-0 mt-2 md:mb-0 mb-2  h-full  space-x-2">
               <img
@@ -100,7 +117,7 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
                     rating={r.rating}
                     starRatedColor="goldenrod"
                     readonly={true}
-                    starDimension="20px"
+                    starDimension="15px"
                     starSpacing="2px"
                   />
                 </span>
@@ -122,13 +139,14 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
                 {userDetails?.username == r?.user && (
                   <p
                     onClick={() =>
-                      handleEditReview(r._id, r.starRating, r.review)
+                      handleEditReview(r.id, r.rating, r.comment)
                     }
                     className="text-green-600  mb-3 font-bold text-xs underline cursor-pointer hover:text-green-700 active:scale-90 duration-300 transform transition ease-out "
                   >
                     Edit
                   </p>
                 )}
+                
               </div>
             </div>
           </div>
@@ -199,7 +217,7 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
           see more reviews
         </p>
       )}
-    </>
+    </div>
   );
 }
 

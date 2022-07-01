@@ -9,7 +9,7 @@ function Footer() {
   return (
     <div
       className={
-        "w-full px-5 bg-gray-800 border-t border-gray-900 transition-all flex flex-col text-gray-100 md:flex-row items-center justify-between text-xs"
+        "w-full px-5 bg-gray-700 border-t border-gray-900 transition-all flex flex-col text-gray-100 md:flex-row items-center justify-between text-xs"
       }
     >
       <div className=" w-full md:w-1/3 mx-3 ">
