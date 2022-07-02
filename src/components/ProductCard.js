@@ -9,7 +9,7 @@ function ProductCard({ img, name, price_m, price_a, discount, rating, id }) {
   return (
     <Link
       to={`/product/${id}`}
-      className="lg:w-[280px] w-[195px] h-auto bg-slate-800  rounded-md cursor-pointer shadow-sm shadow-gray-100/70 lg:hover:scale-105 transition-transform duration-700 delay-300 ease-in-out"
+      className="lg:w-[280px] w-[195px] h-auto bg-slate-800  rounded-md cursor-pointer shadow-md shadow-cyan-100/40 lg:hover:scale-105 transition-transform duration-700 delay-300 ease-in-out"
     >
      
         <img

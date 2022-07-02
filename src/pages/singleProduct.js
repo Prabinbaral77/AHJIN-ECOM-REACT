@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Reviews from "../components/Reviews";
 import { Link } from 'react-scroll'
 import Ratings from "../components/Ratings";
+import toast, { Toaster } from "react-hot-toast";
 
 
 function SingleProduct() {
@@ -40,6 +41,7 @@ function SingleProduct() {
   const [rating, setRating] = useState(0);
 
   const [reviews, setReviews] = useState([]);
+
 
   const changeRating = (rate) => {
     setRating(rate);
@@ -86,6 +88,7 @@ function SingleProduct() {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
 
+
     try {
       await axios.post(
         `http://localhost:8000/api/products/${id}/reviews/`,
@@ -101,8 +104,12 @@ function SingleProduct() {
       );
       setrunUseEffect(runUseEffect + 1);
       setreviewInputValue("");
+      toast.success("Review added successfully")
+      
     } catch (error) {
       console.log(error);
+      toast.error("You have already reviewed the product.")
+
     }
   };
 
@@ -127,6 +134,7 @@ function SingleProduct() {
   return (
     <div className="bg-gray-800 select-none">
       <Navbar />
+      <Toaster/>
 
       <main className="h-auto md:max-w-6xl w-[90%] mx-auto flex flex-col  justify-center lg:grid gap-6  grid-cols-11 md:py-12 pb-20">
         <section className="w-full md:h-screen h-[60vh]  col-span-5 flex flex-col space-y-5  ">
@@ -354,7 +362,7 @@ function SingleProduct() {
 
       {/* //todo: add reviews section */}
 
-      <div className="flex flex-col  space-y-32 mt-20 mb-48  ">
+      <div  id="reviews-section" className="flex flex-col  space-y-32 mt-20 mb-48  ">
       <Ratings  reviews = {reviews} averageRating = {averageRating}/>
       
 
@@ -407,7 +415,7 @@ function SingleProduct() {
       </form>
 
       </div>
-      <div className="border-t" id="reviews-section">
+      <div className="border-t border-cyan-200">
       <Reviews reviews={reviews}  setrunUseEffect = {setrunUseEffect} runUseEffect = {runUseEffect} />
       </div>
       <Footer />
