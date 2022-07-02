@@ -164,7 +164,7 @@ const Navbar = () => {
             <Link to={`/product/${m.id}`}>
               <p
                 onClick={() => setsearchInput("")}
-                className="hover:bg-red-600 px-2 py-3 rounded-sm transition-colors duration-300 ease-out cursor-pointer font-light"
+                className="hover:bg-red-600 hover:text-gray-100 px-2 py-3 rounded-sm transition-colors duration-300 ease-out cursor-pointer font-light"
               >
                 {m.name}
               </p>

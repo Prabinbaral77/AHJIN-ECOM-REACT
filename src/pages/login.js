@@ -61,7 +61,7 @@ function Login() {
         className="w-full h-screen bg-no-repeat bg-cover bg-right flex items-center pt-20 justify-center"
         style={{
           backgroundImage:
-            'url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")',
+            'url("https://images.pexels.com/photos/1166644/pexels-photo-1166644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
         }}
       >
         <div className=" md:w-[33.33%] w-full mx-3 py-10 flex-col space-y-4 bg-gray-800 rounded-lg shadow-2xl shadow-gray-600 flex items-center justify-center px-4 ">

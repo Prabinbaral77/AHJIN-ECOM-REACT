@@ -94,7 +94,7 @@ function Register() {
         className="w-full h-screen bg-no-repeat bg-cover bg-right  flex  items-center pt-20 justify-center"
         style={{
           backgroundImage:
-            'url("https://images.pexels.com/photos/6984661/pexels-photo-6984661.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")',
+            'url("https://images.pexels.com/photos/305821/pexels-photo-305821.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
         }}
       >
         <div className=" relative md:w-1/2 w-full mx-3 overflow-hidden py-10 flex-col space-y-6 bg-gray-800 rounded-lg shadow-2xl shadow-gray-600 flex items-center justify-center px-4 ">
