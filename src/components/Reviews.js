@@ -6,6 +6,7 @@ import TimeAgo from "timeago-react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
+
 function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
 
   const item = JSON.parse(localStorage.getItem("userDetails"));
@@ -76,21 +77,18 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
     }
   };
 
-  const user = true;
 
   return (
-    <div className="lg:px-4 ">
+    <div className="lg:px-4  ">
        <Toaster position="top-center" reverseOrder={false} />
-            
+            <h1 className="text-cyan-500 my-4 ml-8 font-semibold font-serif border-b max-w-fit animate-pulse border-cyan-500 text-xl tracking-widest">Customer Reviews</h1>
       <div
         id="#componentToScrollTo"
         className={
-          "flex flex-col transition-all text-white bg-gray-800  justify-center items-center font-Lora mb-4"
+          "flex flex-col  transition-all text-white    justify-center items-center font-Lora mb-4"
         }
       >
-          <h1 className="m-4  font-bold text-2xl font-Cursive text-yellow-600 border-b-2 mt-10 w-fit  md:my-6 border-yellow-600 ">
-          {`Reviews (${reviews.length})`}
-        </h1>
+          
         {reviews.slice(0, sliceNumber).map((r) => (
           <div
             key={r.id}
@@ -98,7 +96,7 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
           >
             <div className="flex items-center w-48 ml-4 md:mt-0 mt-2 md:mb-0 mb-2  h-full  space-x-2">
               <img
-                className="h-10 select-none  w-10 rounded-full object-cover object-top"
+                className="h-10 select-none bg-black  w-10 rounded-full object-cover object-top"
                 src={`https://avatars.dicebear.com/api/adventurer/${r.user}.svg`}
                 alt=""
               />
@@ -120,6 +118,7 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
                     starDimension="15px"
                     starSpacing="2px"
                   />
+                
                 </span>
                 <p className=" select-none mb-3  text-xs">
                   <TimeAgo datetime={r.createdAt} />
