@@ -31,10 +31,10 @@ function Account() {
     <div className="bg-gray-800">
       <Navbar />
 
-      <main className="lg:max-w-7xl w-full mx-auto bg-gray-700 min-h-screen mt-4 grid grid-cols-10">
+      <main className="lg:max-w-7xl w-full mx-auto bg-gray-700 min-h-[91vh] mt-4 grid grid-cols-10">
         {/* sidebar */}
 
-        <section className="col-span-2 bg-gray-900 hidden lg:inline-block">
+        <section className="col-span-2 bg-gray-900 max-h-[100vh] hidden lg:inline-block">
           <h1 className="font-bold px-5 text-gray-100 my-10 text-2xl">
             My Account
           </h1>
@@ -75,7 +75,7 @@ function Account() {
 
         {/* main */}
 
-        <section className="lg:col-span-8 col-span-10  max-h-screen overflow-scroll scrollbar-hide">
+        <section className="lg:col-span-8 col-span-10  max-h-screen overflow-scroll scrollbar-hide ">
           <div className="text-gray-100 flex bg-gray-800 lg:hidden w-screen h-12  items-center justify-around">
             <UserCircleIcon
               onClick={() => setaccountNumber(1)}
@@ -99,7 +99,7 @@ function Account() {
 
           {accountNumber === 1 && (
             <main className="px-4 py-5 text-gray-100 ">
-              <h1 className=" max-w-fit font-bold text-2xl my-10 mx-[4.5rem] lg:mx-28 text-cyan-500">
+              <h1 className=" max-w-fit font-bold text-2xl my-10 mx-[4.5rem] lg:mx-28 text-gray-100">
                 My Profile
               </h1>
 
@@ -183,20 +183,20 @@ function Account() {
           {/*  orders */}
 
           {accountNumber === 2 && (
-            <main className="px-4 lg:py-5 py-20 text-gray-100 flex flex-col space-y-6 ">
+            <main className="px-4 lg:py-5 py-20 max-h-[90vh] overflow-scroll text-gray-100 flex flex-col space-y-6 ">
               <h1 className="font-bold text-2xl my-2 mx-10">My Orders</h1>
 
               <Fade top>
                 <section className="lg:w-[80%] w-full h-auto bg-gray-600 border border-cyan-500 flex items-center flex-col px-5 py-5 space-y-4">
                   <div className="flex items-center justify-between  w-full ">
                     <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 bg-blue-400 relative ">
+                      <div className="h-20 w-20 ">
                         <img
                           src={
                             "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                           }
                           layout="fill"
-                          className="object-cover"
+                          className="object-cover h-full w-full"
                           alt="product"
                         />
                       </div>
@@ -216,13 +216,13 @@ function Account() {
                   </div>
                   <div className="flex items-center justify-between w-full ">
                     <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 bg-blue-400 relative ">
+                      <div className="h-20 w-20 bg-blue-400 ">
                         <img
                           src={
                             "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                           }
                           layout="fill"
-                          className="object-cover"
+                          className="object-cover  h-full w-full"
                           alt="product"
                         />
                       </div>
@@ -244,13 +244,13 @@ function Account() {
                 <section className="lg:w-[80%] w-full h-auto bg-gray-600 border border-cyan-500 flex items-center flex-col px-5 py-5 space-y-4">
                   <div className="flex items-center justify-between  w-full ">
                     <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 bg-blue-400 relative ">
+                      <div className="h-20 w-20 bg-blue-400 ">
                         <img
                           src={
                             "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                           }
                           layout="fill"
-                          className="object-cover"
+                          className="object-cover h-full w-full"
                           alt="product"
                         />
                       </div>
@@ -270,13 +270,13 @@ function Account() {
                   </div>
                   <div className="flex items-center justify-between w-full ">
                     <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 bg-blue-400 relative ">
+                      <div className="h-20 w-20  ">
                         <img
                           src={
                             "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                           }
                           layout="fill"
-                          className="object-cover"
+                          className="object-cover h-full w-full"
                           alt="profile"
                         />
                       </div>
@@ -298,13 +298,13 @@ function Account() {
                 <section className="lg:w-[80%] w-full h-auto bg-gray-600 border border-cyan-500 flex items-center flex-col px-5 py-5 space-y-4">
                   <div className="flex items-center justify-between  w-full ">
                     <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 bg-blue-400 relative ">
+                      <div className="h-20 w-20   ">
                         <img
                           src={
                             "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                           }
                           layout="fill"
-                          className="object-cover"
+                          className="object-cover h-full w-full"
                           alt="profile"
                         />
                       </div>
@@ -324,13 +324,13 @@ function Account() {
                   </div>
                   <div className="flex items-center justify-between w-full ">
                     <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 bg-blue-400 relative ">
+                      <div className="h-20 w-20   ">
                         <img
                           src={
                             "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                           }
                           layout="fill"
-                          className="object-cover"
+                          className="object-cover h-full w-full"
                           alt="profile"
                         />
                       </div>

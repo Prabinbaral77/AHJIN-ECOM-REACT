@@ -22,7 +22,7 @@ function AddProduct() {
   const [clothesUniqueFeatures, setclothesUniqueFeatures] = useState({
     available_colors: [],
     available_sizes: [],
-    count: 2,
+    count: "",
   });
   const [uniqueFeatures, setuniqueFeatures] = useState({
     RAM: 0,
@@ -68,11 +68,20 @@ function AddProduct() {
   };
 
   const handleClothesUniqueChange = (e) => {
-    setclothesUniqueFeatures({
-      ...clothesUniqueFeatures,
-      [e.target.name]: e.target.value.split(","),
-    });
+    if(e.target.name !== "count"){
+      setclothesUniqueFeatures({
+        ...clothesUniqueFeatures,
+        [e.target.name]: e.target.value.split(","),
+      });
+    }else{
+      setclothesUniqueFeatures({
+        ...clothesUniqueFeatures,
+        [e.target.name]: e.target.value
+      });
+    }
   };
+
+  console.log(clothesUniqueFeatures)
 
   // Perform localStorage action
   const item = JSON.parse(localStorage.getItem("userDetails"));
@@ -351,14 +360,16 @@ function AddProduct() {
 
         {/* //!checkbox */}
 
-        <div className="flex items-center text-xs space-x-2 text-gray-100">
-          <input
-            onClick={() => setChecked(!checked)}
-            type="checkbox"
-            className="cursor-pointer"
-          />
-          <p>Is there an upgrade?</p>
-        </div>
+       {d_cat === "laptop" && (
+         <div className={`flex  ${category!=="E" && "hidden" } items-center text-xs space-x-2 text-gray-100`}>
+         <input
+           onClick={() => setChecked(!checked)}
+           type="checkbox"
+           className="cursor-pointer"
+         />
+         <p>Is there an upgrade?</p>
+       </div>
+       )}
 
         {category === "C" && (
           <div className="flex  space-x-2">
@@ -377,12 +388,13 @@ function AddProduct() {
               placeholder="red,yellow,..."
             />
           </div>
+         
         )}
         <div className="flex items-center space-x-3">
           <input
             type="number"
             min={1}
-            className="form-inputs w-1/2"
+            className="form-inputs w-1/3"
             placeholder="price"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
@@ -390,10 +402,18 @@ function AddProduct() {
           <input
             type="number"
             min={0}
-            className="form-inputs w-1/2"
+            className="form-inputs w-1/3"
             placeholder="discount %"
             value={discount}
             onChange={(e) => setDiscount(e.target.value)}
+          />
+          <input
+            type="number"
+            min={0}
+            className="form-inputs w-1/3"
+            placeholder="count"
+           name="count"
+            onChange={handleClothesUniqueChange}
           />
         </div>
 
