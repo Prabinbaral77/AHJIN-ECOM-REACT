@@ -43,8 +43,17 @@ function Cart() {
     });
   };
 
-  console.log(orderItemArray);
-
+  console.log(JSON.stringify(orderItemArray));
+  const dataTosend = [
+    {
+      productChosen: 1,
+      quantity: 2,
+      paymentMethod: "K",
+      delivered: false,
+      product: 23,
+      user: 6,
+    },
+  ];
   useEffect(() => {
     formatDataToOrder();
   }, []);
@@ -108,11 +117,12 @@ function Cart() {
     // let checkout = await new KhaltiCheckout(config);
     // const price = await totalPriceOfCart();
     // checkout.show({ amount: 1000 });
+    if (orderItemArray.length < 1) return;
     axios
       .post(
         "http://0.0.0.0:8000/api/orders/",
         {
-          orderItemArray,
+          dataTosend,
         },
         {
           headers: {

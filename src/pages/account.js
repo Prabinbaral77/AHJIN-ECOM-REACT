@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import {
   UserCircleIcon,
@@ -6,6 +6,7 @@ import {
   CogIcon,
   LockClosedIcon,
 } from "@heroicons/react/outline";
+import axios from "axios";
 import { Fade } from "react-reveal";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
@@ -13,9 +14,17 @@ import styles from "./account.module.css";
 import { shortenAddress } from "../utils/shortenAddress";
 import { AjhinContext } from "../context/ahjinContext";
 import BuyTokenModal from "../utils/modal/BuyToken";
+import toast, { Toaster } from "react-hot-toast";
 
 function Account() {
   const [accountNumber, setaccountNumber] = useState(1);
+  const [currentPassword, setCurrentpassword] = useState("");
+  const [newPassword, setNewpassword] = useState("");
+  const [conformNewPassword, setConformNewpassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const {
     connectWallet,
     currentAccount,
@@ -26,9 +35,62 @@ function Account() {
   } = useContext(AjhinContext);
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  const access_token = userDetails?.access_token;
+  const handleSubmitPassword = async (e) => {
+    e.preventDefault();
+    try {
+      if (newPassword !== conformNewPassword) {
+        return toast.error("New Password and Confirm Password Must be Matched");
+      }
+      axios
+        .post(
+          "http://localhost:8000/api/user/password-reset/",
+          {
+            email: userDetails?.user?.email,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmitEditAccount = (e) => {
+    e.preventDefault();
+    try {
+      axios
+        .patch(
+          "http://localhost:8000/api/user/detail/",
+          {
+            username: userName,
+            email: email,
+            phone_number: phoneNumber,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        )
+        .then((res) => {
+          toast.success("User Updated Sucessfully!");
+        });
+    } catch (error) {
+      toast.error("Something went Wrong!");
+    }
+  };
 
   return (
     <div className="bg-gray-800">
+      <Toaster position="top-center" reverseOrder={false} />
+
       <Navbar />
 
       <main className="lg:max-w-7xl w-full mx-auto bg-gray-700 min-h-[91vh] mt-4 grid grid-cols-10">
@@ -108,8 +170,8 @@ function Account() {
                   <div className="flex flex-col space-y-4  max-w-fit px-10 py-10 items-cente ">
                     <p className="text-sm text-cyan-500">Username</p>
                     <p className="text-sm font-semibold">
-                      {userDetails?.user?.name
-                        ? userDetails?.user?.name
+                      {userDetails?.user?.username
+                        ? userDetails?.user?.username
                         : "No userName Provided."}
                     </p>
                   </div>
@@ -124,8 +186,8 @@ function Account() {
                   <div className="flex flex-col space-y-4  max-w-fit px-10 py-10 items-cente ">
                     <p className="text-sm text-cyan-500">Phone</p>
                     <p className="text-sm font-semibold">
-                      {userDetails?.user?.phone
-                        ? userDetails?.user?.phone
+                      {userDetails?.user?.phone_number
+                        ? userDetails?.user?.phone_number
                         : "No PhoneNo Provided."}
                     </p>
                   </div>
@@ -356,7 +418,10 @@ function Account() {
           {accountNumber === 3 && (
             <main className="h-full flex  items-center mx-4">
               <Fade top>
-                <form className="border border-cyan-500 rounded-md lg:h-[60%] h-auto lg:w-3/4 w-full mx-auto bg-gray-800 px-10 py-4 flex  justify-center flex-col space-y-10 ">
+                <form
+                  onSubmit={handleSubmitEditAccount}
+                  className="border border-cyan-500 rounded-md lg:h-[60%] h-auto lg:w-3/4 w-full mx-auto bg-gray-800 px-10 py-4 flex  justify-center flex-col space-y-10 "
+                >
                   <h1 className="text-gray-100 font-semibold text-xl">
                     EDIT ACCOUNT
                   </h1>
@@ -373,6 +438,8 @@ function Account() {
                       id="username"
                       name="username"
                       placeholder="username"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col space-y-4">
@@ -388,6 +455,8 @@ function Account() {
                       id="email"
                       name="email"
                       placeholder="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col space-y-4">
@@ -403,9 +472,14 @@ function Account() {
                       id="phone"
                       name="phone"
                       placeholder="phone"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
                     />
                   </div>
-                  <button className="bg-cyan-500 text-white text-sm py-2 px-6 max-w-fit rounded-full hover:bg-cyan-600 transition-all duration-300">
+                  <button
+                    type="submit"
+                    className="bg-cyan-500 text-white text-sm py-2 px-6 max-w-fit rounded-full hover:bg-cyan-600 transition-all duration-300"
+                  >
                     Save
                   </button>
                 </form>
@@ -416,7 +490,10 @@ function Account() {
           {accountNumber === 4 && (
             <main className="h-full flex  items-center mx-4">
               <Fade top>
-                <form className="border border-cyan-500 rounded-md h-auto lg:h-[60%] lg:w-3/4 w-full mx-auto bg-gray-800 px-10 py-4 flex  justify-center flex-col space-y-10 ">
+                <form
+                  onSubmit={handleSubmitPassword}
+                  className="border border-cyan-500 rounded-md h-auto lg:h-[60%] lg:w-3/4 w-full mx-auto bg-gray-800 px-10 py-4 flex  justify-center flex-col space-y-10 "
+                >
                   <h1 className="text-gray-100 font-semibold text-xl">
                     CHANGE PASSWORD
                   </h1>
@@ -433,6 +510,8 @@ function Account() {
                       id="currentpassword"
                       name="currentpassword"
                       placeholder="current password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentpassword(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col space-y-4">
@@ -448,6 +527,8 @@ function Account() {
                       id="newpassword"
                       name="newpassword"
                       placeholder="new password"
+                      value={newPassword}
+                      onChange={(e) => setNewpassword(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col space-y-4">
@@ -458,14 +539,19 @@ function Account() {
                       CONFIRM NEW PASSWORD
                     </label>
                     <input
-                      type="text"
+                      type="password"
                       className="py-2 px-2 outline-none text-gray-100 font-light text-sm border bg-transparent rounded-lg border-cyan-500"
                       id="confirmnewpassword"
                       name="confirmnewpassword"
                       placeholder="confirm new password"
+                      value={conformNewPassword}
+                      onChange={(e) => setConformNewpassword(e.target.value)}
                     />
                   </div>
-                  <button className="bg-cyan-500 text-white text-sm py-2 px-6 max-w-fit rounded-full hover:bg-cyan-600 transition-all duration-300">
+                  <button
+                    type="submit"
+                    className="bg-cyan-500 text-white text-sm py-2 px-6 max-w-fit rounded-full hover:bg-cyan-600 transition-all duration-300"
+                  >
                     Save
                   </button>
                 </form>
