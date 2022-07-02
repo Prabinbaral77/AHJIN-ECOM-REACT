@@ -20,26 +20,82 @@ function Product() {
   const [d_cat, setd_cat] = useState("")
   const [idToBeUpdated, setidToBeUpdated] = useState("");
   const [availableColors, setavailableColors] = useState([]);
+  const [availableSizes, setavailableSizes] = useState([]);
+  const [RAM, setRAM] = useState(0)
+  const [SSD, setSSD] = useState(0)
+  const [priceAdd, setPriceAdd] = useState(0)
+  const [count, setCount] = useState(0)
+  const [availableColors2, setavailableColors2] = useState([]);
+  
+  const [RAM2, setRAM2] = useState(0)
+  const [SSD2, setSSD2] = useState(0)
+  const [priceAdd2, setPriceAdd2] = useState(0)
+  const [count2, setCount2] = useState(0)
+  const [featured, setFeatured] = useState(false);
+  const [uniqueFeatureArray, setuniqueFeatureArray] = useState([]);
   const [recievedUniqueFeature, setrecievedUniqueFeature] = useState([])
-  const [uniqueFeatures, setuniqueFeatures] = useState({
-    RAM: 0,
-    SSD: 0,
-    count: 0,
-    color: [],
-    priceAdd: 0,
-  });
-  const [uniqueFeatures2, setuniqueFeatures2] = useState({
-    RAM: 0,
-    SSD: 0,
-    count: 0,
-    color: [],
-    priceAdd: 0,
-  });
-  const [clothesUniqueFeatures, setclothesUniqueFeatures] = useState({
-    available_colors: [],
-    available_sizes: [],
-    count: 2,
-  });
+
+
+  // const [clothesUniqueFeatures, setclothesUniqueFeatures] = useState({
+  //   available_colors: [],
+  //   available_sizes: [],
+  //   count: "",
+  // });
+  // const [uniqueFeatures, setuniqueFeatures] = useState({
+  //   RAM: 0,
+  //   SSD: 0,
+  //   count: 0,
+  //   color: [],
+  //   priceAdd: 0,
+  // });
+  // const [uniqueFeatures2, setuniqueFeatures2] = useState({
+  //   RAM: 0,
+  //   SSD: 0,
+  //   count: 0,
+  //   color: [],
+  //   priceAdd: 0,
+  // });
+
+  // const handleChange = (e) => {
+  //   if (e.target.name !== "color") {
+  //     setuniqueFeatures({
+  //       ...uniqueFeatures,
+  //       [e.target.name]: e.target.value,
+  //     });
+  //   } else {
+  //     setuniqueFeatures({
+  //       ...uniqueFeatures,
+  //       [e.target.name]: e.target.value.split(","),
+  //     });
+  //   }
+  // };
+  // const handleChange2 = (e) => {
+  //   if (e.target.name !== "color") {
+  //     setuniqueFeatures2({
+  //       ...uniqueFeatures2,
+  //       [e.target.name]: e.target.value,
+  //     });
+  //   } else {
+  //     setuniqueFeatures2({
+  //       ...uniqueFeatures2,
+  //       [e.target.name]: e.target.value.split(","),
+  //     });
+  //   }
+  // };
+
+  // const handleClothesUniqueChange = (e) => {
+  //   if(e.target.name !== "count"){
+  //     setclothesUniqueFeatures({
+  //       ...clothesUniqueFeatures,
+  //       [e.target.name]: e.target.value.split(","),
+  //     });
+  //   }else{
+  //     setclothesUniqueFeatures({
+  //       ...clothesUniqueFeatures,
+  //       [e.target.name]: e.target.value
+  //     });
+  //   }
+  // };
 
   const fetchProducts = async () => {
     axios
@@ -77,27 +133,10 @@ function Product() {
     }
   };
 
-  const handleChange = (e) => {
-    if (e.target.name !== "color") {
-      setuniqueFeatures({
-        ...uniqueFeatures,
-        [e.target.name]: e.target.value,
-      });
-    } else {
-      setuniqueFeatures({
-        ...uniqueFeatures,
-        [e.target.name]: e.target.value.split(","),
-      });
-    }
-  };
 
-  const handleChange2 = (e) => {
 
-  }
 
-  console.log(imageUrl,imageUrl2,imageUrl3)
-
-  const handleEditClick = (id,imageUrl,imageUrl2,imageUrl3,title,description,category,d_cat,price,discount,uniqueFeature) => {
+  const handleEditClick = (id,imageUrl,imageUrl2,imageUrl3,title,description,category,d_cat,price,discount,uniqueFeature,featured) => {
     setidToBeUpdated(id);
     setimageUrl(imageUrl)
     setimageUrl2(imageUrl2)
@@ -106,12 +145,14 @@ function Product() {
     setDescription(description)
     setCategory(category)
     setd_cat(d_cat)
-
+    setrecievedUniqueFeature(uniqueFeature)
     setPrice(price)
     setDiscount(discount)
-    setrecievedUniqueFeature(uniqueFeature)
+    
+    setFeatured(featured)
   };
 
+  
   const handleImageUpdateClick = async(e) => {
     e.preventDefault()
     const toastId = toast.loading("Uploading Images");
@@ -151,6 +192,46 @@ function Product() {
     toast.success("Images uploaded", { id: toastId });
   }
 
+ const handleEditSubmit = async(e) => {
+  e.preventDefault()
+  try {
+    await axios.patch(`http://localhost:8000/api/products/${idToBeUpdated}`,{
+      name: title,
+      description: description,
+      price_m: price,
+      discount: discount,
+      featured: featured,
+      unique_feature: recievedUniqueFeature,
+      image: imageUrl,
+      image2: imageUrl2,
+      image3: imageUrl2,
+      cat: category
+
+    },
+     {
+      headers: {
+        authorization: `Bearer ${access_token}`,
+      },
+    })
+    toast.success("vayo")
+    setidToBeUpdated("")
+    fetchProducts();
+   
+  } catch (error) {
+    console.log(error)
+    toast.error("Vayena edit")
+  }
+ }
+
+ const handleChange = (e) => {
+  setrecievedUniqueFeature(
+  {
+    ...recievedUniqueFeature[0],
+    [e.target.name]: e.target.value
+  }
+  )
+ }
+
 
   return (
     <div className="lg:col-span-10 col-span-12 relative  max-h-screen overflow-scroll scrollbar-hide text-[10px] lg:text-sm  ">
@@ -186,7 +267,7 @@ function Product() {
             <p className="col-span-1 text-yellow-500">${product?.price_m}</p>
             <div className="flex space-x-3 pl-8 w-full py-4">
             <button
-              onClick={() => handleEditClick(product.id,product.image,product.image2,product.image3,product.name,product.description,product.cat,product.d_cat,product.price_m,product.discount,product.unique_feature)}
+              onClick={() => handleEditClick(product.id,product.image,product.image2,product.image3,product.name,product.description,product.cat,product.d_cat,product.price_m,product.discount,product.unique_feature, product.featured)}
               className="border-b max-w-fit border-green-600 text-green-600 font-semibold"
             >
               Edit
@@ -206,7 +287,7 @@ function Product() {
       {idToBeUpdated && (
         <div className="fixed lg:right-10 lg:top-5 top-10 lg:w-[80.5%] w-full text-sm h-screen bg-black/40 py-20">
           <Fade top>
-            <form className="h-auto relative  w-3/4 mx-auto flex flex-col space-y-3 p-6 shadow-lg shadow-cyan-400/40  bg-gray-500 rounded-lg">
+            <form onSubmit={handleEditSubmit} className="h-auto relative  w-3/4 mx-auto flex flex-col space-y-3 p-6 shadow-lg shadow-cyan-400/40  bg-gray-500 rounded-lg">
               <XIcon
                 onClick={() => setidToBeUpdated("")}
                 className="h-5 w-5 cursor-pointer hover:rotate-180 absolute right-2 top-2 text-gray-100"
@@ -256,18 +337,21 @@ function Product() {
                     placeholder="RAM"
                     name="RAM"
                     id="RAM"
-                    value={recievedUniqueFeature[0].RAM}
-                    onChange={handleChange}
+                    onChange = {handleChange}
+                    value ={ recievedUniqueFeature[0].RAM}
+                   
+                    
                   />
                   <input
                     type="text"
                     min={1}
                     className="form-inputs w-1/3"
                     placeholder="SSD"
-                    value={recievedUniqueFeature[0].SSD}
+                    
+                    value ={ recievedUniqueFeature[0].SSD}
                     name="SSD"
                     id="SSD"
-                    onChange={handleChange}
+                    
                   />
                    
                   <input
@@ -278,17 +362,17 @@ function Product() {
                     name="Color"
                     value={recievedUniqueFeature[0].color.join(",")}
                     id="Color"
-                    onChange={handleChange}
+                    
                   />
                   <input
                     type="number"
                     min={0}
-                    value={recievedUniqueFeature[0].count}
+                    value ={ recievedUniqueFeature[0].count}
                     className="form-inputs w-1/3"
                     placeholder="count"
                     name="count"
                     id="count"
-                    onChange={handleChange2}
+                   
                   />
                 </div>
 
@@ -305,7 +389,7 @@ function Product() {
                     value={recievedUniqueFeature[1].RAM}
                     name="RAM"
                     id="RAM"
-                    onChange={handleChange2}
+                  
                   />
                   <input
                     type="text"
@@ -315,7 +399,7 @@ function Product() {
                     placeholder="SSD"
                     name="SSD"
                     id="SSD"
-                    onChange={handleChange2}
+                    
                   />
                   <input
                     type="text"
@@ -325,7 +409,7 @@ function Product() {
                     placeholder="Color"
                     name="Color"
                     id="Color"
-                    onChange={handleChange2}
+                   
                   />
                   <input
                     type="number"
@@ -335,7 +419,7 @@ function Product() {
                     placeholder="count"
                     name="count"
                     id="count"
-                    onChange={handleChange2}
+                   
                   />
                   <input
                     type="number"
@@ -345,7 +429,7 @@ function Product() {
                     placeholder="priceAdd"
                     name="priceAdd"
                     id="priceAdd"
-                    onChange={handleChange2}
+                    
                   />
                   
                   
@@ -360,15 +444,26 @@ function Product() {
                     type="text"
                     className="form-inputs"
                     placeholder="s,m,..."
+                   
+                    name="available_sizes"
                   />
                   <input
                     type="text"
                     value={recievedUniqueFeature[0].available_colors.join(',')}
-                    onChange={(e) =>
-                      setavailableColors(e.target.value.split(","))
-                    }
+                   
                     className="form-inputs"
                     placeholder="red,yellow,..."
+                    name="available_colors"
+                  />
+                  <input
+                    type="number"
+                    value={recievedUniqueFeature[0].count}
+                    min={0}
+                    className="form-inputs"
+                    placeholder="count"
+                    name="count"
+                    id="count"
+                    
                   />
                 </>
               )}
@@ -388,7 +483,16 @@ function Product() {
                 value={discount}
                 onChange={(e) => setDiscount(e.target.value)}
               />
-              <button
+               <div className="flex items-center text-xs space-x-2 text-gray-100">
+          <input
+            onClick={() => setFeatured(!featured)}
+            type="checkbox"
+            checked={featured === true}
+            className="cursor-pointer"
+          />
+          <p>Is this to be featured?</p>
+        </div>
+              <button 
                 className="max-w-fit bg-cyan-500 text-white rounded-lg py-1.5 px-8 hover:bg-cyan-600 transition-all duration-500"
                 type="submit"
               >
