@@ -3,7 +3,7 @@ import StarRatings from "react-star-ratings";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
 function Ratings({reviews,averageRating}) {
-    console.log(reviews);
+    
     const ratingArray = reviews.map((m)=>{
         return m.rating
     })
@@ -30,9 +30,9 @@ function Ratings({reviews,averageRating}) {
       const fourPercent = (fourArr.length?fourArr.length/reviews.length:0) * 100
       const fivePercent = (fiveArr.length?fiveArr.length/reviews.length:0) * 100
   return (
-    <div className="h-24 max-w-6xl mx-auto lg:absolute right-10 top-[1750px] mb-32 lg:mb-0   flex flex-col space-y-6 px-6 lg:px-0">
+    <div className="h-24 max-w-6xl mx-auto lg:absolute right-10 top-[1750px] mb-32 lg:mb-0   flex flex-col space-y-6 px-4  lg:px-0">
         <h1 className="text-2xl text-cyan-100 font-bold font-mono">Customer reviews</h1>
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 ">
         <StarRatings
               rating={averageRating?averageRating :1}
               starRatedColor="goldenrod"
@@ -44,7 +44,7 @@ function Ratings({reviews,averageRating}) {
         </div>
             <p className="text-gray-300 text-xs">{reviews?.length} global ratings</p>
 
-            <div className="w-80 flex flex-col space-y-6 ">
+            <div className="w-80  flex flex-col space-y-6 ">
              <div className="flex items-center space-x-2 w-full">
                 <p className="text-cyan-100 text-xs">1 star</p>
              <ProgressBar className="flex-1"  now={onePercent}  variant="danger" label={`${onePercent}%`} />

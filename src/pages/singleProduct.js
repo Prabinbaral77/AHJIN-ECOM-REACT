@@ -345,7 +345,7 @@ function SingleProduct() {
       {/* //! Image zoom section */}
       <div className="hidden lg:flex space-x-3 h-auto max-w-6xl  cursor-auto items-center justify-start mx-auto">
         <ReactImageZoom
-          width={500}
+          width={550}
           ZoomPosition="right"
           ZoomScale={100}
           height={500}
