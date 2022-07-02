@@ -27,6 +27,9 @@ const Navbar = () => {
     localStorage.removeItem("isUserPresent");
   };
 
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  const userName = userDetails?.user?.username;
+
   useEffect(() => {
     const getProducts = async () => {
       const res = await axios.get("http://0.0.0.0:8000/api/products/");
@@ -96,7 +99,7 @@ const Navbar = () => {
             >
               <div className="h-10 w-10 relative ">
                 <img
-                  src={`https://avatars.dicebear.com/api/adventurer/sankalpa.svg`}
+                  src={`https://avatars.dicebear.com/api/adventurer/${userName}.svg`}
                   className=" rounded-full bg-black hover:opacity-80 object-cover"
                   alt="product"
                 />
