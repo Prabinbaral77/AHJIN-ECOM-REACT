@@ -39,7 +39,7 @@ const Navbar = () => {
     return m.name.toLowerCase().includes(searchInput.toLowerCase());
   });
   return (
-    <nav className=" w-full sticky top-0 z-50 select-none  bg-gray-800 text-gray-100 shadow-md h-14 flex items-center justify-between px-4 ">
+    <nav className=" w-full sticky top-0 z-50 select-none  bg-gray-900 text-gray-100 shadow-md h-14 flex items-center justify-between px-4 ">
       <Link to="/">
         <p className="text-2xl font-mono text-yellow-600 hover:opacity-80 cursor-pointer ml-6 ">
           AHJIN

@@ -3,14 +3,17 @@ import Navbar from "../components/Navbar";
 import ReactImageZoom from "react-image-zoom";
 import Footer from "../components/Footer";
 import StarRatings from "react-star-ratings";
+import ProgressBar from 'react-bootstrap/ProgressBar';
+//! reviews
 import axios from "axios";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import { useParams } from "react-router-dom";
 import { setCartProduct } from "../redux/products/action";
 import { useDispatch, useSelector } from "react-redux";
 import Reviews from "../components/Reviews";
+import { Link } from 'react-scroll'
+import Ratings from "../components/Ratings";
 
-//! reviews
 
 function SingleProduct() {
   const dispatch = useDispatch();
@@ -28,7 +31,6 @@ function SingleProduct() {
   const [cartData, setCartData] = useState([]);
   const [runUseEffect, setrunUseEffect] = useState(1);
   const { id } = useParams();
-  console.log(uniquefeatureIndex, "uniquefea");
 
   // !reviews
   const item = JSON.parse(localStorage.getItem("userDetails"));
@@ -118,7 +120,9 @@ function SingleProduct() {
   const total = reviews?.reduce((tot, item) => tot + item.rating, 0);
   const averageRating = parseFloat((total/reviews.length).toFixed(2))
 
-  console.log(size,selectedColor)
+  console.log(product)
+
+
  
   return (
     <div className="bg-gray-800 select-none">
@@ -126,7 +130,7 @@ function SingleProduct() {
 
       <main className="h-auto md:max-w-6xl w-[90%] mx-auto flex flex-col  justify-center lg:grid gap-6  grid-cols-11 md:py-12 pb-20">
         <section className="w-full md:h-screen h-[60vh]  col-span-5 flex flex-col space-y-5  ">
-          <div className="h-[65%] bg-red-400  w-full relative">
+          <div className="h-[65%]   w-full relative">
             <img
               src={
                 displayImage
@@ -202,7 +206,7 @@ function SingleProduct() {
               starDimension="15px"
               starSpacing="2px"
             />
-            <p className="text-gray-400"> ({reviews.length} {reviews.length === 1? "Review":"Reviews"})</p>
+            <Link to="reviews-section" className="text-cyan-500 hover:text-cyan-600 cursor-pointer "> ({reviews.length} {reviews.length === 1? "Review":"Reviews"})</Link>
           </div>
           <div className="flex items-center space-x-3">
             <p className="text-orange-600 font-bold text-xl tracking-wider">
@@ -214,7 +218,10 @@ function SingleProduct() {
                 : product?.price_m - product?.discount}
             </p>
             <p className="text-gray-400 line-through text-sm">
-              Rs. {product?.price_m}
+              Rs. {uniquefea?.priceAdd
+                ? product?.price_m +
+                  parseInt(uniquefea?.priceAdd) 
+                : product?.price_m}
             </p>
           </div>
           <p className="text-gray-300 text-sm ">{product?.description}</p>
@@ -347,8 +354,13 @@ function SingleProduct() {
 
       {/* //todo: add reviews section */}
 
+      <div className="flex flex-col  space-y-32 mt-20 mb-48  ">
+      <Ratings  reviews = {reviews} averageRating = {averageRating}/>
+      
+
       <form
-        className="w-full lg:w-[60%] lg:px-8 lg:ml-28   px-8 py-4 overflow-x-hidden lg:my-16"
+     
+        className="w-full lg:w-[60%] lg:px-8 lg:ml-10     px-8 py-4 overflow-x-hidden"
         onSubmit={handleReviewSubmit}
       >
         <div className="flex flex-col space-y-3">
@@ -393,7 +405,11 @@ function SingleProduct() {
           Submit
         </button>
       </form>
-      <Reviews reviews={reviews} setrunUseEffect = {setrunUseEffect} runUseEffect = {runUseEffect} />
+
+      </div>
+      <div className="border-t" id="reviews-section">
+      <Reviews reviews={reviews}  setrunUseEffect = {setrunUseEffect} runUseEffect = {runUseEffect} />
+      </div>
       <Footer />
       <ToastsContainer store={ToastsStore} />
     </div>

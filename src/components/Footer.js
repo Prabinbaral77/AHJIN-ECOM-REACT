@@ -9,7 +9,7 @@ function Footer() {
   return (
     <div
       className={
-        "w-full px-5 bg-gray-700 border-t border-gray-900 transition-all flex flex-col text-gray-100 md:flex-row items-center justify-between text-xs"
+        "w-full px-5 bg-gray-900 border-t border-gray-900 transition-all flex flex-col text-gray-100 md:flex-row items-center justify-between text-xs"
       }
     >
       <div className=" w-full md:w-1/3 mx-3 ">
@@ -106,15 +106,17 @@ function Footer() {
 
         <div className="flex space-x-2 items-center  ">
           <img
-            src="https://cdn.pixabay.com/photo/2015/05/26/09/37/paypal-784404__480.png"
-            height={70}
-            width={70}
+            src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/icons/khalti.png"
+            height={80}
+            width={80}
+            className="object-cover"
             alt=""
           />
           <img
             src="https://cdn.pixabay.com/photo/2017/11/19/09/02/master-card-2962135__480.png"
             height={70}
             width={70}
+            className="object-cover"
             alt=""
           />
 
@@ -123,6 +125,7 @@ function Footer() {
             alt=""
             height={70}
             width={70}
+            className="object-cover"
           />
         </div>
       </div>
