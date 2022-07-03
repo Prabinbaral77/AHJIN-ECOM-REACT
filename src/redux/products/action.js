@@ -7,3 +7,9 @@ export const setCartProduct =
       uniquefeatureIndex: uniquefeatureIndex,
     });
   };
+
+export const emptyCartProduct = () => async (dispatch) => {
+  dispatch({
+    type: "EMPTY_CART_PRODUCTS",
+  });
+};

@@ -17,6 +17,11 @@ export default function (state = initialState, action) {
           },
         ],
       };
+    case "EMPTY_CART_PRODUCTS":
+      return {
+        ...state,
+        cart: [],
+      };
 
     default:
       return state;

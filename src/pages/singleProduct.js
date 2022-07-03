@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import ReactImageZoom from "react-image-zoom";
 import Footer from "../components/Footer";
 import StarRatings from "react-star-ratings";
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import ProgressBar from "react-bootstrap/ProgressBar";
 //! reviews
 import axios from "axios";
 import { ToastsContainer, ToastsStore } from "react-toasts";
@@ -11,10 +11,9 @@ import { useParams } from "react-router-dom";
 import { setCartProduct } from "../redux/products/action";
 import { useDispatch, useSelector } from "react-redux";
 import Reviews from "../components/Reviews";
-import { Link } from 'react-scroll'
+import { Link } from "react-scroll";
 import Ratings from "../components/Ratings";
 import toast, { Toaster } from "react-hot-toast";
-
 
 function SingleProduct() {
   const dispatch = useDispatch();
@@ -28,7 +27,7 @@ function SingleProduct() {
   const [uniquefeatureIndex, setuniquefeatureIndex] = useState(1);
 
   const [selectedColor, setSelectedColor] = useState("");
-  const [size, setSize] = useState("s")
+  const [size, setSize] = useState("s");
   const [cartData, setCartData] = useState([]);
   const [runUseEffect, setrunUseEffect] = useState(1);
   const { id } = useParams();
@@ -41,7 +40,6 @@ function SingleProduct() {
   const [rating, setRating] = useState(0);
 
   const [reviews, setReviews] = useState([]);
-
 
   const changeRating = (rate) => {
     setRating(rate);
@@ -88,7 +86,6 @@ function SingleProduct() {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
 
-
     try {
       await axios.post(
         `http://localhost:8000/api/products/${id}/reviews/`,
@@ -104,12 +101,10 @@ function SingleProduct() {
       );
       setrunUseEffect(runUseEffect + 1);
       setreviewInputValue("");
-      toast.success("Review added successfully")
-      
+      toast.success("Review added successfully");
     } catch (error) {
       console.log(error);
-      toast.error("You have already reviewed the product.")
-
+      toast.error("You have already reviewed the product.");
     }
   };
 
@@ -123,18 +118,15 @@ function SingleProduct() {
     getReviews();
   }, [runUseEffect]);
 
-
   const total = reviews?.reduce((tot, item) => tot + item.rating, 0);
-  const averageRating = parseFloat((total/reviews.length).toFixed(2))
+  const averageRating = parseFloat((total / reviews.length).toFixed(2));
 
-  console.log(product)
+  console.log(product);
 
-
- 
   return (
     <div className="bg-gray-800 select-none">
       <Navbar />
-      <Toaster/>
+      <Toaster />
 
       <main className="h-auto md:max-w-6xl w-[90%] mx-auto flex flex-col  justify-center lg:grid gap-6  grid-cols-11 md:py-12 pb-20">
         <section className="w-full md:h-screen h-[60vh]  col-span-5 flex flex-col space-y-5  ">
@@ -149,8 +141,6 @@ function SingleProduct() {
               className="object-cover h-full w-full"
               alt="productImage"
             />
-
-            {/* <ReactImageZoom  width = "500" ZoomPosition="right"  ZoomScale = {50}  height = "630" zoomWidth = '700' img=  "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" className="z-50" /> */}
           </div>
 
           <div className="w-full grid md:grid-cols-4 grid-cols-3 gap-x-6 md:gap-x-2 gap-y-4 overflow-scroll md:min-h-[20%] min-h-[20%] scrollbar-hide">
@@ -208,13 +198,19 @@ function SingleProduct() {
           </h1>
           <div className="flex items-center space-x-3  text-gray-100 text-xs">
             <StarRatings
-              rating={averageRating?averageRating :1}
+              rating={averageRating ? averageRating : 1}
               starRatedColor="goldenrod"
               readonly={true}
               starDimension="15px"
               starSpacing="2px"
             />
-            <Link to="reviews-section" className="text-cyan-500 hover:text-cyan-600 cursor-pointer "> ({reviews.length} {reviews.length === 1? "Review":"Reviews"})</Link>
+            <Link
+              to="reviews-section"
+              className="text-cyan-500 hover:text-cyan-600 cursor-pointer "
+            >
+              {" "}
+              ({reviews.length} {reviews.length === 1 ? "Review" : "Reviews"})
+            </Link>
           </div>
           <div className="flex items-center space-x-3">
             <p className="text-orange-600 font-bold text-xl tracking-wider">
@@ -226,9 +222,9 @@ function SingleProduct() {
                 : product?.price_m - product?.discount}
             </p>
             <p className="text-gray-400 line-through text-sm">
-              Rs. {uniquefea?.priceAdd
-                ? product?.price_m +
-                  parseInt(uniquefea?.priceAdd) 
+              Rs.{" "}
+              {uniquefea?.priceAdd
+                ? product?.price_m + parseInt(uniquefea?.priceAdd)
                 : product?.price_m}
             </p>
           </div>
@@ -275,13 +271,17 @@ function SingleProduct() {
                 <div className="flex flex-col space-y-2">
                   <h1 className="text-gray-100 text-sm">Size</h1>
                   <div className="flex space-x-2">
-                    {product?.unique_feature[0]?.available_sizes?.map((m)=>(
-                        <p value={m} onClick={()=>setSize(m)} className={`bg-gray-600 ${m===size && "bg-gray-500"} uppercase cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1`} >
+                    {product?.unique_feature[0]?.available_sizes?.map((m) => (
+                      <p
+                        value={m}
+                        onClick={() => setSize(m)}
+                        className={`bg-gray-600 ${
+                          m === size && "bg-gray-500"
+                        } uppercase cursor-pointer hover:bg-gray-500 transition-colors h-8 w-10 text-gray-100 text-center pt-1`}
+                      >
                         {m}
                       </p>
                     ))}
-                    
-                   
                   </div>
                 </div>
               )}
@@ -294,7 +294,6 @@ function SingleProduct() {
                         setuniquefea(product?.unique_feature[index])
                       }
                       className={`h-auto ${
-
                         uniquefea?.RAM == m?.RAM ? "bg-cyan-900" : "bg-gray-800"
                       }  w-32  bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
                     >
@@ -362,61 +361,65 @@ function SingleProduct() {
 
       {/* //todo: add reviews section */}
 
-      <div  id="reviews-section" className="flex flex-col  space-y-32 mt-20 mb-48  ">
-      <Ratings  reviews = {reviews} averageRating = {averageRating}/>
-      
-
-      <form
-     
-        className="w-full lg:w-[60%] lg:px-8 lg:ml-10     px-8 py-4 overflow-x-hidden"
-        onSubmit={handleReviewSubmit}
+      <div
+        id="reviews-section"
+        className="flex flex-col  space-y-32 mt-20 mb-48  "
       >
-        <div className="flex flex-col space-y-3">
-          <label className={"font-bold text-white my-4 "} htmlFor="comment">
-            Want to review the product?
-          </label>
-          <div className="my-3">
-            <StarRatings
-              rating={rating}
-              starRatedColor="goldenrod"
-              starHoverColor="goldenrod"
-              changeRating={changeRating}
-              numberOfStars={5}
-              starDimension="25px"
-              name="rating"
+        <Ratings reviews={reviews} averageRating={averageRating} />
+
+        <form
+          className="w-full lg:w-[60%] lg:px-8 lg:ml-10     px-8 py-4 overflow-x-hidden"
+          onSubmit={handleReviewSubmit}
+        >
+          <div className="flex flex-col space-y-3">
+            <label className={"font-bold text-white my-4 "} htmlFor="comment">
+              Want to review the product?
+            </label>
+            <div className="my-3">
+              <StarRatings
+                rating={rating}
+                starRatedColor="goldenrod"
+                starHoverColor="goldenrod"
+                changeRating={changeRating}
+                numberOfStars={5}
+                starDimension="25px"
+                name="rating"
+              />
+            </div>
+            <textarea
+              value={reviewInputValue}
+              onChange={(e) => setreviewInputValue(e.target.value)}
+              className={
+                rating !== 0
+                  ? "border   text-sm bg-gray-800 text-white mb-3  rounded-lg p-2 outline-none"
+                  : "hidden"
+              }
+              rows={4}
+              type="text"
+              placeholder="Your review here.."
+              name="comment"
+              id="comment"
             />
           </div>
-          <textarea
-            value={reviewInputValue}
-            onChange={(e) => setreviewInputValue(e.target.value)}
+          <button
+            disabled={reviewInputValue === ""}
             className={
-              rating !== 0
-                ? "border   text-sm bg-gray-800 text-white mb-3  rounded-lg p-2 outline-none"
-                : "hidden"
+              reviewInputValue === ""
+                ? "cursor-not-allowed border-2 h-10 hover:text-gray-800 hover:bg-white text-center border-black  select-none text-sm   text-gray-200 font-mono rounded-lg p-2 mt-2  transition-all"
+                : "border-2 border-gray-200 h-10  select-none text-sm hover:text-black hover:bg-white   text-gray-200 font-mono rounded-lg p-2 mt-2  transition-all"
             }
-            rows={4}
-            type="text"
-            placeholder="Your review here.."
-            name="comment"
-            id="comment"
-          />
-        </div>
-        <button
-          disabled={reviewInputValue === ""}
-          className={
-            reviewInputValue === ""
-              ? "cursor-not-allowed border-2 h-10 hover:text-gray-800 hover:bg-white text-center border-black  select-none text-sm   text-gray-200 font-mono rounded-lg p-2 mt-2  transition-all"
-              : "border-2 border-gray-200 h-10  select-none text-sm hover:text-black hover:bg-white   text-gray-200 font-mono rounded-lg p-2 mt-2  transition-all"
-          }
-          type="submit"
-        >
-          Submit
-        </button>
-      </form>
-
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
       </div>
       <div className="border-t border-cyan-200">
-      <Reviews reviews={reviews}  setrunUseEffect = {setrunUseEffect} runUseEffect = {runUseEffect} />
+        <Reviews
+          reviews={reviews}
+          setrunUseEffect={setrunUseEffect}
+          runUseEffect={runUseEffect}
+        />
       </div>
       <Footer />
       <ToastsContainer store={ToastsStore} />
