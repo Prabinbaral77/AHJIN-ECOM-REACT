@@ -22,7 +22,7 @@ function AddProduct() {
   const [clothesUniqueFeatures, setclothesUniqueFeatures] = useState({
     available_colors: [],
     available_sizes: [],
-    count: "",
+    count: 0,
   });
   const [uniqueFeatures, setuniqueFeatures] = useState({
     RAM: 0,
@@ -44,7 +44,7 @@ function AddProduct() {
     if (e.target.name !== "color") {
       setuniqueFeatures({
         ...uniqueFeatures,
-        [e.target.name]: e.target.value,
+        [e.target.name]: parseInt(e.target.value),
       });
     } else {
       setuniqueFeatures({
@@ -57,7 +57,7 @@ function AddProduct() {
     if (e.target.name !== "color") {
       setuniqueFeatures2({
         ...uniqueFeatures2,
-        [e.target.name]: e.target.value,
+        [e.target.name]: parseInt(e.target.value),
       });
     } else {
       setuniqueFeatures2({
@@ -76,7 +76,7 @@ function AddProduct() {
     }else{
       setclothesUniqueFeatures({
         ...clothesUniqueFeatures,
-        [e.target.name]: e.target.value
+        [e.target.name]: parseInt(e.target.value)
       });
     }
   };
@@ -407,7 +407,8 @@ function AddProduct() {
             value={discount}
             onChange={(e) => setDiscount(e.target.value)}
           />
-          <input
+        {category === "C" && (
+            <input
             type="number"
             min={0}
             className="form-inputs w-1/3"
@@ -415,6 +416,7 @@ function AddProduct() {
            name="count"
             onChange={handleClothesUniqueChange}
           />
+        )}
         </div>
 
         <div className="flex items-center text-xs space-x-2 text-gray-100">

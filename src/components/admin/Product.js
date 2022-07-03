@@ -224,13 +224,17 @@ function Product() {
  }
 
  const handleChange = (e) => {
-  setrecievedUniqueFeature(
-  {
-    ...recievedUniqueFeature[0],
-    [e.target.name]: e.target.value
-  }
-  )
+  // setrecievedUniqueFeature(
+  // {
+  //   ...recievedUniqueFeature[0],
+  //   [e.target.name]: e.target.value
+  // }
+  // )
+
+  console.log("hello")
  }
+
+ console.log(recievedUniqueFeature)
 
 
 
