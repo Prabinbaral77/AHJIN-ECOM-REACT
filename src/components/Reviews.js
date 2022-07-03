@@ -79,7 +79,7 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
 
 
   return (
-    <div className="lg:px-4  ">
+    <div className="lg:px-4 ">
        <Toaster position="top-center" reverseOrder={false} />
             <h1 className="text-cyan-500 my-4 ml-8 font-semibold border-b max-w-fit animate-pulse border-cyan-500 text-xl tracking-widest">Customer Reviews</h1>
       <div
