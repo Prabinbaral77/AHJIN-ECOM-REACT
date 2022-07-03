@@ -233,6 +233,7 @@ function Product() {
  }
 
 
+
   return (
     <div className="lg:col-span-10 col-span-12 relative  max-h-screen overflow-scroll scrollbar-hide text-[10px] lg:text-sm  ">
       <Toaster />
@@ -338,7 +339,7 @@ function Product() {
                     name="RAM"
                     id="RAM"
                     onChange = {handleChange}
-                    value ={ recievedUniqueFeature[0].RAM}
+                   
                    
                     
                   />
@@ -347,8 +348,7 @@ function Product() {
                     min={1}
                     className="form-inputs w-1/3"
                     placeholder="SSD"
-                    
-                    value ={ recievedUniqueFeature[0].SSD}
+                    onChange = {handleChange}
                     name="SSD"
                     id="SSD"
                     
@@ -358,19 +358,20 @@ function Product() {
                     type="text"
                     min={1}
                     className="form-inputs w-1/3"
-                    placeholder="Color"
+                    // placeholder={recievedUniqueFeature[0].color.join(",")}
                     name="Color"
-                    value={recievedUniqueFeature[0].color.join(",")}
+                    onChange = {handleChange}
                     id="Color"
                     
                   />
                   <input
                     type="number"
                     min={0}
-                    value ={ recievedUniqueFeature[0].count}
+                    // placeholder ={ recievedUniqueFeature[0].count}
                     className="form-inputs w-1/3"
-                    placeholder="count"
+                 
                     name="count"
+                    onChange = {handleChange}
                     id="count"
                    
                   />
@@ -386,7 +387,7 @@ function Product() {
                     min={1}
                     className="form-inputs w-1/3"
                     placeholder="RAM"
-                    value={recievedUniqueFeature[1].RAM}
+                    // value={recievedUniqueFeature[1].RAM}
                     name="RAM"
                     id="RAM"
                   
@@ -395,7 +396,7 @@ function Product() {
                     type="text"
                     min={1}
                     className="form-inputs w-1/3"
-                    value={recievedUniqueFeature[1].SSD}
+                    
                     placeholder="SSD"
                     name="SSD"
                     id="SSD"
@@ -405,7 +406,7 @@ function Product() {
                     type="text"
                     min={1}
                     className="form-inputs w-1/3"
-                    value={recievedUniqueFeature[1].color.join(",")}
+                    
                     placeholder="Color"
                     name="Color"
                     id="Color"
@@ -413,7 +414,7 @@ function Product() {
                   />
                   <input
                     type="number"
-                    value={recievedUniqueFeature[1].count}
+                    
                     min={0}
                     className="form-inputs w-1/3"
                     placeholder="count"
@@ -424,7 +425,7 @@ function Product() {
                   <input
                     type="number"
                     min={0}
-                    value={recievedUniqueFeature[1].priceAdd}
+                    // value={recievedUniqueFeature[1].priceAdd}
                     className="form-inputs w-1/3"
                     placeholder="priceAdd"
                     name="priceAdd"
@@ -440,7 +441,7 @@ function Product() {
               {category === "C" && (
                 <>
                   <input
-                  value={recievedUniqueFeature[0].available_sizes.join(',')}
+                  // value={recievedUniqueFeature[0].available_sizes.join(',')}
                     type="text"
                     className="form-inputs"
                     placeholder="s,m,..."
@@ -449,7 +450,7 @@ function Product() {
                   />
                   <input
                     type="text"
-                    value={recievedUniqueFeature[0].available_colors.join(',')}
+                    // value={recievedUniqueFeature[0].available_colors.join(',')}
                    
                     className="form-inputs"
                     placeholder="red,yellow,..."
@@ -457,7 +458,7 @@ function Product() {
                   />
                   <input
                     type="number"
-                    value={recievedUniqueFeature[0].count}
+                    // value={recievedUniqueFeature[0].count}
                     min={0}
                     className="form-inputs"
                     placeholder="count"
