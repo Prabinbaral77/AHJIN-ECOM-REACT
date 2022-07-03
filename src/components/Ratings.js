@@ -40,7 +40,7 @@ function Ratings({reviews,averageRating}) {
               starDimension="25px"
               starSpacing="2px"
             />
-            <p className="text-cyan-300 font-semibold pt-2">{`${averageRating} out of 5`}</p>
+            <p className="text-cyan-300 font-semibold pt-2">{`${averageRating?averageRating:0} out of 5`}</p>
         </div>
             <p className="text-gray-300 text-xs">{reviews?.length} global ratings</p>
 
