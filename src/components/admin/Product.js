@@ -19,21 +19,23 @@ function Product() {
   const [category, setCategory] = useState("");
   const [d_cat, setd_cat] = useState("")
   const [idToBeUpdated, setidToBeUpdated] = useState("");
-  const [availableColors, setavailableColors] = useState([]);
-  const [availableSizes, setavailableSizes] = useState([]);
-  const [RAM, setRAM] = useState(0)
-  const [SSD, setSSD] = useState(0)
+  const [availableColors, setavailableColors] = useState(null);
+  const [availableSizes, setavailableSizes] = useState(null);
+  const [RAM, setRAM] = useState(null)
+  const [SSD, setSSD] = useState(null)
   const [priceAdd, setPriceAdd] = useState(0)
-  const [count, setCount] = useState(0)
-  const [availableColors2, setavailableColors2] = useState([]);
+  const [count, setCount] = useState(null)
+  const [availableColors2, setavailableColors2] = useState(null);
   
   const [RAM2, setRAM2] = useState(0)
   const [SSD2, setSSD2] = useState(0)
   const [priceAdd2, setPriceAdd2] = useState(0)
   const [count2, setCount2] = useState(0)
   const [featured, setFeatured] = useState(false);
-  const [uniqueFeatureArray, setuniqueFeatureArray] = useState([]);
   const [recievedUniqueFeature, setrecievedUniqueFeature] = useState([])
+  const [newObj, setnewObj] = useState({})
+  const [clothesNewObj, setclothesNewObj] = useState({})
+  const [newArr, setnewArr] = useState([])
 
 
   // const [clothesUniqueFeatures, setclothesUniqueFeatures] = useState({
@@ -102,7 +104,7 @@ function Product() {
       .get("http://localhost:8000/api/products/")
       .then((res) => {
         setProducts(res.data);
-        console.log(res.data)
+        
       })
       .catch((error) => {
         console.log(error.response?.data);
@@ -148,9 +150,21 @@ function Product() {
     setrecievedUniqueFeature(uniqueFeature)
     setPrice(price)
     setDiscount(discount)
-    
     setFeatured(featured)
+    if(category === "E"){
+    setRAM(uniqueFeature[0].RAM )
+    setSSD( uniqueFeature[0].SSD)
+    setavailableColors(uniqueFeature[0].color)
+    }
+    
+    if(category === "C"){
+      setavailableSizes(uniqueFeature[0].available_sizes )
+      setavailableColors(uniqueFeature[0].available_colors)
+    }
+    setCount(uniqueFeature[0].count)
   };
+
+
 
   
   const handleImageUpdateClick = async(e) => {
@@ -193,6 +207,12 @@ function Product() {
   }
 
  const handleEditSubmit = async(e) => {
+  if(category === "E"){
+    newArr.push(newObj)
+  }
+  else if(category === "C"){
+    newArr.push(clothesNewObj)
+  }
   e.preventDefault()
   try {
     await axios.patch(`http://localhost:8000/api/products/${idToBeUpdated}`,{
@@ -201,7 +221,7 @@ function Product() {
       price_m: price,
       discount: discount,
       featured: featured,
-      unique_feature: recievedUniqueFeature,
+      unique_feature: newArr,
       image: imageUrl,
       image2: imageUrl2,
       image3: imageUrl2,
@@ -213,28 +233,49 @@ function Product() {
         authorization: `Bearer ${access_token}`,
       },
     })
-    toast.success("vayo")
-    setidToBeUpdated("")
+    toast.success("Product updated successfully.")
     fetchProducts();
-   
+   newArr.pop()
   } catch (error) {
     console.log(error)
-    toast.error("Vayena edit")
+    toast.error("Update unsuccessfull")
   }
  }
+useEffect(() => {
+  setnewObj({
+    "RAM": RAM,
+    "SSD": SSD,
+    "color":availableColors,
+    "count": count,
+    "priceAdd": priceAdd
+  
+  })
+}, [idToBeUpdated,RAM,SSD,availableColors,count,priceAdd])
 
- const handleChange = (e) => {
-  // setrecievedUniqueFeature(
-  // {
-  //   ...recievedUniqueFeature[0],
-  //   [e.target.name]: e.target.value
-  // }
-  // )
 
-  console.log("hello")
+
+
+
+
+useEffect(() => {
+  setclothesNewObj({
+
+    "available_colors":availableColors,
+    "available_sizes":  availableSizes,
+    "count": count,
+  
+  })
+}, [idToBeUpdated,availableSizes,availableColors,count])
+
+// console.log(newArr)
+
+
+ const handleXClick = () => {
+  setidToBeUpdated("")
  }
 
- console.log(recievedUniqueFeature)
+
+
 
 
 
@@ -294,7 +335,7 @@ function Product() {
           <Fade top>
             <form onSubmit={handleEditSubmit} className="h-auto relative  w-3/4 mx-auto flex flex-col space-y-3 p-6 shadow-lg shadow-cyan-400/40  bg-gray-500 rounded-lg">
               <XIcon
-                onClick={() => setidToBeUpdated("")}
+                onClick={handleXClick}
                 className="h-5 w-5 cursor-pointer hover:rotate-180 absolute right-2 top-2 text-gray-100"
               />
             <div className="flex items-center">
@@ -342,7 +383,8 @@ function Product() {
                     placeholder="RAM"
                     name="RAM"
                     id="RAM"
-                    onChange = {handleChange}
+                    value={RAM}
+                    onChange = {(e)=>setRAM(e.target.value)}
                    
                    
                     
@@ -352,8 +394,9 @@ function Product() {
                     min={1}
                     className="form-inputs w-1/3"
                     placeholder="SSD"
-                    onChange = {handleChange}
+                    onChange = {(e)=>setSSD(e.target.value)}
                     name="SSD"
+                    value={SSD}
                     id="SSD"
                     
                   />
@@ -362,9 +405,9 @@ function Product() {
                     type="text"
                     min={1}
                     className="form-inputs w-1/3"
-                    // placeholder={recievedUniqueFeature[0].color.join(",")}
-                    name="Color"
-                    onChange = {handleChange}
+                    value={availableColors}
+                    name="color"
+                    onChange = {(e)=>setavailableColors(e.target.value.split(','))}
                     id="Color"
                     
                   />
@@ -375,7 +418,8 @@ function Product() {
                     className="form-inputs w-1/3"
                  
                     name="count"
-                    onChange = {handleChange}
+                    value={count}
+                    onChange = {(e)=>setCount(parseInt(e.target.value))}
                     id="count"
                    
                   />
@@ -449,23 +493,27 @@ function Product() {
                     type="text"
                     className="form-inputs"
                     placeholder="s,m,..."
-                   
+                   onChange = {(e)=>setavailableSizes(e.target.value.split(','))}
                     name="available_sizes"
+                    value={availableSizes}
                   />
                   <input
                     type="text"
-                    // value={recievedUniqueFeature[0].available_colors.join(',')}
+                    onChange = {(e)=>setavailableColors(e.target.value.split(','))}
                    
                     className="form-inputs"
                     placeholder="red,yellow,..."
                     name="available_colors"
+                    value={availableColors}
                   />
                   <input
                     type="number"
                     // value={recievedUniqueFeature[0].count}
                     min={0}
+                    onChange = {(e)=>setCount(parseInt(e.target.value))}
                     className="form-inputs"
                     placeholder="count"
+                    value={count}
                     name="count"
                     id="count"
                     
