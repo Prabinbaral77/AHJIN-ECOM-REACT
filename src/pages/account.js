@@ -17,13 +17,16 @@ import BuyTokenModal from "../utils/modal/BuyToken";
 import toast, { Toaster } from "react-hot-toast";
 
 function Account() {
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [accountNumber, setaccountNumber] = useState(1);
   const [currentPassword, setCurrentpassword] = useState("");
   const [newPassword, setNewpassword] = useState("");
   const [conformNewPassword, setConformNewpassword] = useState("");
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [userName, setUserName] = useState(userDetails?.user?.username);
+  const [email, setEmail] = useState(userDetails?.user?.email);
+  const [phoneNumber, setPhoneNumber] = useState(
+    userDetails?.user?.phone_number
+  );
 
   const {
     connectWallet,
@@ -34,7 +37,6 @@ function Account() {
     tokenBalance,
   } = useContext(AjhinContext);
 
-  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const access_token = userDetails?.access_token;
   const handleSubmitPassword = async (e) => {
     e.preventDefault();
@@ -64,23 +66,34 @@ function Account() {
 
   const handleSubmitEditAccount = (e) => {
     e.preventDefault();
+    let dataToSend = {};
+    if (userName !== userDetails?.user?.username) {
+      dataToSend.userName = userName;
+    } else if (email !== userDetails?.user?.email) {
+      dataToSend.email = email;
+    } else if (phoneNumber !== userDetails?.user?.phone_number) {
+      dataToSend.phone_number = phoneNumber;
+    } else {
+      dataToSend = {};
+    }
+
+    console.log(dataToSend);
+
     try {
       axios
-        .patch(
-          "http://localhost:8000/api/user/detail/",
-          {
-            username: userName,
-            email: email,
-            phone_number: phoneNumber,
+        .patch("http://localhost:8000/api/user/detail/", dataToSend, {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
-        )
+        })
         .then((res) => {
           toast.success("User Updated Sucessfully!");
+          let userDetailss = {};
+          let userData = res.data;
+          userDetailss.access_token = userDetails?.access_token;
+          userDetailss.refresh_token = userDetails?.refresh_token;
+          userDetailss.user = userData;
+          localStorage.setItem("userDetails", JSON.stringify(userDetailss));
         });
     } catch (error) {
       toast.error("Something went Wrong!");

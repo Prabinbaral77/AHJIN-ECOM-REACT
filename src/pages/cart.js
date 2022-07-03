@@ -43,7 +43,6 @@ function Cart() {
     });
   };
 
-  console.log(JSON.stringify(orderItemArray));
   const dataTosend = [
     {
       productChosen: 1,
@@ -75,22 +74,19 @@ function Cart() {
           .post(`http://0.0.0.0:8000/api/khalti/pay`, data)
           .then((response) => {
             console.log("WOW SUCCESS");
-            // axios
-            //   .post(
-            //     "http://0.0.0.0:8000/api/orders/",
-            //     {
-            //       orderItemArray,
-            //     },
-            //     {
-            //       headers: {
-            //         authorization: `Bearer ${accessToken}`,
-            //       },
-            //     }
-            //   )
-            //   .then((res) => {
-            //     console.log(res);
-            //   })
-            //   .catch((error) => console.log(error));
+            if (response.status === 200) {
+              if (orderItemArray.length < 1) return;
+              axios
+                .post("http://0.0.0.0:8000/api/orders/", dataTosend, {
+                  headers: {
+                    authorization: `Bearer ${accessToken}`,
+                  },
+                })
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((error) => console.log(error));
+            }
           })
           .catch((error) => {
             console.log("Error", error);
@@ -114,26 +110,9 @@ function Cart() {
     ],
   };
   const khaltiCheckoutHandler = async () => {
-    // let checkout = await new KhaltiCheckout(config);
-    // const price = await totalPriceOfCart();
-    // checkout.show({ amount: 1000 });
-    if (orderItemArray.length < 1) return;
-    axios
-      .post(
-        "http://0.0.0.0:8000/api/orders/",
-        {
-          dataTosend,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => console.log(error));
+    let checkout = await new KhaltiCheckout(config);
+    const price = await totalPriceOfCart();
+    checkout.show({ amount: 1000 });
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
