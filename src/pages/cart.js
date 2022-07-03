@@ -2,16 +2,21 @@ import React, { useEffect, useState, useContext } from "react";
 import { ShoppingBagIcon } from "@heroicons/react/outline";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import KhaltiCheckout from "khalti-checkout-web";
 import axios from "axios";
 // import config from "../khalti/khalti.config";
+import toast, { Toaster } from "react-hot-toast";
 import { AjhinContext } from "../context/ahjinContext";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import { ahjinCoinCalculator } from "../utils/ahjinCoinCalculator";
+import { emptyCartProduct } from "../redux/products/action";
 
 function Cart() {
+  const dispatch = useDispatch();
   const [orderItemArray, setOrderItemArray] = useState([]);
+  const [orderItemArrayAhjin, setOrderItemArrayAhjin] = useState([]);
+
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
   const userId = userDetail?.user?.pk;
@@ -22,7 +27,7 @@ function Cart() {
   const totalPriceOfCart = () => {
     let price = 0;
     cartProductDetails.forEach(({ product, quantity }) => {
-      price += (product.price_m - product.discount) * quantity;
+      price += (product?.price_m - product?.discount) * quantity;
     });
     return price;
   };
@@ -43,18 +48,25 @@ function Cart() {
     });
   };
 
-  const dataTosend = [
-    {
-      productChosen: 1,
-      quantity: 2,
-      paymentMethod: "K",
-      delivered: false,
-      product: 23,
-      user: 6,
-    },
-  ];
+  const formatDataToOrderAhjin = async () => {
+    cartProductDetails.forEach((singleProduct) => {
+      setOrderItemArrayAhjin((prevData) => [
+        ...prevData,
+        {
+          productChosen: singleProduct?.uniquefeatureIndex,
+          quantity: singleProduct?.quantity,
+          paymentMethod: "A",
+          delivered: false,
+          product: singleProduct?.product?.id,
+          user: userId,
+        },
+      ]);
+    });
+  };
+
   useEffect(() => {
     formatDataToOrder();
+    formatDataToOrderAhjin();
   }, []);
 
   let config = {
@@ -77,13 +89,15 @@ function Cart() {
             if (response.status === 200) {
               if (orderItemArray.length < 1) return;
               axios
-                .post("http://0.0.0.0:8000/api/orders/", dataTosend, {
+                .post("http://0.0.0.0:8000/api/orders/", orderItemArray, {
                   headers: {
                     authorization: `Bearer ${accessToken}`,
                   },
                 })
                 .then((res) => {
                   console.log(res);
+                  toast.success("Ordered successfully using Khalti.");
+                  dispatch(emptyCartProduct());
                 })
                 .catch((error) => console.log(error));
             }
@@ -119,6 +133,18 @@ function Cart() {
   const ahjinCoinBurnHandler = async () => {
     if (currentAccount) {
       await buyAssets(2);
+      axios
+        .post("http://0.0.0.0:8000/api/orders/", orderItemArray, {
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          toast.success("Ordered successfully using AC.");
+          dispatch(emptyCartProduct());
+        })
+        .catch((error) => console.log(error));
     } else if (currentAccount == undefined) {
       ToastsStore.warning("Please connect with your metamask wallet.");
     } else if (tokenBalance < ahjinCoinCalculator(totalPriceOfCart())) {
@@ -128,8 +154,8 @@ function Cart() {
 
   return (
     <div className="bg-gray-800 font-Roboto">
+      <Toaster />
       <Navbar />
-
       <main className="lg:w-[80%] w-[full]   bg-gray-800  text-gray-100  mx-auto  flex flex-col space-y-10 lg:gap-x-20 lg:grid grid-cols-10 mt-4">
         <div className="col-span-6  max-h-screen  overflow-scroll scrollbar-hide   text-gray-100  px-4 py-4 min-h-screen">
           <div className="flex items-center">
@@ -148,13 +174,13 @@ function Cart() {
           </div>
           {cartProductDetails.map(({ product, quantity }) => (
             <div
-              key={product.id}
+              key={product?.id}
               className="text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  "
             >
               <div className="lg:col-span-6 col-span-5 flex lg:items-center flex-col lg:flex-row space-y-3  lg:space-x-3  ">
                 <div className="w-40 h-32">
                   <img
-                    src={product.image}
+                    src={product?.image}
                     className="object-cover h-full w-full"
                     layout="fill"
                     alt="product"
@@ -162,11 +188,11 @@ function Cart() {
                 </div>
                 <div className="pr-2 flex flex-col space-y-2 py-2">
                   <h1 className="font-bold lg:w-60 w-44 text-left text-cyan-100 pb-3">
-                    {product.name}
+                    {product?.name}
                   </h1>
                   {/* //todo:check d_cat */}
 
-                  {product.d_cat === "laptop" && (
+                  {product?.d_cat === "laptop" && (
                     <>
                       <div className="flex items-center space-x-2">
                         <p>RAM: 4GB</p>
@@ -177,7 +203,7 @@ function Cart() {
                       </div>
                     </>
                   )}
-                  {product.cat === "C" && (
+                  {product?.cat === "C" && (
                     <>
                       <div className="flex items-center space-x-2">
                         <p className="uppercase">Color: red</p>
@@ -193,10 +219,10 @@ function Cart() {
               <div className="flex items-center justify-between lg:col-span-4 col-span-5 text-xs lg:text-sm ">
                 <h1 className="pl-10">{quantity}</h1>
                 <h1 className="pl-3">
-                  Rs.{product.price_m - product.discount}
+                  Rs.{product?.price_m - product?.discount}
                 </h1>
                 <h1 className="pr-2 flex flex-col space-y-2 items-center">
-                  <p>Rs.{quantity * (product.price_m - product.discount)}</p>
+                  <p>Rs.{quantity * (product?.price_m - product?.discount)}</p>
                   <p>
                     {/* {ahjinCoinCalculator(
                       quantity * (product.price_m - product.discount)
