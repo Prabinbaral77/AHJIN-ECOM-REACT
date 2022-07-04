@@ -381,7 +381,7 @@ function SingleProduct() {
         <Ratings reviews={reviews} averageRating={averageRating} />
 
         <form
-          className="w-full lg:w-[60%] lg:px-8 lg:ml-10     px-8 py-4 overflow-x-hidden"
+          className="w-full lg:w-[60%] lg:px-8 lg:ml-10  px-8 py-4 overflow-x-hidden"
           onSubmit={handleReviewSubmit}
         >
           <div className="flex flex-col space-y-3">
