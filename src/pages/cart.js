@@ -141,7 +141,7 @@ function Cart() {
                 })
                 .then((res) => {
                   console.log(res);
-                  toast.success("Ordered successfully using Khalti.");
+                  toast.success("Ordered successful using Khalti.");
                   dispatch(emptyCartProduct());
                 })
                 .catch((error) => console.log(error));
@@ -177,7 +177,7 @@ function Cart() {
   //DO NOT DELETE THIS WHOLE FUNCTION
   const ahjinCoinBurnHandler = async () => {
     if (currentAccount) {
-      await buyAssets(2);
+      // await buyAssets(2);
       axios
         .post("http://0.0.0.0:8000/api/orders/", orderItemArrayAhjin, {
           headers: {
@@ -186,7 +186,7 @@ function Cart() {
         })
         .then((res) => {
           console.log(res);
-          toast.success("Ordered successfully using AC.");
+          toast.success("Ordered successful using AC.");
           dispatch(emptyCartProduct());
         })
         .catch((error) => console.log(error));

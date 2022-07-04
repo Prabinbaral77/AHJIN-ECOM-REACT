@@ -34,7 +34,7 @@ function Ratings({reviews,averageRating}) {
         <h1 className="text-2xl text-cyan-100 font-bold font-mono">Customer reviews</h1>
         <div className="flex items-center space-x-3 ">
         <StarRatings
-              rating={averageRating?averageRating :1}
+              rating={averageRating?averageRating :0}
               starRatedColor="goldenrod"
               readonly={true}
               starDimension="25px"
