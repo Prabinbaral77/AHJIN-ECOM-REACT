@@ -28,7 +28,7 @@ function Order() {
       {/* <Fade top> */}
       {orders.map((order, index) => (
         <OrderCard
-          key={index}
+          key={index + 1}
           delivered={order?.delivered}
           orderProducts={order?.products}
           total={order?.total}
