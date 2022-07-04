@@ -200,7 +200,7 @@ function SingleProduct() {
           </h1>
           <div className="flex items-center space-x-3  text-gray-100 text-xs">
             <StarRatings
-              rating={averageRating ? averageRating : 1}
+              rating={averageRating ? averageRating : 0}
               starRatedColor="goldenrod"
               readonly={true}
               starDimension="15px"
