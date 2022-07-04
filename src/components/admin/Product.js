@@ -3,6 +3,7 @@ import { Fade } from "react-reveal";
 import { XIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 function Product() {
   const [products, setProducts] = useState([]);
@@ -27,13 +28,14 @@ function Product() {
   const [count, setCount] = useState(null)
   const [availableColors2, setavailableColors2] = useState(null);
   
-  const [RAM2, setRAM2] = useState(0)
-  const [SSD2, setSSD2] = useState(0)
-  const [priceAdd2, setPriceAdd2] = useState(0)
-  const [count2, setCount2] = useState(0)
+  const [RAM2, setRAM2] = useState(null)
+  const [SSD2, setSSD2] = useState(null)
+  const [priceAdd2, setPriceAdd2] = useState(null)
+  const [count2, setCount2] = useState(null)
   const [featured, setFeatured] = useState(false);
   const [recievedUniqueFeature, setrecievedUniqueFeature] = useState([])
   const [newObj, setnewObj] = useState({})
+  const [newObj2, setnewObj2] = useState({})
   const [clothesNewObj, setclothesNewObj] = useState({})
   const [newArr, setnewArr] = useState([])
 
@@ -151,7 +153,7 @@ function Product() {
     setPrice(price)
     setDiscount(discount)
     setFeatured(featured)
-    if(category === "E"){
+    if(category === "E" && uniqueFeature.length === 1){
     setRAM(uniqueFeature[0].RAM )
     setSSD( uniqueFeature[0].SSD)
     setavailableColors(uniqueFeature[0].color)
@@ -161,8 +163,20 @@ function Product() {
       setavailableSizes(uniqueFeature[0].available_sizes )
       setavailableColors(uniqueFeature[0].available_colors)
     }
+
+    if(uniqueFeature.length >1){
+      setRAM(uniqueFeature[0].RAM )
+      setSSD( uniqueFeature[0].SSD)
+      setavailableColors(uniqueFeature[0].color)
+      setRAM2(uniqueFeature[1].RAM )
+      setSSD2( uniqueFeature[1].SSD)
+      setavailableColors2(uniqueFeature[1].color)
+      setCount2(uniqueFeature[1].count)
+      setPriceAdd2(uniqueFeature[1].priceAdd)
+      }
     setCount(uniqueFeature[0].count)
   };
+
 
 
 
@@ -207,11 +221,15 @@ function Product() {
   }
 
  const handleEditSubmit = async(e) => {
-  if(category === "E"){
+  if(category === "E" && recievedUniqueFeature.length === 1){
     newArr.push(newObj)
   }
-  else if(category === "C"){
+   if(category === "C"){
     newArr.push(clothesNewObj)
+  }
+   if(recievedUniqueFeature.length === 2){
+    newArr.push(newObj)
+    newArr.push(newObj2)
   }
   e.preventDefault()
   try {
@@ -235,7 +253,14 @@ function Product() {
     })
     toast.success("Product updated successfully.")
     fetchProducts();
-   newArr.pop()
+
+    if(recievedUniqueFeature.length === 1){
+      newArr.pop()
+    }else{
+      newArr.pop()
+      newArr.pop()
+    }
+   setidToBeUpdated("")
   } catch (error) {
     console.log(error)
     toast.error("Update unsuccessfull")
@@ -251,6 +276,18 @@ useEffect(() => {
   
   })
 }, [idToBeUpdated,RAM,SSD,availableColors,count,priceAdd])
+
+
+useEffect(() => {
+  setnewObj2({
+    "RAM": RAM2,
+    "SSD": SSD2,
+    "color":availableColors2,
+    "count": count2,
+    "priceAdd": priceAdd2
+  
+  })
+}, [idToBeUpdated,RAM2,SSD2,availableColors2,count2,priceAdd2])
 
 
 
@@ -274,8 +311,13 @@ useEffect(() => {
   setidToBeUpdated("")
  }
 
+//  console.log(recievedUniqueFeature);
 
 
+// console.log(RAM2, SSD2, availableColors2,count2,priceAdd2);
+
+
+// console.log( newObj2)
 
 
 
@@ -297,11 +339,12 @@ useEffect(() => {
           <section className="grid grid-cols-12 place-items-center  text-center text-gray-100 px-4 py-4">
             <p className="col-span-1">{index + 1}</p>
             <p className="lg:col-span-2 col-span-3">
+              <Link to={`/product/${product.id}`}>
               <img
                 src={product.image}
                 className="h-28 w-32 object-cover"
                 alt=""
-              />
+              /></Link>
             </p>
             <p className="lg:col-span-2 col-span-3">{product.name}</p>
             <p className="col-span-2">
@@ -428,24 +471,26 @@ useEffect(() => {
                 
               )}
 
-{category === "E" && recievedUniqueFeature.length > 1? (
+{recievedUniqueFeature.length > 1? (
                 <div className={`flex ${d_cat !== "laptop" && "hidden"} items-center space-x-2`}>
                   <input
                     type="number"
                     min={1}
                     className="form-inputs w-1/3"
                     placeholder="RAM"
-                    // value={recievedUniqueFeature[1].RAM}
+                    value={RAM2}
                     name="RAM"
                     id="RAM"
+                    onChange = {(e)=>setRAM2(e.target.value)}
                   
                   />
                   <input
                     type="text"
                     min={1}
                     className="form-inputs w-1/3"
-                    
+                    value={SSD2}
                     placeholder="SSD"
+                    onChange = {(e)=>setSSD2(e.target.value)}
                     name="SSD"
                     id="SSD"
                     
@@ -454,7 +499,8 @@ useEffect(() => {
                     type="text"
                     min={1}
                     className="form-inputs w-1/3"
-                    
+                    value = {availableColors2}
+                    onChange = {(e)=>setavailableColors2(e.target.value.split(','))}
                     placeholder="Color"
                     name="Color"
                     id="Color"
@@ -462,7 +508,8 @@ useEffect(() => {
                   />
                   <input
                     type="number"
-                    
+                    value={count2}
+                    onChange = {(e)=>setCount2(parseInt(e.target.value))}
                     min={0}
                     className="form-inputs w-1/3"
                     placeholder="count"
@@ -473,7 +520,8 @@ useEffect(() => {
                   <input
                     type="number"
                     min={0}
-                    // value={recievedUniqueFeature[1].priceAdd}
+                    onChange = {(e)=>setPriceAdd2(parseInt(e.target.value))}
+                    value = {priceAdd2}
                     className="form-inputs w-1/3"
                     placeholder="priceAdd"
                     name="priceAdd"
