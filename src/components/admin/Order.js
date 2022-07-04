@@ -72,6 +72,7 @@ function Order() {
           trigger={trigger}
           setTrigger={setTrigger}
           paymentMethod={order?.paymentMethod}
+          ethAccountAddress={order?.products[0]?.currentAccount}
         />
       ))}
     </main>

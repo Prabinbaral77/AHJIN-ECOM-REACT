@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import UpdateOrderStatus from "../../utils/modal/UpdateOrderStatus";
 import axios from "axios";
-
+import { AjhinContext } from "../../context/ahjinContext";
 import { CheckIcon, ExclamationIcon } from "@heroicons/react/outline";
 
 const OrderCard = ({
@@ -13,7 +13,9 @@ const OrderCard = ({
   setTrigger,
   trigger,
   paymentMethod,
+  ethAccountAddress,
 }) => {
+  const { sendEthInReward } = useContext(AjhinContext);
   const [openModal, setOpenModal] = useState(false);
   const handleModal = () => {
     setOpenModal(!openModal);
@@ -96,6 +98,14 @@ const OrderCard = ({
             >
               Delete
             </p>
+            {ethAccountAddress && (
+              <p
+                className="text-green-600 font-bold cursor-pointer"
+                onClick={() => sendEthInReward(ethAccountAddress)}
+              >
+                Send Reward
+              </p>
+            )}
           </div>
         </article>
       </section>
