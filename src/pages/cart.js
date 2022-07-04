@@ -14,9 +14,9 @@ import { emptyCartProduct } from "../redux/products/action";
 
 function Cart() {
   const dispatch = useDispatch();
-  const [orderItemArray, setOrderItemArray] = useState([]);
-  const [orderItemArrayAhjin, setOrderItemArrayAhjin] = useState([]);
-
+  const [orderFormatKhalti, setOrderFormatKhalti] = useState();
+  const [orderItemArrayAhjin, setOrderItemArrayAhjin] = useState();
+  console.log(orderFormatKhalti, orderItemArrayAhjin);
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
   const userId = userDetail?.user?.pk;
@@ -33,35 +33,81 @@ function Cart() {
   };
 
   const formatDataToOrder = async () => {
-    cartProductDetails.forEach((singleProduct) => {
-      setOrderItemArray((prevData) => [
-        ...prevData,
-        {
-          productChosen: singleProduct?.uniquefeatureIndex,
-          quantity: singleProduct?.quantity,
-          paymentMethod: "K",
-          delivered: false,
-          product: singleProduct?.product?.id,
-          user: userId,
-        },
-      ]);
+    // await cartProductDetails.map((singleProduct) => {
+    //   setOrderItemArray((prevData) => [
+    //     ...prevData,
+    //     {
+    //       productChosen: singleProduct?.uniquefeatureIndex,
+    //       quantity: singleProduct?.quantity,
+    //       product: singleProduct?.product?.id,
+    //       user: userId,
+    //       image: singleProduct?.product?.image,
+    //       name: singleProduct?.product?.name,
+    //     },
+    //   ]);
+    // });
+    // setrender(!render);
+    const productsArray = [];
+    let dataFormat = {};
+    await cartProductDetails.map((singleProduct) => {
+      return productsArray.push({
+        productChosen: singleProduct?.uniquefeatureIndex,
+        quantity: singleProduct?.quantity,
+        product: singleProduct?.product?.id,
+        user: userId,
+        image: singleProduct?.product?.image,
+        name: singleProduct?.product?.name,
+      });
     });
+    dataFormat.products = await productsArray;
+    dataFormat.delivered = false;
+    dataFormat.paymentMethod = "K";
+    dataFormat.total = totalPriceOfCart();
+    setOrderFormatKhalti(dataFormat);
   };
 
+  // const formatToOrder = async () => {
+  //   let dataFormat = {};
+  //   if (orderItemArray.length >= 1) {
+  //     dataFormat.products = orderItemArray;
+  //     dataFormat.delivered = false;
+  //     dataFormat.paymentMethod = "K";
+  //     dataFormat.total = totalPriceOfCart();
+  //   }
+  //   console.log(dataFormat);
+  // };
+
   const formatDataToOrderAhjin = async () => {
-    cartProductDetails.forEach((singleProduct) => {
-      setOrderItemArrayAhjin((prevData) => [
-        ...prevData,
-        {
-          productChosen: singleProduct?.uniquefeatureIndex,
-          quantity: singleProduct?.quantity,
-          paymentMethod: "A",
-          delivered: false,
-          product: singleProduct?.product?.id,
-          user: userId,
-        },
-      ]);
+    // cartProductDetails.forEach((singleProduct) => {
+    //   setOrderItemArrayAhjin((prevData) => [
+    //     ...prevData,
+    //     {
+    //       productChosen: singleProduct?.uniquefeatureIndex,
+    //       quantity: singleProduct?.quantity,
+    //       paymentMethod: "A",
+    //       delivered: false,
+    //       product: singleProduct?.product?.id,
+    //       user: userId,
+    //     },
+    //   ]);
+    // });
+    const productsArray = [];
+    let dataFormat = {};
+    await cartProductDetails.map((singleProduct) => {
+      return productsArray.push({
+        productChosen: singleProduct?.uniquefeatureIndex,
+        quantity: singleProduct?.quantity,
+        product: singleProduct?.product?.id,
+        user: userId,
+        image: singleProduct?.product?.image,
+        name: singleProduct?.product?.name,
+      });
     });
+    dataFormat.products = await productsArray;
+    dataFormat.delivered = false;
+    dataFormat.paymentMethod = "A";
+    dataFormat.total = totalPriceOfCart();
+    setOrderItemArrayAhjin(dataFormat);
   };
 
   useEffect(() => {
@@ -87,9 +133,8 @@ function Cart() {
           .then((response) => {
             console.log("WOW SUCCESS");
             if (response.status === 200) {
-              if (orderItemArray.length < 1) return;
               axios
-                .post("http://0.0.0.0:8000/api/orders/", orderItemArray, {
+                .post("http://0.0.0.0:8000/api/orders/", orderFormatKhalti, {
                   headers: {
                     authorization: `Bearer ${accessToken}`,
                   },
@@ -134,7 +179,7 @@ function Cart() {
     if (currentAccount) {
       await buyAssets(2);
       axios
-        .post("http://0.0.0.0:8000/api/orders/", orderItemArray, {
+        .post("http://0.0.0.0:8000/api/orders/", orderItemArrayAhjin, {
           headers: {
             authorization: `Bearer ${accessToken}`,
           },
