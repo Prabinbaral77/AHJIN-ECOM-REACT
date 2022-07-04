@@ -238,7 +238,7 @@ function Account() {
                 </div>
               </div>
 
-              <div className="flex w-[30%] mx-auto">
+              <div className="flex w-[35%] mx-auto gap-x-2">
                 <button
                   onClick={connectWallet}
                   className="bg-cyan-500 text-white text-sm py-3 px-8 max-w-fit rounded-full hover:bg-cyan-600 transition-all duration-300 mt-[2rem] flex items-center justify-center mx-auto"
