@@ -96,20 +96,20 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
           >
             <div className="flex items-center w-48 ml-4 md:mt-0 mt-2 md:mb-0 mb-2  h-full  space-x-2">
               <img
-                className="h-10 select-none bg-black  w-10 rounded-full object-cover object-top"
+                className="h-10  bg-black  w-10 rounded-full object-cover object-top"
                 src={`https://avatars.dicebear.com/api/adventurer/${r.user}.svg`}
                 alt=""
               />
 
 
-              <h1 className="font-bold text-sm   select-none">{r.user}</h1>
+              <h1 className="font-bold text-sm ">{r.user}</h1>
             </div>
             <p className=" w-[90%]   md:w-[60%]  h-auto mx-4 mt-2 text-xs text-justify">
               {r.comment}
             </p>
 
-            <div className="flex flex-col w-72 pr-2 mt-2   items-center justify-between  ">
-              <div className="flex items-center w-[80%]   md:w-full space-x-3 justify-around  md:justify-evenly">
+            <div className="flex flex-col w-72 pr-4 mt-2   items-center justify-between  ">
+              <div className="flex items-center w-[80%]     md:w-full space-x-3  md:justify-evenly">
                 <span className="mb-3 ">
                   <StarRatings
                     rating={r.rating}
@@ -120,12 +120,12 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
                   />
                 
                 </span>
-                <p className=" select-none mb-3  text-xs">
+                <p className="  mb-3  text-xs">
                   <TimeAgo datetime={r.createdAt} />
                 </p>
               </div>
 
-              <div className="flex items-center justify-evenly w-1/2">
+              <div className="flex items-center lg:justify-center  w-full pl-7 space-x-2">
                 {userDetails?.username == r?.user && (
                   <p
                     onClick={() => handleDeleteReview(r.id)}
@@ -153,7 +153,7 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
       </div>
 
       <Offcanvas
-        className="bg-gradient-to-r from-black to-gray-800 font-Lora w-[750px] "
+        className="bg-gradient-to-r from-black to-gray-800 font-Lora w-[700px] "
         show={show}
         onHide={handleClose}
       >
@@ -200,7 +200,7 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
       {sliceNumber > 5 && sliceNumber >= reviews.length ? (
         <p
           onClick={handleLessReviews}
-          className={`text-blue-500 underline cursor-pointer text-sm font-Lora my-3 mx-3 select-none hover:text-blue-600`}
+          className={`text-blue-500 underline cursor-pointer text-sm font-Lora my-3 mx-3  hover:text-blue-600`}
         >
           see less reviews
         </p>
@@ -209,7 +209,7 @@ function Reviews({ reviews, setrunUseEffect, runUseEffect }) {
           onClick={handleMoreReviews}
           className={
             reviews.length > 5
-              ? `text-blue-500 hover:text-blue-600 underline cursor-pointer text-sm font-Lora my-3 mx-3 select-none`
+              ? `text-blue-500 hover:text-blue-600 underline cursor-pointer text-sm font-Lora my-3 mx-3 `
               : "hidden"
           }
         >

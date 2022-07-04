@@ -20,9 +20,9 @@ function NewProducts({ products }) {
       <Fade right>
         <div className="lg:h-64 h-60  py-2 flex  overflow-scroll space-x-3 scrollbar-hide">
           {products.slice(0, 15).map((product) => (
-            <Link to={`/product/${product.id}`}>
+            <Link key={product.id} to={`/product/${product.id}`}>
               <section
-                key={product.id}
+                
                 className="h-full w-60  cursor-pointer shrink-0"
               >
                 <img
