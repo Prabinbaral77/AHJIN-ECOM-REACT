@@ -27,8 +27,11 @@ function Cart() {
   const totalPriceOfCart = () => {
     let price = 0;
     cartProductDetails.forEach(({ product, quantity }) => {
-      price += (product?.price_m - product?.discount) * quantity;
+      price +=
+        (product?.price_m - product?.price_m * (product?.discount / 100)) *
+        quantity;
     });
+
     return price;
   };
 
@@ -125,7 +128,7 @@ function Cart() {
       onSuccess(payload) {
         let data = {
           token: payload.token,
-          amount: payload.amount,
+          amount: totalPriceOfCart(),
         };
 
         axios
@@ -171,13 +174,13 @@ function Cart() {
   const khaltiCheckoutHandler = async () => {
     let checkout = await new KhaltiCheckout(config);
     const price = await totalPriceOfCart();
-    checkout.show({ amount: 1000 });
+    checkout.show({ amount: price * 100 });
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
   const ahjinCoinBurnHandler = async () => {
     if (currentAccount) {
-      // await buyAssets(2);
+      await buyAssets(2);
       axios
         .post("http://0.0.0.0:8000/api/orders/", orderItemArrayAhjin, {
           headers: {
@@ -264,14 +267,23 @@ function Cart() {
               <div className="flex items-center justify-between lg:col-span-4 col-span-5 text-xs lg:text-sm ">
                 <h1 className="pl-10">{quantity}</h1>
                 <h1 className="pl-3">
-                  Rs.{product?.price_m - product?.discount}
+                  Rs.
+                  {product?.price_m -
+                    product?.price_m * (product?.discount / 100)}
                 </h1>
                 <h1 className="pr-2 flex flex-col space-y-2 items-center">
-                  <p>Rs.{quantity * (product?.price_m - product?.discount)}</p>
                   <p>
-                    {/* {ahjinCoinCalculator(
-                      quantity * (product.price_m - product.discount)
-                    )}{" "} */}
+                    Rs.
+                    {quantity *
+                      (product?.price_m -
+                        product?.price_m * (product?.discount / 100))}
+                  </p>
+                  <p>
+                    {ahjinCoinCalculator(
+                      quantity *
+                        (product.price_m -
+                          product?.price_m * (product?.discount / 100))
+                    )}{" "}
                     AC
                   </p>
                 </h1>

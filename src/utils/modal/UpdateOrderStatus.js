@@ -29,7 +29,6 @@ const UpdateOrderStatus = ({
         }
       )
       .then((res) => {
-        console.log(res);
         toast.success("Updated successfully.");
         setTrigger(!trigger);
       })

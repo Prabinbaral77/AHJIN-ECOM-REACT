@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 function User() {
   const [users, setUsers] = useState([]);
+  const [trigger, setTrigger] = useState(false);
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
   useEffect(() => {
@@ -15,10 +17,28 @@ function User() {
       setUsers(res.data);
     };
     getUsers();
-  }, []);
-  console.log(users);
+  }, [trigger]);
+  const deleteUserHandler = (id) => {
+    axios
+      .delete(`http://localhost:8000/api/user/allusers/${id}`, {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success(" User Delete successfully.");
+        setTrigger(!trigger);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Something went wrong.");
+      });
+  };
   return (
     <div className="col-span-10 ">
+      <Toaster />
+
       <nav className=" text-cyan-500 text-center font-semibold grid grid-cols-12 px-4 bg-gray-800 shadow-md py-3 sticky top-0 z-50">
         <p className="col-span-1 ">SN</p>
         <p className="col-span-3 uppercase">Username</p>
@@ -52,7 +72,10 @@ function User() {
               {/* <button className="border-b max-w-fit border-green-600 text-green-600 font-semibold">
                 Edit
               </button> */}
-              <button className="border-b max-w-fit border-red-600 text-red-600 font-semibold">
+              <button
+                className="border-b max-w-fit border-red-600 text-red-600 font-semibold"
+                onClick={() => deleteUserHandler(singleUser?.pk)}
+              >
                 Delete
               </button>
             </section>

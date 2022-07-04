@@ -13,25 +13,28 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function App() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const getProducts = async() => {
-      const res =  await axios.get("http://localhost:8000/api/products/")
-     setProducts(res.data)
-    }
-    getProducts()
-  }, [])
+    const getProducts = async () => {
+      const res = await axios.get("http://localhost:8000/api/products/");
+      setProducts(res.data);
+    };
+    getProducts();
+  }, []);
+
   return (
     <div className="bg-gray-800">
       <Routes>
-        <Route path="/" element={<Home products = {products} />} />
+        <Route path="/" element={<Home products={products} />} />
         <Route path={`/product/:id`} element={<SingleProduct />} />
         <Route path="/product/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/account" element={<Account />} />
+
         <Route path="/admin" element={<Admin />} />
+
         <Route path="/categories/electronics" element={<Electronics />} />
         <Route path="/categories/clothes" element={<Clothes />} />
       </Routes>
