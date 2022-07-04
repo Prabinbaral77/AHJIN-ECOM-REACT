@@ -99,30 +99,29 @@ export const AjhinProvider = ({ children }) => {
     }
   };
 
-  const sendEthInReward = async () => {
+  const sendEthInReward = async (receivingAddress) => {
     try {
       if (!ethereum) return alert("Please Install metamask.");
       const ajhinContract = getEthereumContract();
       const amount = "0.00001";
       const parsedAmount = ethers.utils.parseEther(amount);
-      const sendingAddress = "0x0e401acce5ad22338f3765884616e88f715c0c90";
 
       await ethereum.request({
         method: "eth_sendTransaction",
         params: [
           {
-            from: sendingAddress,
-            to: currentAccount,
+            from: currentAccount,
+            to: receivingAddress,
             gas: "0x5208", //21000 GWEI in decimal equivalent to hex value 0x5208
             value: parsedAmount._hex,
+            amount: parsedAmount,
           },
         ],
       });
 
-      console.log("request processed");
       const transactionHash = await ajhinContract.transferReward(
-        sendingAddress,
         currentAccount,
+        receivingAddress,
         parsedAmount,
         "conguration you got reward"
       );

@@ -60,11 +60,13 @@ function Cart() {
         user: userId,
         image: singleProduct?.product?.image,
         name: singleProduct?.product?.name,
+        currentAccount: currentAccount,
       });
     });
     dataFormat.products = await productsArray;
     dataFormat.delivered = false;
     dataFormat.paymentMethod = "K";
+
     dataFormat.total = totalPriceOfCart();
     setOrderFormatKhalti(dataFormat);
   };
@@ -104,6 +106,7 @@ function Cart() {
         user: userId,
         image: singleProduct?.product?.image,
         name: singleProduct?.product?.name,
+        currentAccount: currentAccount,
       });
     });
     dataFormat.products = await productsArray;
@@ -128,7 +131,8 @@ function Cart() {
       onSuccess(payload) {
         let data = {
           token: payload.token,
-          amount: totalPriceOfCart(),
+          // amount: totalPriceOfCart(),
+          amount: 1,
         };
 
         axios
@@ -174,7 +178,7 @@ function Cart() {
   const khaltiCheckoutHandler = async () => {
     let checkout = await new KhaltiCheckout(config);
     const price = await totalPriceOfCart();
-    checkout.show({ amount: price * 100 });
+    checkout.show({ amount: 1000 });
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
