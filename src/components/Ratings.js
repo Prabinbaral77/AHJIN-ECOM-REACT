@@ -30,11 +30,11 @@ function Ratings({reviews,averageRating}) {
       const fourPercent = (fourArr.length?fourArr.length/reviews.length:0) * 100
       const fivePercent = (fiveArr.length?fiveArr.length/reviews.length:0) * 100
   return (
-    <div className="h-24 max-w-6xl mx-auto lg:absolute right-10 top-[1750px] mb-32 lg:mb-0   flex flex-col space-y-6 px-4  lg:px-0">
+    <div className="h-24 max-w-6xl mx-auto lg:absolute right-10 top-[1750px] lg:mb-0   flex flex-col space-y-6 px-4  lg:px-0">
         <h1 className="text-2xl text-cyan-100 font-bold font-mono">Customer reviews</h1>
         <div className="flex items-center space-x-3 ">
         <StarRatings
-              rating={averageRating?averageRating :1}
+              rating={averageRating?averageRating :0}
               starRatedColor="goldenrod"
               readonly={true}
               starDimension="25px"

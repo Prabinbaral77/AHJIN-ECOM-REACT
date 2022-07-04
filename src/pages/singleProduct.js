@@ -71,7 +71,7 @@ function SingleProduct() {
   };
 
   const handleQuantityIncrease = () => {
-    if (quantityInput === 20) {
+    if (quantityInput === count) {
       setquantityInput(quantityInput);
     } else {
       setquantityInput(quantityInput + 1);
@@ -200,7 +200,7 @@ function SingleProduct() {
           </h1>
           <div className="flex items-center space-x-3  text-gray-100 text-xs">
             <StarRatings
-              rating={averageRating ? averageRating : 1}
+              rating={averageRating ? averageRating : 0}
               starRatedColor="goldenrod"
               readonly={true}
               starDimension="15px"
@@ -313,7 +313,7 @@ function SingleProduct() {
               <h1 className="text-gray-100 text-sm">Quantity:</h1>
               <div className="flex">
                 <p
-                  onClick={handleQuantityDecrease}
+                  onClick={count && handleQuantityDecrease}
                   className="bg-gray-600 cursor-pointer h-8 w-10 text-gray-100 text-center pt-1 text-sm"
                 >
                   -
@@ -323,21 +323,22 @@ function SingleProduct() {
                   {quantityInput}
                 </label>
                 <p
-                  onClick={handleQuantityIncrease}
+                  onClick={count && handleQuantityIncrease}
                   className="bg-gray-600 h-8 cursor-pointer  w-10 text-gray-100 text-center pt-1 text-sm"
                 >
                   +
                 </p>
               </div>
             </div>
-            {count?  (
+           
               <button
-              className="border disabled:cursor-not-allowed  border-red-600 text-red-600 font-bold text-sm px-8 py-2 cursor-pointer hover:text-red-500 transition-all active:scale-90 duration-300 ease-in-out md:mr-3 mt-6"
+              disabled={!count}
+              className="border disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-red-600 disabled:active:scale-100 border-red-600 text-red-600 font-bold text-sm px-8 py-2 cursor-pointer hover:text-red-500 transition-all active:scale-90 duration-300 ease-in-out md:mr-3 mt-6"
               onClick={addToCartHandler}
             >
               Add To Cart
             </button>
-            ):""}
+            
           </div>
          {!count?(
            <p className="text-sm text-red-600 mx-3">Not available in stock</p>
@@ -375,7 +376,7 @@ function SingleProduct() {
 
       <div
         id="reviews-section"
-        className="flex flex-col  space-y-32 mt-20 mb-48  "
+        className="flex flex-col  space-y-32 mt-20 mb-32  "
       >
         <Ratings reviews={reviews} averageRating={averageRating} />
 
@@ -426,12 +427,16 @@ function SingleProduct() {
           </button>
         </form>
       </div>
-      <div className="border-t border-cyan-200">
-        <Reviews
+      <div className=" border-cyan-200">
+        {reviews.length> 0? (
+          <Reviews
           reviews={reviews}
           setrunUseEffect={setrunUseEffect}
           runUseEffect={runUseEffect}
         />
+        ): (
+         ""
+        )}
       </div>
       <Footer />
       <ToastsContainer store={ToastsStore} />
