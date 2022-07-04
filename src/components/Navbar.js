@@ -29,6 +29,7 @@ const Navbar = () => {
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const userName = userDetails?.user?.username;
+  const is_superuser = userDetails?.user?.is_superuser;
 
   useEffect(() => {
     const getProducts = async () => {
@@ -135,13 +136,15 @@ const Navbar = () => {
                         <CogIcon className="h-6 w-6 cursor-pointer text-gray-100" />
                         <p>Account Settings</p>
                       </Link>
-                      <Link
-                        className="flex items-center space-x-2 hover:bg-yellow-600 transition-all px-2 py-2"
-                        to="/admin"
-                      >
-                        <UsersIcon className="h-6 w-6 cursor-pointer text-gray-100" />
-                        <p>Admin</p>
-                      </Link>
+                      {is_superuser && (
+                        <Link
+                          className="flex items-center space-x-2 hover:bg-yellow-600 transition-all px-2 py-2"
+                          to="/admin"
+                        >
+                          <UsersIcon className="h-6 w-6 cursor-pointer text-gray-100" />
+                          <p>Admin</p>
+                        </Link>
+                      )}
                       <div
                         className="flex items-center space-x-2 hover:bg-yellow-600 transition-all px-2 py-2"
                         onClick={logOutHandler}

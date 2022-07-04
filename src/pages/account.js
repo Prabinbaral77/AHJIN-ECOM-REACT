@@ -5,6 +5,7 @@ import {
   ShoppingBagIcon,
   CogIcon,
   LockClosedIcon,
+  ExclamationIcon,
 } from "@heroicons/react/outline";
 import axios from "axios";
 import { Fade } from "react-reveal";
@@ -27,6 +28,24 @@ function Account() {
   const [phoneNumber, setPhoneNumber] = useState(
     userDetails?.user?.phone_number
   );
+  const [orders, setOrders] = useState([]);
+  const accessToken = userDetails?.access_token;
+  const userId = userDetails?.user?.pk;
+
+  useEffect(() => {
+    const getOrders = async () => {
+      const res = await axios.get(
+        `http://localhost:8000/api/orders/user/${userId}`,
+        {
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setOrders(res.data);
+    };
+    getOrders();
+  }, []);
 
   const {
     connectWallet,
@@ -76,8 +95,6 @@ function Account() {
     } else {
       dataToSend = {};
     }
-
-    console.log(dataToSend);
 
     try {
       axios
@@ -201,7 +218,7 @@ function Account() {
                     <p className="text-sm font-semibold">
                       {userDetails?.user?.phone_number
                         ? userDetails?.user?.phone_number
-                        : "No PhoneNo Provided."}
+                        : "PhoneNumber not Provided."}
                     </p>
                   </div>
                   <div className="flex flex-col space-y-4 items-center max-w-fit px-10 py-10 ">
@@ -258,173 +275,57 @@ function Account() {
           {/*  orders */}
 
           {accountNumber === 2 && (
-            <main className="px-4 lg:py-5 py-20 max-h-[90vh] overflow-scroll text-gray-100 flex flex-col space-y-6 ">
+            <main className="px-4 lg:py-5 py-20 max-h-[90vh] overflow-scroll scrollbar-hide text-gray-100 flex flex-col space-y-6 ">
               <h1 className="font-bold text-2xl my-2 mx-10">My Orders</h1>
 
-              <Fade top>
-                <section className="lg:w-[80%] w-full h-auto bg-gray-600 border border-cyan-500 flex items-center flex-col px-5 py-5 space-y-4">
-                  <div className="flex items-center justify-between  w-full ">
-                    <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 ">
-                        <img
-                          src={
-                            "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                          }
-                          layout="fill"
-                          className="object-cover h-full w-full"
-                          alt="product"
-                        />
-                      </div>
-                      <p className="text-sm lg:w-80 w-28">
-                        Riversong Vibe N SP30 2.1 Multimedia Speaker - 1 RUPEE
-                        GAME
-                      </p>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <p className="text-gray-300">QTY: &nbsp;</p>
-                      {1}
-                    </div>
+              {orders.length >= 1 ? (
+                <div>
+                  {orders.map((singleOrder) => {
+                    return (
+                      <section className="lg:w-[80%] w-full h-auto bg-gray-600 border border-cyan-500 flex items-center flex-col px-5 py-5 space-y-4">
+                        {singleOrder?.products.map((product) => {
+                          return (
+                            <div className="flex items-center justify-between  w-full ">
+                              <div className="flex items-center space-x-4">
+                                <div className="h-20 w-20   ">
+                                  <img
+                                    src={product?.image}
+                                    layout="fill"
+                                    className="object-cover h-full w-full"
+                                    alt="profile"
+                                  />
+                                </div>
+                                <p className="text-sm lg:w-80 w-28">
+                                  {product?.name}
+                                </p>
+                              </div>
+                              <div className="flex items-center text-sm">
+                                <p className="text-gray-300">QTY: &nbsp;</p>
+                                {product?.quantity}
+                              </div>
 
-                    <p className="text-sm text-green-600 font-semibold">
-                      Delivered
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between w-full ">
-                    <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 bg-blue-400 ">
-                        <img
-                          src={
-                            "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                          }
-                          layout="fill"
-                          className="object-cover  h-full w-full"
-                          alt="product"
-                        />
-                      </div>
-                      <p className="text-sm lg:w-80 w-28">
-                        Riversong Vibe N SP30 2.1 Multimedia Speaker - 1 RUPEE
-                        GAME
-                      </p>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <p className="text-gray-300">QTY: &nbsp;</p>
-                      {1}
-                    </div>
-
-                    <p className="text-sm text-green-600 font-semibold">
-                      Delivered
-                    </p>
-                  </div>
-                </section>
-                <section className="lg:w-[80%] w-full h-auto bg-gray-600 border border-cyan-500 flex items-center flex-col px-5 py-5 space-y-4">
-                  <div className="flex items-center justify-between  w-full ">
-                    <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 bg-blue-400 ">
-                        <img
-                          src={
-                            "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                          }
-                          layout="fill"
-                          className="object-cover h-full w-full"
-                          alt="product"
-                        />
-                      </div>
-                      <p className="text-sm lg:w-80 w-28">
-                        Riversong Vibe N SP30 2.1 Multimedia Speaker - 1 RUPEE
-                        GAME
-                      </p>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <p className="text-gray-300">QTY: &nbsp;</p>
-                      {1}
-                    </div>
-
-                    <p className="text-sm text-green-600 font-semibold">
-                      Delivered
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between w-full ">
-                    <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20  ">
-                        <img
-                          src={
-                            "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                          }
-                          layout="fill"
-                          className="object-cover h-full w-full"
-                          alt="profile"
-                        />
-                      </div>
-                      <p className="text-sm lg:w-80 w-28">
-                        Riversong Vibe N SP30 2.1 Multimedia Speaker - 1 RUPEE
-                        GAME
-                      </p>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <p className="text-gray-300">QTY: &nbsp;</p>
-                      {1}
-                    </div>
-
-                    <p className="text-sm text-green-600 font-semibold">
-                      Delivered
-                    </p>
-                  </div>
-                </section>
-                <section className="lg:w-[80%] w-full h-auto bg-gray-600 border border-cyan-500 flex items-center flex-col px-5 py-5 space-y-4">
-                  <div className="flex items-center justify-between  w-full ">
-                    <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20   ">
-                        <img
-                          src={
-                            "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                          }
-                          layout="fill"
-                          className="object-cover h-full w-full"
-                          alt="profile"
-                        />
-                      </div>
-                      <p className="text-sm lg:w-80 w-28">
-                        Riversong Vibe N SP30 2.1 Multimedia Speaker - 1 RUPEE
-                        GAME
-                      </p>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <p className="text-gray-300">QTY: &nbsp;</p>
-                      {1}
-                    </div>
-
-                    <p className="text-sm text-green-600 font-semibold">
-                      Delivered
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between w-full ">
-                    <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20   ">
-                        <img
-                          src={
-                            "https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                          }
-                          layout="fill"
-                          className="object-cover h-full w-full"
-                          alt="profile"
-                        />
-                      </div>
-                      <p className="text-sm lg:w-80 w-28">
-                        Riversong Vibe N SP30 2.1 Multimedia Speaker - 1 RUPEE
-                        GAME
-                      </p>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <p className="text-gray-300">QTY: &nbsp;</p>
-                      {1}
-                    </div>
-
-                    <p className="text-sm text-green-600 font-semibold">
-                      Delivered
-                    </p>
-                  </div>
-                </section>
-              </Fade>
+                              {singleOrder?.delivered ? (
+                                <p className="text-sm text-green-600 font-semibold">
+                                  Delivered
+                                </p>
+                              ) : (
+                                <div className="flex items-center space-x-1 text-yellow-500 ">
+                                  <p className="text-sm font-semibold">
+                                    Not Delivered
+                                  </p>
+                                  <ExclamationIcon className=" h-6 w-6" />
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </section>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-3xl mx-auto mt-28">No Order till Now.</p>
+              )}
             </main>
           )}
 

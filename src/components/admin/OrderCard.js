@@ -38,6 +38,7 @@ const OrderCard = ({
         toast.error("Something went wrong.");
       });
   };
+
   return (
     <div>
       <Toaster />
@@ -55,9 +56,12 @@ const OrderCard = ({
                   />
                 </div>
                 <p className="text-sm lg:w-80 w-28">{singleOrder?.name}</p>
-                <div className="flex items-center text-sm pl-36">
-                  <p className="text-gray-300">QTY: &nbsp;</p>
-                  {singleOrder?.quantity}
+                <div className="flex items-center text-sm pl-36 flex-col">
+                  <div className="flex text-[#322151] font-semibold">
+                    <p className="text-gray-300">paymentMethod: &nbsp;</p>
+                    {paymentMethod === "K" ? "Khalti" : "AC"}
+                  </div>
+                  <p className="text-sm text-yellow-500">Price: Rs {total}</p>
                 </div>
               </div>
             </div>
@@ -66,6 +70,7 @@ const OrderCard = ({
 
         <article className="absolute right-8 top-[20%]  flex flex-col items-center space-y-6">
           <p className="text-sm text-yellow-500">Price: Rs {total}</p>
+
           {delivered ? (
             <div className="flex items-center space-x-1 ">
               <p className="text-sm text-green-600 font-semibold">Delivered</p>
@@ -99,8 +104,8 @@ const OrderCard = ({
         handleModal={handleModal}
         id={id}
         paymentMethod={paymentMethod}
-        setTrigger={setTrigger}
         trigger={trigger}
+        setTrigger={setTrigger}
       />
     </div>
   );
