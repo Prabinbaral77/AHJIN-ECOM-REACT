@@ -1,6 +1,7 @@
 const initialState = {
   products: [],
   cart: [],
+  refreshOrder: true,
 };
 
 export default function (state = initialState, action) {
@@ -17,11 +18,20 @@ export default function (state = initialState, action) {
           },
         ],
       };
+    case "REMOVE_SINGLE_CART_PRODUCTS":
+      return {
+        cart: state.cart.filter((singleProduct) => {
+          return singleProduct?.product?.id !== action.payload;
+        }),
+      };
     case "EMPTY_CART_PRODUCTS":
       return {
         ...state,
         cart: [],
       };
+
+    case "TRIGGER_ORDER":
+      return (state.refreshOrder = !state.refreshOrder);
 
     default:
       return state;

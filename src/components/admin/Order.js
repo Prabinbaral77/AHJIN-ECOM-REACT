@@ -2,14 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Fade } from "react-reveal";
 import OrderCard from "./OrderCard";
+import { useSelector } from "react-redux";
 
 function Order() {
   const [orders, setOrders] = useState([]);
+  const [filterOrders, setFilterOrders] = useState([]);
+
   const [trigger, setTrigger] = useState(false);
   const [filterTrigger, setFilterTrigger] = useState(false);
-  const [filterString, setFilterString] = useState();
+  const [filterString, setFilterString] = useState("all");
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
+  // const ProductDetails = useSelector((state) => state.products);
+  // console.log(ProductDetails);
+
   useEffect(() => {
     const getOrders = async () => {
       const res = await axios.get("http://localhost:8000/api/orders/", {
@@ -28,17 +34,18 @@ function Order() {
       const data = orders.filter((order) => {
         return order?.delivered === true;
       });
-      setOrders(data);
+      setFilterOrders(data);
     } else if (filterString === "notdelivered") {
       const data = orders.filter((order) => {
         return order?.delivered === false;
       });
-      setOrders(data);
+      setFilterOrders(data);
     } else if (filterString === "all") {
-      setOrders(orders);
+      setFilterOrders(orders);
+    } else {
+      setFilterOrders(orders);
     }
-    setOrders(orders);
-  }, [filterString, filterTrigger]);
+  }, [filterString]);
   return (
     <main className="px-4 lg:col-span-10 col-span-12 lg:py-5 py-20 max-h-[100vh] overflow-scroll text-gray-100 flex flex-col space-y-6 ">
       <h1 className="font-bold text-cyan-50 text-2xl my-2 mx-10">
@@ -62,7 +69,7 @@ function Order() {
         </div>
       </div>
       {/* <Fade top> */}
-      {orders.map((order, index) => (
+      {filterOrders.map((order, index) => (
         <OrderCard
           key={index + 1}
           delivered={order?.delivered}
@@ -72,7 +79,8 @@ function Order() {
           trigger={trigger}
           setTrigger={setTrigger}
           paymentMethod={order?.paymentMethod}
-          ethAccountAddress={order?.products[0]?.currentAccount}
+          ethAccountAddress={order?.currentAccount}
+          isRewarded={order?.isRewarded}
         />
       ))}
     </main>

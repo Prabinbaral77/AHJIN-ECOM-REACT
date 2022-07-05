@@ -4,7 +4,8 @@ import UpdateOrderStatus from "../../utils/modal/UpdateOrderStatus";
 import axios from "axios";
 import { AjhinContext } from "../../context/ahjinContext";
 import { CheckIcon, ExclamationIcon } from "@heroicons/react/outline";
-
+import { triggerOrderAfterReward } from "../../redux/products/action";
+import { useDispatch } from "react-redux";
 const OrderCard = ({
   orderProducts,
   delivered,
@@ -14,7 +15,9 @@ const OrderCard = ({
   trigger,
   paymentMethod,
   ethAccountAddress,
+  isRewarded,
 }) => {
+  const dispatch = useDispatch();
   const { sendEthInReward } = useContext(AjhinContext);
   const [openModal, setOpenModal] = useState(false);
   const handleModal = () => {
@@ -34,11 +37,36 @@ const OrderCard = ({
         console.log(res);
         toast.success("Delete successfully.");
         setTrigger(!trigger);
+        dispatch(triggerOrderAfterReward());
       })
       .catch((error) => {
         console.log(error);
         toast.error("Something went wrong.");
       });
+  };
+
+  const sendEthInRewardHandler = async () => {
+    await sendEthInReward(ethAccountAddress);
+    axios
+      .patch(
+        `http://localhost:8000/api/orders/${id}`,
+        {
+          paymentMethod: paymentMethod,
+          isRewarded: true,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        toast.success("Rewarded successfully.");
+      })
+      .catch((error) => {
+        toast.error("Something went wrong.");
+      });
+    setTrigger(!trigger);
   };
 
   return (
@@ -98,13 +126,19 @@ const OrderCard = ({
             >
               Delete
             </p>
-            {ethAccountAddress && (
-              <p
-                className="text-green-600 font-bold cursor-pointer"
-                onClick={() => sendEthInReward(ethAccountAddress)}
-              >
-                Send Reward
+            {isRewarded ? (
+              <p className="text-green-600 font-bold cursor-pointer">
+                Reward already send
               </p>
+            ) : (
+              ethAccountAddress && (
+                <p
+                  className="text-green-600 font-bold cursor-pointer"
+                  onClick={sendEthInRewardHandler}
+                >
+                  Send Reward
+                </p>
+              )
             )}
           </div>
         </article>

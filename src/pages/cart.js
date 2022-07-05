@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { ShoppingBagIcon } from "@heroicons/react/outline";
+import { ShoppingBagIcon, XCircleIcon } from "@heroicons/react/outline";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,20 +10,22 @@ import toast, { Toaster } from "react-hot-toast";
 import { AjhinContext } from "../context/ahjinContext";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import { ahjinCoinCalculator } from "../utils/ahjinCoinCalculator";
-import { emptyCartProduct } from "../redux/products/action";
+import {
+  emptyCartProduct,
+  removeProductFromCart,
+} from "../redux/products/action";
 
 function Cart() {
   const dispatch = useDispatch();
   const [orderFormatKhalti, setOrderFormatKhalti] = useState();
   const [orderItemArrayAhjin, setOrderItemArrayAhjin] = useState();
-  console.log(orderFormatKhalti, orderItemArrayAhjin);
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
   const userId = userDetail?.user?.pk;
   const { currentAccount, tokenBalance, buyAssets, sendEthInReward } =
     useContext(AjhinContext);
   const cartProductDetails = useSelector((state) => state.products).cart;
-
+  console.log(cartProductDetails, "cartProductDetails");
   const totalPriceOfCart = () => {
     let price = 0;
     cartProductDetails.forEach(({ product, quantity }) => {
@@ -60,13 +62,12 @@ function Cart() {
         user: userId,
         image: singleProduct?.product?.image,
         name: singleProduct?.product?.name,
-        currentAccount: currentAccount,
       });
     });
     dataFormat.products = await productsArray;
     dataFormat.delivered = false;
     dataFormat.paymentMethod = "K";
-
+    dataFormat.currentAccount = currentAccount;
     dataFormat.total = totalPriceOfCart();
     setOrderFormatKhalti(dataFormat);
   };
@@ -106,12 +107,12 @@ function Cart() {
         user: userId,
         image: singleProduct?.product?.image,
         name: singleProduct?.product?.name,
-        currentAccount: currentAccount,
       });
     });
     dataFormat.products = await productsArray;
     dataFormat.delivered = false;
     dataFormat.paymentMethod = "A";
+    dataFormat.currentAccount = currentAccount;
     dataFormat.total = totalPriceOfCart();
     setOrderItemArrayAhjin(dataFormat);
   };
@@ -204,6 +205,12 @@ function Cart() {
     }
   };
 
+  const cartProductRemoveHandler = (id) => {
+    console.log(id);
+    dispatch(removeProductFromCart(id));
+    ToastsStore.success("Successfully removed from cart.");
+  };
+
   return (
     <div className="bg-gray-800 font-Roboto">
       <Toaster />
@@ -224,76 +231,109 @@ function Cart() {
               <h1>TOTAL</h1>
             </div>
           </div>
-          {cartProductDetails.map(({ product, quantity }) => (
-            <div
-              key={product?.id}
-              className="text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  "
-            >
-              <div className="lg:col-span-6 col-span-5 flex lg:items-center flex-col lg:flex-row space-y-3  lg:space-x-3  ">
-                <div className="w-40 h-32">
-                  <img
-                    src={product?.image}
-                    className="object-cover h-full w-full"
-                    layout="fill"
-                    alt="product"
-                  />
-                </div>
-                <div className="pr-2 flex flex-col space-y-2 py-2">
-                  <h1 className="font-bold lg:w-60 w-44 text-left text-cyan-100 pb-3">
-                    {product?.name}
-                  </h1>
-                  {/* //todo:check d_cat */}
+          {cartProductDetails.map(
+            ({ product, quantity, uniquefeatureIndex }) => (
+              <div
+                key={product?.id}
+                className=" relative text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  "
+              >
+                <div className="lg:col-span-6 col-span-5 flex lg:items-center flex-col lg:flex-row space-y-3  lg:space-x-3  ">
+                  <div className="w-40 h-32">
+                    <img
+                      src={product?.image}
+                      className="object-cover h-full w-full"
+                      layout="fill"
+                      alt="product"
+                    />
+                  </div>
+                  <div className="pr-2 flex flex-col space-y-2 py-2">
+                    <h1 className="font-bold lg:w-60 w-44 text-left text-cyan-100 pb-3">
+                      {product?.name}
+                    </h1>
+                    {/* //todo:check d_cat */}
 
-                  {product?.d_cat === "laptop" && (
-                    <>
-                      <div className="flex items-center space-x-2">
-                        <p>RAM: 4GB</p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <p>SSD:</p>
-                        <p>256</p>
-                      </div>
-                    </>
-                  )}
-                  {product?.cat === "C" && (
-                    <>
-                      <div className="flex items-center space-x-2">
-                        <p className="uppercase">Color: red</p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <p>Size:</p>
-                        <p>XL</p>
-                      </div>
-                    </>
-                  )}
+                    {product?.d_cat === "laptop" && (
+                      <>
+                        <div className="flex items-center space-x-2">
+                          <p>
+                            RAM:
+                            {
+                              product?.unique_feature[uniquefeatureIndex - 1]
+                                ?.RAM
+                            }
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <p>SSD:</p>
+                          <p>
+                            {
+                              product?.unique_feature[uniquefeatureIndex - 1]
+                                ?.SSD
+                            }
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <p
+                            className="font-bold text-sm text-red-400 cursor-pointer"
+                            onClick={() =>
+                              cartProductRemoveHandler(product?.id)
+                            }
+                          >
+                            Remove
+                          </p>
+                        </div>
+                      </>
+                    )}
+                    {product?.cat === "C" && (
+                      <>
+                        <div className="flex items-center space-x-2">
+                          <p className="uppercase">Color: red</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <p>Size:</p>
+                          <p>XL</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <p
+                            className="font-bold text-sm text-red-400 cursor-pointer"
+                            onClick={() =>
+                              cartProductRemoveHandler(product?.id)
+                            }
+                          >
+                            Remove
+                          </p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between lg:col-span-4 col-span-5 text-xs lg:text-sm ">
+                  <h1 className="pl-10">{quantity}</h1>
+                  <h1 className="pl-3">
+                    Rs.
+                    {product?.price_m -
+                      product?.price_m * (product?.discount / 100)}
+                  </h1>
+                  <h1 className="pr-2 flex flex-col space-y-2 items-center">
+                    <p>
+                      Rs.
+                      {quantity *
+                        (product?.price_m -
+                          product?.price_m * (product?.discount / 100))}
+                    </p>
+                    <p>
+                      {ahjinCoinCalculator(
+                        quantity *
+                          (product.price_m -
+                            product?.price_m * (product?.discount / 100))
+                      )}{" "}
+                      AC
+                    </p>
+                  </h1>
                 </div>
               </div>
-              <div className="flex items-center justify-between lg:col-span-4 col-span-5 text-xs lg:text-sm ">
-                <h1 className="pl-10">{quantity}</h1>
-                <h1 className="pl-3">
-                  Rs.
-                  {product?.price_m -
-                    product?.price_m * (product?.discount / 100)}
-                </h1>
-                <h1 className="pr-2 flex flex-col space-y-2 items-center">
-                  <p>
-                    Rs.
-                    {quantity *
-                      (product?.price_m -
-                        product?.price_m * (product?.discount / 100))}
-                  </p>
-                  <p>
-                    {ahjinCoinCalculator(
-                      quantity *
-                        (product.price_m -
-                          product?.price_m * (product?.discount / 100))
-                    )}{" "}
-                    AC
-                  </p>
-                </h1>
-              </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
 
         {/* //!checkout wala */}

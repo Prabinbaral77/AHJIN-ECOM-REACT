@@ -8,8 +8,21 @@ export const setCartProduct =
     });
   };
 
+export const removeProductFromCart = (id) => async (dispatch) => {
+  dispatch({
+    type: "REMOVE_SINGLE_CART_PRODUCTS",
+    payload: id,
+  });
+};
+
 export const emptyCartProduct = () => async (dispatch) => {
   dispatch({
     type: "EMPTY_CART_PRODUCTS",
+  });
+};
+
+export const triggerOrderAfterReward = () => async (dispatch) => {
+  dispatch({
+    type: "TRIGGER_ORDER",
   });
 };
