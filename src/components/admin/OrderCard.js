@@ -73,9 +73,9 @@ const OrderCard = ({
   };
 
   useEffect(() => {
+    let data = [];
     orderProducts.forEach((element) => {
-      setSingleOrder((order) => [
-        ...order,
+      data.push([
         {
           productName: element?.name,
           quantity: element?.quantity,
@@ -83,12 +83,16 @@ const OrderCard = ({
         },
       ]);
     });
+    setSingleOrder(data);
   }, []);
 
   const data = {
     name: singleOrder,
     price: total,
     paymentMethod: paymentMethod === "K" ? "Khalti" : "AC",
+    phoneNumber: orderProducts[0]?.phoneNumber
+      ? orderProducts[0]?.phoneNumber
+      : "No Phone Number Provided",
   };
 
   return (
@@ -110,11 +114,15 @@ const OrderCard = ({
                 </div>
                 <p className="text-sm lg:w-80 w-28">{singleOrder?.name}</p>
                 <div className="flex items-center text-sm pl-36 flex-col">
-                  <div className="flex text-[#322151] font-semibold">
-                    <p className="text-gray-300">paymentMethod: &nbsp;</p>
-                    {paymentMethod === "K" ? "Khalti" : "AC"}
+                  <div className="flex  font-semibold ">
+                    <p className="text-white">payment Method: &nbsp;</p>
+                    {paymentMethod === "K" ? (
+                      <span className="text-purple-600">Khalti</span>
+                    ) : (
+                      <span>AC</span>
+                    )}
                   </div>
-                  <p className="text-sm text-yellow-500">
+                  <p className="text-sm text-yellow-500 pt-2">
                     Price: Rs {singleOrder?.quantity * singleOrder?.price}(
                     {singleOrder?.quantity})
                   </p>
@@ -148,7 +156,7 @@ const OrderCard = ({
             </div>
           ) : (
             <div className="flex items-center space-x-1 text-yellow-500 ">
-              <p className="text-sm font-semibold">Not Delivered</p>
+              <p className="text-sm font-semibold">Pending</p>
               <ExclamationIcon className=" h-6 w-6" />
             </div>
           )}

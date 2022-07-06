@@ -62,6 +62,7 @@ function Cart() {
         user: userId,
         image: singleProduct?.product?.image,
         name: singleProduct?.product?.name,
+        phoneNumber: userDetail?.user?.phone_number,
         price:
           singleProduct?.product?.price_m -
           singleProduct?.product?.price_m *
@@ -71,6 +72,7 @@ function Cart() {
     dataFormat.products = await productsArray;
     dataFormat.delivered = false;
     dataFormat.paymentMethod = "K";
+
     dataFormat.currentAccount = currentAccount;
     dataFormat.total = totalPriceOfCart();
     setOrderFormatKhalti(dataFormat);
@@ -111,11 +113,13 @@ function Cart() {
         user: userId,
         image: singleProduct?.product?.image,
         name: singleProduct?.product?.name,
+        phoneNumber: userDetail?.user?.phone_number,
       });
     });
     dataFormat.products = await productsArray;
     dataFormat.delivered = false;
     dataFormat.paymentMethod = "A";
+
     dataFormat.currentAccount = currentAccount;
     dataFormat.total = totalPriceOfCart();
     setOrderItemArrayAhjin(dataFormat);
