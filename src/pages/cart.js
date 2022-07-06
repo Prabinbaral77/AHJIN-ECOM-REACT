@@ -157,7 +157,7 @@ function Cart() {
                 })
                 .then((res) => {
                   console.log(res);
-                  toast.success("Ordered successful using Khalti.");
+                  toast.success("Order successful using Khalti.");
                   dispatch(emptyCartProduct());
                 })
                 .catch((error) => console.log(error));
@@ -357,29 +357,27 @@ function Cart() {
             <h1 className="uppercase font-semibold border-b border-red-500 text-red-500  max-w-fit my-4">
               order summary
             </h1>
+           
+
+            <section className="text-sm flex flex-col space-y-8 ">
             <a
               href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn/related"
-              className="text-sm text-red-400 hover:text-red-300 pb-2 cursor-pointer"
+              className="text-sm text-red-500 hover:text-red-600 pb-4 cursor-pointer"
             >
               Please connect with your metaMask wallet to get reward.
             </a>
-
-            <section className="text-sm flex flex-col space-y-8 ">
               <div className="flex items-center text-gray-300 justify-between lg:w-3/4">
                 <h1>Shipping cost</h1>
-                <p>Rs150</p>
+                <p>Rs 150</p>
               </div>
               <div className="flex items-center text-gray-300 justify-between lg:w-3/4">
                 <h1>Shipping Discount</h1>
-                <p>Rs10</p>
+                <p>Rs 10</p>
               </div>
-              <div className="flex text-gray-300 items-center justify-between lg:w-3/4">
-                <h1>Tax</h1>
-                <p>13%</p>
-              </div>
-              <div className="flex items-center justify-between lg:w-3/4">
-                <h1 className="text-xl text-gray-100">Estimated Total</h1>
-                <p className="text-xl text-yellow-500 tracking-wider">
+             
+              <div className="flex items-center justify-between lg:w-full">
+                <h1 className="text-lg font-bold text-gray-100">Estimated Total</h1>
+                <p className="text-lg font-bold text-yellow-500 tracking-wider pr-14">
                   Rs.{totalPriceOfCart()}
                 </p>
               </div>
@@ -388,13 +386,13 @@ function Cart() {
                 className="bg-red-500 py-3 hover:bg-red-600 transition-all active:scale-90 duration-500 ease-in-out "
                 onClick={khaltiCheckoutHandler}
               >
-                Checkout Now
+                Checkout using khalti
               </button>
               <button
                 className="bg-red-500 py-3 hover:bg-red-600 transition-all active:scale-90 duration-500 ease-in-out "
                 onClick={ahjinCoinBurnHandler}
               >
-                Checkout From AC
+                Checkout using AC
               </button>
             </section>
           </main>

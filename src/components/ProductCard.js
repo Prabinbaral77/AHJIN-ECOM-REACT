@@ -6,6 +6,8 @@ import { ahjinCoinCalculator } from "../utils/ahjinCoinCalculator";
 function ProductCard({ img, name, price_m, price_a, discount, rating, id }) {
   const stock = true;
 
+  console.log(rating)
+
   return (
     <Link
       to={`/product/${id}`}

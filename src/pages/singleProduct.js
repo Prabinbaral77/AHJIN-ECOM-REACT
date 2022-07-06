@@ -17,6 +17,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 function SingleProduct() {
   const dispatch = useDispatch();
+  const [error, setError] = useState(null)
   const [product, setProduct] = useState();
   const [image, setImage] = useState("");
   const [image2, setImage2] = useState("");
@@ -114,9 +115,8 @@ function SingleProduct() {
       setrunUseEffect(runUseEffect + 1);
       setreviewInputValue("");
       toast.success("Review added successfully");
-    } catch (error) {
-      console.log(error);
-      toast.error("You have already reviewed the product.");
+    } catch (err) {
+      console.log(err)
     }
   };
 
@@ -129,6 +129,8 @@ function SingleProduct() {
     };
     getReviews();
   }, [runUseEffect, id]);
+
+  console.log(reviews);
 
   const total = reviews?.reduce((tot, item) => tot + item.rating, 0);
   const averageRating = parseFloat((total / reviews.length).toFixed(2));

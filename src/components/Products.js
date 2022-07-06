@@ -4,6 +4,7 @@ import ProductCard from "./ProductCard";
 import { shuffle } from "lodash";
 
 function Products({products}) {
+  console.log(products);
 
   return (
     <Fade bottom>
