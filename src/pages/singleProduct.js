@@ -25,10 +25,11 @@ function SingleProduct() {
   const [quantityInput, setquantityInput] = useState(1);
   const [uniquefea, setuniquefea] = useState(null);
   const [uniquefeatureIndex, setuniquefeatureIndex] = useState(1);
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   const [selectedColor, setSelectedColor] = useState("");
   const [size, setSize] = useState("s");
+
   const [cartData, setCartData] = useState([]);
   const [runUseEffect, setrunUseEffect] = useState(1);
   const { id } = useParams();
@@ -56,7 +57,7 @@ function SingleProduct() {
         setImage3(res.data.image3);
         setdisplayImage(res.data.image);
         setuniquefea(res.data.unique_feature[0]);
-        setCount(res.data.count)
+        setCount(res.data.count);
       })
       .catch((error) => {
         console.log(error.response?.data);
@@ -67,7 +68,15 @@ function SingleProduct() {
   }, [id]);
 
   const addToCartHandler = () => {
-    dispatch(setCartProduct(product, quantityInput, uniquefeatureIndex));
+    dispatch(
+      setCartProduct(
+        product,
+        quantityInput,
+        uniquefeatureIndex,
+        size,
+        selectedColor
+      )
+    );
   };
 
   const handleQuantityIncrease = () => {
@@ -118,7 +127,7 @@ function SingleProduct() {
       setReviews(res.data);
     };
     getReviews();
-  }, [runUseEffect,id]);
+  }, [runUseEffect, id]);
 
   const total = reviews?.reduce((tot, item) => tot + item.rating, 0);
   const averageRating = parseFloat((total / reviews.length).toFixed(2));
@@ -330,22 +339,22 @@ function SingleProduct() {
                 </p>
               </div>
             </div>
-           
-              <button
+
+            <button
               disabled={!count}
               className="border disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-red-600 disabled:active:scale-100 border-red-600 text-red-600 font-bold text-sm px-8 py-2 cursor-pointer hover:text-red-500 transition-all active:scale-90 duration-300 ease-in-out md:mr-3 mt-6"
               onClick={addToCartHandler}
             >
               Add To Cart
             </button>
-            
           </div>
-         {!count?(
-           <p className="text-sm text-red-600 mx-3">Not available in stock</p>
-         ):(
-          <p className="text-sm text-green-600 mx-3">{count} available in stock</p>
-          
-         )}
+          {!count ? (
+            <p className="text-sm text-red-600 mx-3">Not available in stock</p>
+          ) : (
+            <p className="text-sm text-green-600 mx-3">
+              {count} available in stock
+            </p>
+          )}
         </section>
       </main>
       <h1 className="max-w-6xl mx-auto hidden w-full lg:inline-block text-xl lg:px-36 text-cyan-100 underline my-4">
@@ -353,7 +362,6 @@ function SingleProduct() {
       </h1>
 
       {/* //! Image zoom section */}
-
 
       <div className="hidden lg:flex space-x-3 h-auto max-w-6xl  cursor-auto items-center justify-start mx-auto">
         <ReactImageZoom
@@ -428,14 +436,14 @@ function SingleProduct() {
         </form>
       </div>
       <div className=" border-cyan-200">
-        {reviews.length> 0? (
+        {reviews.length > 0 ? (
           <Reviews
-          reviews={reviews}
-          setrunUseEffect={setrunUseEffect}
-          runUseEffect={runUseEffect}
-        />
-        ): (
-         ""
+            reviews={reviews}
+            setrunUseEffect={setrunUseEffect}
+            runUseEffect={runUseEffect}
+          />
+        ) : (
+          ""
         )}
       </div>
       <Footer />
