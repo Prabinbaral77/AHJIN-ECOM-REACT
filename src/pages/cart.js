@@ -25,7 +25,6 @@ function Cart() {
   const { currentAccount, tokenBalance, buyAssets, sendEthInReward } =
     useContext(AjhinContext);
   const cartProductDetails = useSelector((state) => state.products).cart;
-  console.log(cartProductDetails, "cartProductDetails");
   const totalPriceOfCart = () => {
     let price = 0;
     cartProductDetails.forEach(({ product, quantity }) => {
@@ -54,6 +53,7 @@ function Cart() {
     // setrender(!render);
     const productsArray = [];
     let dataFormat = {};
+    console.log(cartProductDetails);
     await cartProductDetails.map((singleProduct) => {
       return productsArray.push({
         productChosen: singleProduct?.uniquefeatureIndex,
@@ -62,6 +62,10 @@ function Cart() {
         user: userId,
         image: singleProduct?.product?.image,
         name: singleProduct?.product?.name,
+        price:
+          singleProduct?.product?.price_m -
+          singleProduct?.product?.price_m *
+            (singleProduct?.product?.discount / 100),
       });
     });
     dataFormat.products = await productsArray;
@@ -232,7 +236,13 @@ function Cart() {
             </div>
           </div>
           {cartProductDetails.map(
-            ({ product, quantity, uniquefeatureIndex }) => (
+            ({
+              product,
+              quantity,
+              uniquefeatureIndex,
+              size,
+              selectedColor,
+            }) => (
               <div
                 key={product?.id}
                 className=" relative text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  "
@@ -287,11 +297,11 @@ function Cart() {
                     {product?.cat === "C" && (
                       <>
                         <div className="flex items-center space-x-2">
-                          <p className="uppercase">Color: red</p>
+                          <p className="uppercase">Color: {selectedColor}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p>Size:</p>
-                          <p>XL</p>
+                          <p>{size}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p
@@ -343,6 +353,12 @@ function Cart() {
             <h1 className="uppercase font-semibold border-b border-red-500 text-red-500  max-w-fit my-4">
               order summary
             </h1>
+            <a
+              href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn/related"
+              className="text-sm text-red-400 hover:text-red-300 pb-2 cursor-pointer"
+            >
+              Please connect with your metaMask wallet to get reward.
+            </a>
 
             <section className="text-sm flex flex-col space-y-8 ">
               <div className="flex items-center text-gray-300 justify-between lg:w-3/4">

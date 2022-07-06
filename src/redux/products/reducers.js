@@ -15,6 +15,8 @@ export default function (state = initialState, action) {
             product: action.payload,
             quantity: action.quantity,
             uniquefeatureIndex: action.uniquefeatureIndex,
+            size: action?.size,
+            selectedColor: action?.selectedColor,
           },
         ],
       };
@@ -31,7 +33,10 @@ export default function (state = initialState, action) {
       };
 
     case "TRIGGER_ORDER":
-      return (state.refreshOrder = !state.refreshOrder);
+      return {
+        ...state,
+        refreshOrder: !state?.refreshOrder,
+      };
 
     default:
       return state;

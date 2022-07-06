@@ -5,6 +5,8 @@ import axios from "axios";
 import { AjhinContext } from "../../context/ahjinContext";
 import { CheckIcon, ExclamationIcon } from "@heroicons/react/outline";
 import { triggerOrderAfterReward } from "../../redux/products/action";
+import { QrcodeIcon } from "@heroicons/react/outline";
+import QRCode from "react-qr-code";
 import { useDispatch } from "react-redux";
 const OrderCard = ({
   orderProducts,
@@ -19,13 +21,14 @@ const OrderCard = ({
 }) => {
   const dispatch = useDispatch();
   const { sendEthInReward } = useContext(AjhinContext);
+  const [singleOrder, setSingleOrder] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [isQrcodeShown, setIsQrCodeShown] = useState(false);
   const handleModal = () => {
     setOpenModal(!openModal);
   };
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
-
   const deleteOrderHandler = (id) => {
     axios
       .delete(`http://localhost:8000/api/orders/${id}`, {
@@ -69,11 +72,31 @@ const OrderCard = ({
     setTrigger(!trigger);
   };
 
+  useEffect(() => {
+    orderProducts.forEach((element) => {
+      setSingleOrder((order) => [
+        ...order,
+        {
+          productName: element?.name,
+          quantity: element?.quantity,
+          user: element?.user - 1,
+        },
+      ]);
+    });
+  }, []);
+
+  const data = {
+    name: singleOrder,
+    price: total,
+    paymentMethod: paymentMethod === "K" ? "Khalti" : "AC",
+  };
+
   return (
     <div>
       <Toaster />
       <section className=" relative h-auto bg-gray-600 flex items-center flex-col px-5 py-5 space-y-4">
         {orderProducts.map((singleOrder) => {
+          console.log(singleOrder);
           return (
             <div className="flex items-center justify-between   w-full ">
               <div className="flex items-center space-x-4 flex-1 ">
@@ -91,7 +114,10 @@ const OrderCard = ({
                     <p className="text-gray-300">paymentMethod: &nbsp;</p>
                     {paymentMethod === "K" ? "Khalti" : "AC"}
                   </div>
-                  <p className="text-sm text-yellow-500">Price: Rs {total}</p>
+                  <p className="text-sm text-yellow-500">
+                    Price: Rs {singleOrder?.quantity * singleOrder?.price}(
+                    {singleOrder?.quantity})
+                  </p>
                 </div>
               </div>
             </div>
@@ -99,7 +125,21 @@ const OrderCard = ({
         })}
 
         <article className="absolute right-8 top-[20%]  flex flex-col items-center space-y-6">
-          <p className="text-sm text-yellow-500">Price: Rs {total}</p>
+          <div className="flex gap-4">
+            <p className="text-sm text-yellow-500">Price: Rs {total}</p>
+            <QrcodeIcon
+              className="h-6 w-6 cursor-pointer z-40"
+              onClick={() => setIsQrCodeShown(!isQrcodeShown)}
+            />
+            {isQrcodeShown && (
+              <div style={{ zIndex: 99 }} className="p-2 bg-red-200">
+                <QRCode value={JSON.stringify(data)} className="" />
+                <p className="text-black flex items-center justify-center py-2 underline">
+                  Order Details
+                </p>
+              </div>
+            )}
+          </div>
 
           {delivered ? (
             <div className="flex items-center space-x-1 ">

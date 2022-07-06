@@ -13,8 +13,8 @@ function Order() {
   const [filterString, setFilterString] = useState("all");
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
-  // const ProductDetails = useSelector((state) => state.products);
-  // console.log(ProductDetails);
+  const ProductDetails = useSelector((state) => state.products);
+  console.log(ProductDetails);
 
   useEffect(() => {
     const getOrders = async () => {
@@ -27,7 +27,7 @@ function Order() {
     };
     getOrders();
     setFilterTrigger(!filterTrigger);
-  }, [trigger]);
+  }, [trigger, ProductDetails?.refreshOrder]);
 
   useEffect(() => {
     if (filterString === "delivered") {
@@ -40,12 +40,11 @@ function Order() {
         return order?.delivered === false;
       });
       setFilterOrders(data);
-    } else if (filterString === "all") {
-      setFilterOrders(orders);
     } else {
       setFilterOrders(orders);
     }
   }, [filterString]);
+  // console.log(filterOrders);
   return (
     <main className="px-4 lg:col-span-10 col-span-12 lg:py-5 py-20 max-h-[100vh] overflow-scroll text-gray-100 flex flex-col space-y-6 ">
       <h1 className="font-bold text-cyan-50 text-2xl my-2 mx-10">
@@ -69,20 +68,35 @@ function Order() {
         </div>
       </div>
       {/* <Fade top> */}
-      {filterOrders.map((order, index) => (
-        <OrderCard
-          key={index + 1}
-          delivered={order?.delivered}
-          orderProducts={order?.products}
-          total={order?.total}
-          id={order?.id}
-          trigger={trigger}
-          setTrigger={setTrigger}
-          paymentMethod={order?.paymentMethod}
-          ethAccountAddress={order?.currentAccount}
-          isRewarded={order?.isRewarded}
-        />
-      ))}
+      {filterOrders.length > 0
+        ? filterOrders.map((order, index) => (
+            <OrderCard
+              key={index + 1}
+              delivered={order?.delivered}
+              orderProducts={order?.products}
+              total={order?.total}
+              id={order?.id}
+              trigger={trigger}
+              setTrigger={setTrigger}
+              paymentMethod={order?.paymentMethod}
+              ethAccountAddress={order?.currentAccount}
+              isRewarded={order?.isRewarded}
+            />
+          ))
+        : orders.map((order, index) => (
+            <OrderCard
+              key={index + 1}
+              delivered={order?.delivered}
+              orderProducts={order?.products}
+              total={order?.total}
+              id={order?.id}
+              trigger={trigger}
+              setTrigger={setTrigger}
+              paymentMethod={order?.paymentMethod}
+              ethAccountAddress={order?.currentAccount}
+              isRewarded={order?.isRewarded}
+            />
+          ))}
     </main>
   );
 }
