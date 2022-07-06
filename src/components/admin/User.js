@@ -27,7 +27,7 @@ function User() {
       })
       .then((res) => {
         console.log(res);
-        toast.success(" User Delete successfully.");
+        toast.success(" User deleted successfully.");
         setTrigger(!trigger);
       })
       .catch((error) => {

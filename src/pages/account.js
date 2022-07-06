@@ -22,9 +22,10 @@ function Account() {
   const [accountNumber, setaccountNumber] = useState(1);
   const [currentPassword, setCurrentpassword] = useState("");
   const [newPassword, setNewpassword] = useState("");
-  const [conformNewPassword, setConformNewpassword] = useState("");
+  const [confirmNewPassword, setConfirmNewpassword] = useState("");
   const [userName, setUserName] = useState(userDetails?.user?.username);
   const [email, setEmail] = useState(userDetails?.user?.email);
+  const [error, setError] = useState(null)
   const [phoneNumber, setPhoneNumber] = useState(
     userDetails?.user?.phone_number
   );
@@ -60,14 +61,23 @@ function Account() {
   const handleSubmitPassword = async (e) => {
     e.preventDefault();
     try {
-      if (newPassword !== conformNewPassword) {
-        return toast.error("New Password and Confirm Password Must be Matched");
+      if (!currentPassword || !newPassword || !confirmNewPassword) {
+        return toast.error("Please enter all the fields");
       }
+      if (newPassword !== confirmNewPassword) {
+        return toast.error("Please make sure passwords match");
+      }
+      if (currentPassword === newPassword) {
+        return toast.error("Current and new passwords cannot be same.");
+      }
+      
       axios
         .post(
-          "http://localhost:8000/api/user/password-reset/",
+          "http://localhost:8000/api/user/password/change/",
           {
-            email: userDetails?.user?.email,
+            old_password: currentPassword,
+            new_password1: newPassword,
+            new_password2: confirmNewPassword
           },
           {
             headers: {
@@ -77,11 +87,33 @@ function Account() {
         )
         .then((res) => {
           console.log(res);
+          toast.success("password changed successfully!")
+        }).catch((err)=>{
+          if (err) {
+            let errArr = [];
+            setError(err.response?.data);
+            if (error) {
+              Object.entries(error && error).forEach(([key, value]) =>
+                errArr.push(value)
+              );
+            }
+  
+            errArr.map((m) => {
+              m.map((n) => {
+                toast.error(n, { id: "common" });
+              });
+            });
+          }
+        
         });
     } catch (error) {
+      
       console.log(error);
+     
     }
   };
+
+  console.log(error)
 
   const handleSubmitEditAccount = (e) => {
     e.preventDefault();
@@ -458,8 +490,8 @@ function Account() {
                       id="confirmnewpassword"
                       name="confirmnewpassword"
                       placeholder="confirm new password"
-                      value={conformNewPassword}
-                      onChange={(e) => setConformNewpassword(e.target.value)}
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewpassword(e.target.value)}
                     />
                   </div>
                   <button
