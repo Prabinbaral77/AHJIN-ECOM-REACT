@@ -13,7 +13,7 @@ function ChangePassword() {
   return (
     <main className="h-screen select-none bg-black justify-center flex items-center px-4">
     <section className=" ">
-        <header className="bg-red-600 text-gray-100 py-3 px-5">
+        <header className="bg-purple-600 text-gray-100 py-3 px-5">
             <p className="uppercase text-2xl tracking-widest font-semibold text-center font-mono">change your password</p>
         </header>
 
@@ -40,8 +40,8 @@ function ChangePassword() {
                 <EyeOffIcon onClick = {()=>setView2(false)} className="text-gray-400 cursor-pointer h-5 w-5"/>
             )}
             </div>
-            <button type='submit' className="bg-red-600 py-2 text-center uppercase hover:opacity-80 my-4 w-1/2 mr-auto ">
-                send email
+            <button type='submit' className="bg-purple-600 py-2 text-center uppercase hover:opacity-80 my-4 w-1/2 mr-auto ">
+               Change
             </button>
         </form>
 
