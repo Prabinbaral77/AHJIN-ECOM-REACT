@@ -25,7 +25,6 @@ function Cart() {
   const { currentAccount, tokenBalance, buyAssets, sendEthInReward } =
     useContext(AjhinContext);
   const cartProductDetails = useSelector((state) => state.products).cart;
-  console.log(cartProductDetails, "cartProductDetails");
   const totalPriceOfCart = () => {
     let price = 0;
     cartProductDetails.forEach(({ product, quantity }) => {
@@ -237,7 +236,13 @@ function Cart() {
             </div>
           </div>
           {cartProductDetails.map(
-            ({ product, quantity, uniquefeatureIndex }) => (
+            ({
+              product,
+              quantity,
+              uniquefeatureIndex,
+              size,
+              selectedColor,
+            }) => (
               <div
                 key={product?.id}
                 className=" relative text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  "
@@ -292,11 +297,11 @@ function Cart() {
                     {product?.cat === "C" && (
                       <>
                         <div className="flex items-center space-x-2">
-                          <p className="uppercase">Color: red</p>
+                          <p className="uppercase">Color: {selectedColor}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p>Size:</p>
-                          <p>XL</p>
+                          <p>{size}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p

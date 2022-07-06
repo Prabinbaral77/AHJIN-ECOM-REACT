@@ -15,6 +15,8 @@ export default function (state = initialState, action) {
             product: action.payload,
             quantity: action.quantity,
             uniquefeatureIndex: action.uniquefeatureIndex,
+            size: action?.size,
+            selectedColor: action?.selectedColor,
           },
         ],
       };

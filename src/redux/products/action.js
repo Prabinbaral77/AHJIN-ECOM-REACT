@@ -1,10 +1,13 @@
 export const setCartProduct =
-  (product, quantityInput, uniquefeatureIndex) => async (dispatch) => {
+  (product, quantityInput, uniquefeatureIndex, size, selectedColor) =>
+  async (dispatch) => {
     dispatch({
       type: "SET_CART_PRODUCTS",
       payload: product,
       quantity: quantityInput,
       uniquefeatureIndex: uniquefeatureIndex,
+      size: size,
+      selectedColor: selectedColor,
     });
   };
 
