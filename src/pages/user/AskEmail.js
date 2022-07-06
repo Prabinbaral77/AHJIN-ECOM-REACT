@@ -1,15 +1,23 @@
-import React from 'react'
+import axios from 'axios'
+import React,{useState} from 'react'
 import { Link } from 'react-router-dom'
 
 function AskEmail() {
-
-    const handleSubmit = (e) => {
+const [email, setemail] = useState("")
+    const handleSubmit = async(e) => {
         e.preventDefault()
+
+        try {
+            const res = await axios.post("http://localhost:8000/api/user/password-reset/", {email})
+            console.log(res.data)
+        } catch (error) {
+            console.log(error);
+        }
     }
   return (
     <main className="h-screen bg-black justify-center flex items-center px-4">
             <section className="   py-3 ">
-                <header className="bg-red-600 text-gray-100 py-3 px-5">
+                <header className="bg-purple-600 text-gray-100 py-3 px-5">
                     <p className="uppercase text-2xl tracking-wider font-semibold text-center">forgot your password?</p>
                 </header>
 
@@ -17,8 +25,8 @@ function AskEmail() {
                     <p className="text-gray-400 w-3/4 mx-auto text-sm">Don't worry! Just fill in your email and we will help you to reset your password.</p>
                     <form onSubmit = {handleSubmit} className="flex  flex-col space-y-2 w-3/4 mx-auto">
                     <label htmlFor="email" className="uppercase text-gray-300 text-sm">email address</label>
-                    <input className="outline-none py-2 px-2 text-gray-100 text-sm bg-gray-500 focus:ring ring-cyan-600" type="email" />
-                    <button type='submit' className="bg-red-600 py-2 text-center uppercase hover:opacity-80 my-4 w-1/2 mr-auto ">
+                    <input value={email} onChange = {e=>setemail(e.target.value)} className="outline-none py-2 px-2 text-gray-100 text-sm bg-gray-500 focus:ring ring-cyan-600" type="email" />
+                    <button type='submit' className="bg-purple-600 py-2 text-center uppercase hover:opacity-80 my-4 w-1/2 mr-auto ">
                         send email
                     </button>
                 </form>

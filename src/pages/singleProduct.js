@@ -28,7 +28,8 @@ function SingleProduct() {
   const [count, setCount] = useState(0);
 
   const [selectedColor, setSelectedColor] = useState("");
-  const [size, setSize] = useState("s");
+
+  const [size, setSize] = useState("");
 
   const [cartData, setCartData] = useState([]);
   const [runUseEffect, setrunUseEffect] = useState(1);
