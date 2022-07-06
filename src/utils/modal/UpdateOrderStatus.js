@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { triggerOrderAfterReward } from "../../redux/products/action";
 
 const UpdateOrderStatus = ({
   open,
@@ -11,6 +13,8 @@ const UpdateOrderStatus = ({
   setTrigger,
   trigger,
 }) => {
+  const dispatch = useDispatch;
+
   const [isDelivered, setIsDelivered] = useState(true);
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
@@ -30,6 +34,7 @@ const UpdateOrderStatus = ({
       )
       .then((res) => {
         toast.success("Updated successfully.");
+        // dispatch(triggerOrderAfterReward());
         setTrigger(!trigger);
       })
       .catch((error) => {

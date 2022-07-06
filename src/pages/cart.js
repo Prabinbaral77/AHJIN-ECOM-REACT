@@ -54,6 +54,7 @@ function Cart() {
     // setrender(!render);
     const productsArray = [];
     let dataFormat = {};
+    console.log(cartProductDetails);
     await cartProductDetails.map((singleProduct) => {
       return productsArray.push({
         productChosen: singleProduct?.uniquefeatureIndex,
@@ -62,6 +63,10 @@ function Cart() {
         user: userId,
         image: singleProduct?.product?.image,
         name: singleProduct?.product?.name,
+        price:
+          singleProduct?.product?.price_m -
+          singleProduct?.product?.price_m *
+            (singleProduct?.product?.discount / 100),
       });
     });
     dataFormat.products = await productsArray;
@@ -343,6 +348,12 @@ function Cart() {
             <h1 className="uppercase font-semibold border-b border-red-500 text-red-500  max-w-fit my-4">
               order summary
             </h1>
+            <a
+              href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn/related"
+              className="text-sm text-red-400 hover:text-red-300 pb-2 cursor-pointer"
+            >
+              Please connect with your metaMask wallet to get reward.
+            </a>
 
             <section className="text-sm flex flex-col space-y-8 ">
               <div className="flex items-center text-gray-300 justify-between lg:w-3/4">

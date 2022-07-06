@@ -31,7 +31,10 @@ export default function (state = initialState, action) {
       };
 
     case "TRIGGER_ORDER":
-      return (state.refreshOrder = !state.refreshOrder);
+      return {
+        ...state,
+        refreshOrder: !state?.refreshOrder,
+      };
 
     default:
       return state;
