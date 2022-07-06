@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   let navigate = useNavigate();
@@ -91,9 +91,11 @@ function Login() {
           >
             LOGIN
           </button>
-          <p className="self-start cursor-pointer text-sm font-light text-gray-100">
+          <Link className="self-start" to={'/user/enter-email'}>
+          <p className=" cursor-pointer text-sm font-light text-gray-100">
             FORGET PASSWORD?
           </p>
+          </Link>
           <p
             className="self-start cursor-pointer text-sm font-light text-gray-100"
             // onClick={createNewAccoutHandler}

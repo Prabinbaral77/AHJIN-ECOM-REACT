@@ -118,7 +118,7 @@ function SingleProduct() {
       setReviews(res.data);
     };
     getReviews();
-  }, [runUseEffect]);
+  }, [runUseEffect,id]);
 
   const total = reviews?.reduce((tot, item) => tot + item.rating, 0);
   const averageRating = parseFloat((total / reviews.length).toFixed(2));
@@ -296,8 +296,8 @@ function SingleProduct() {
                         setuniquefea(product?.unique_feature[index])
                       }
                       className={`h-auto ${
-                        uniquefea?.RAM == m?.RAM ? "bg-cyan-900" : "bg-gray-800"
-                      }  w-32  bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-200 px-3 py-2 space-y-3`}
+                        uniquefea?.RAM == m?.RAM ? "bg-cyan-800" : "bg-gray-800"
+                      }  w-32  bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-50 px-3 py-2 space-y-3`}
                     >
                       <p>{m.RAM}GB RAM</p>
                       <p>{m.SSD} SSD</p>

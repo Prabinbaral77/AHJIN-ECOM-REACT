@@ -11,6 +11,8 @@ import Electronics from "./pages/categories/electronics";
 import Clothes from "./pages/categories/clothes";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AskEmail from "./pages/user/AskEmail";
+import ChangePassword from "./pages/user/ChangePassword";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -37,6 +39,8 @@ function App() {
 
         <Route path="/categories/electronics" element={<Electronics />} />
         <Route path="/categories/clothes" element={<Clothes />} />
+        <Route path="/user/enter-email" element={<AskEmail />} />
+        <Route path="/user/change-password" element={<ChangePassword />} />
       </Routes>
     </div>
   );
