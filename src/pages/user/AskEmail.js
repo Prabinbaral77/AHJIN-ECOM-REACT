@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React,{useState} from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 
 function AskEmail() {
@@ -9,13 +10,15 @@ const [email, setemail] = useState("")
 
         try {
             const res = await axios.post("http://localhost:8000/api/user/password-reset/", {email})
-            console.log(res.data)
+            toast.success("Email sent successfully")
         } catch (error) {
             console.log(error);
+            toast.error("Failed to send email")
         }
     }
   return (
     <main className="h-screen bg-black justify-center flex items-center px-4">
+        <Toaster/>
             <section className="   py-3 ">
                 <header className="bg-purple-600 text-gray-100 py-3 px-5">
                     <p className="uppercase text-2xl tracking-wider font-semibold text-center">forgot your password?</p>
