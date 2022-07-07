@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AskEmail from "./pages/user/AskEmail";
 import ChangePassword from "./pages/user/ChangePassword";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <div className="bg-gray-800">
+      <Toaster/>
       <Routes>
         <Route path="/" element={<Home products={products} />} />
         <Route path={`/product/:id`} element={<SingleProduct />} />
