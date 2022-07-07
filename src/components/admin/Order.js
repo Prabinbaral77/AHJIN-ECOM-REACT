@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Fade } from "react-reveal";
 import OrderCard from "./OrderCard";
 import { useSelector } from "react-redux";
 
@@ -27,7 +26,7 @@ function Order() {
     };
     getOrders();
     setFilterTrigger(!filterTrigger);
-  }, [trigger, ProductDetails?.refreshOrder]);
+  }, [trigger, ProductDetails?.refreshOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (filterString === "delivered") {
@@ -43,7 +42,7 @@ function Order() {
     } else {
       setFilterOrders(orders);
     }
-  }, [filterString]);
+  }, [filterString]); // eslint-disable-line react-hooks/exhaustive-deps
   // console.log(filterOrders);
   return (
     <main className="px-4 lg:col-span-10 col-span-12 lg:py-5 py-20 max-h-[100vh] overflow-scroll text-gray-100 flex flex-col space-y-6 ">
@@ -54,19 +53,19 @@ function Order() {
         <h1 className="text-cyan-500 font-semibold text-xl underline">
           Filter Orders
         </h1>
-       
-          <select
-            onChange={(e) => setFilterString(e.target.value)}
-            name=""
-            id=""
-            className="bg-gray-700 outline-none text-gray-100 w-[25%] cursor-pointer text-sm p-2"
-          >
-            <option value="all">On the basis of delivery</option>
-            <option value="delivered">Delivered</option>
-            <option value="notdelivered">Not delivered</option>
-          </select>
-        </div>
-      
+
+        <select
+          onChange={(e) => setFilterString(e.target.value)}
+          name=""
+          id=""
+          className="bg-gray-700 outline-none text-gray-100 w-[25%] cursor-pointer text-sm p-2"
+        >
+          <option value="all">On the basis of delivery</option>
+          <option value="delivered">Delivered</option>
+          <option value="notdelivered">Not delivered</option>
+        </select>
+      </div>
+
       {/* <Fade top> */}
       {filterOrders.length > 0
         ? filterOrders.map((order, index) => (

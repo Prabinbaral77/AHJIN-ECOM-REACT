@@ -84,7 +84,7 @@ const OrderCard = ({
       ]);
     });
     setSingleOrder(data);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const data = {
     name: singleOrder,
@@ -100,7 +100,6 @@ const OrderCard = ({
       <Toaster />
       <section className=" relative h-auto bg-gray-700 flex items-center flex-col px-5 py-5 space-y-4">
         {orderProducts.map((singleOrder) => {
-          console.log(singleOrder);
           return (
             <div className="flex items-center justify-between   w-full ">
               <div className="flex items-center space-x-4 flex-1 ">
@@ -136,11 +135,11 @@ const OrderCard = ({
           <div className="flex gap-4">
             <p className="text-sm text-yellow-500">Price: Rs {total}</p>
             <QrcodeIcon
-              className="h-6 w-6 cursor-pointer z-40 absolute -bottom-56 -right-3"
+              className="h-6 w-6 cursor-pointer z-40 absolute  -right-4 top-[2.8rem]"
               onClick={() => setIsQrCodeShown(!isQrcodeShown)}
             />
             {isQrcodeShown && (
-              <div style={{ zIndex: 99 }} className="p-2 bg-red-200">
+              <div style={{ zIndex: 99 }} className="p-2 bg-purple-200">
                 <QRCode value={JSON.stringify(data)} className="" />
                 <p className="text-black flex items-center justify-center py-2 underline">
                   Order Details

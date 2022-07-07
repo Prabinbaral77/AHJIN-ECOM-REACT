@@ -25,7 +25,7 @@ function Account() {
   const [confirmNewPassword, setConfirmNewpassword] = useState("");
   const [userName, setUserName] = useState(userDetails?.user?.username);
   const [email, setEmail] = useState(userDetails?.user?.email);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(
     userDetails?.user?.phone_number
   );
@@ -46,7 +46,7 @@ function Account() {
       setOrders(res.data);
     };
     getOrders();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     connectWallet,
@@ -70,14 +70,14 @@ function Account() {
       if (currentPassword === newPassword) {
         return toast.error("Current and new passwords cannot be same.");
       }
-      
+
       axios
         .post(
           "http://localhost:8000/api/user/password/change/",
           {
             old_password: currentPassword,
             new_password1: newPassword,
-            new_password2: confirmNewPassword
+            new_password2: confirmNewPassword,
           },
           {
             headers: {
@@ -87,8 +87,9 @@ function Account() {
         )
         .then((res) => {
           console.log(res);
-          toast.success("password changed successfully!")
-        }).catch((err)=>{
+          toast.success("password changed successfully!");
+        })
+        .catch((err) => {
           if (err) {
             let errArr = [];
             setError(err.response?.data);
@@ -97,23 +98,20 @@ function Account() {
                 errArr.push(value)
               );
             }
-  
-            errArr.map((m) => {
-              m.map((n) => {
+
+            errArr.forEach((m) => {
+              m.forEach((n) => {
                 toast.error(n, { id: "common" });
               });
             });
           }
-        
         });
     } catch (error) {
-      
       console.log(error);
-     
     }
   };
 
-  console.log(error)
+  console.log(error);
 
   const handleSubmitEditAccount = (e) => {
     e.preventDefault();

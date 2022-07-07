@@ -17,6 +17,7 @@ export default function (state = initialState, action) {
             uniquefeatureIndex: action.uniquefeatureIndex,
             size: action?.size,
             selectedColor: action?.selectedColor,
+            uniquefea: action?.uniquefea,
           },
         ],
       };

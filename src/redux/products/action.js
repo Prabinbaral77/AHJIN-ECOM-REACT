@@ -1,5 +1,12 @@
 export const setCartProduct =
-  (product, quantityInput, uniquefeatureIndex, size, selectedColor) =>
+  (
+    product,
+    quantityInput,
+    uniquefeatureIndex,
+    size,
+    selectedColor,
+    uniquefea
+  ) =>
   async (dispatch) => {
     dispatch({
       type: "SET_CART_PRODUCTS",
@@ -8,6 +15,7 @@ export const setCartProduct =
       uniquefeatureIndex: uniquefeatureIndex,
       size: size,
       selectedColor: selectedColor,
+      uniquefea: uniquefea,
     });
   };
 

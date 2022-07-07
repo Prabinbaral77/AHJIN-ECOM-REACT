@@ -5,9 +5,9 @@ import axios from "axios";
 import { Fade } from "react-reveal";
 import ProductCard from "../../components/ProductCard";
 import Footer from "../../components/Footer";
-import Clothe1 from '../../images/clothes1.jpeg'
-import Clothe2 from '../../images/clothes2.jpeg'
-import Clothe3 from '../../images/clothes3.jpeg'
+import Clothe1 from "../../images/clothes1.jpeg";
+import Clothe2 from "../../images/clothes2.jpeg";
+import Clothe3 from "../../images/clothes3.jpeg";
 
 function Clothes() {
   const [products, setProducts] = useState([]);
@@ -44,7 +44,7 @@ function Clothes() {
       });
       setdCatProducts(dCatProductsArr);
     }
-  }, [dCat, products, price]);
+  }, [dCat, products, price]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (price === "desc") {
@@ -58,12 +58,12 @@ function Clothes() {
       });
       setProducts(newProducts);
     }
-  }, [price, dCat]);
+  }, [price, dCat]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main className="bg-gray-800 ">
       <Navbar />
-      <Slider img1 = {Clothe2} img2 = {Clothe1} img3 = {Clothe3} />
+      <Slider img1={Clothe2} img2={Clothe1} img3={Clothe3} />
 
       <div className="h-auto bg-gray-800 px-4 py-2 flex flex-col space-y-3 mt-20 mb-10 max-w-6xl mx-auto">
         <h1 className="text-cyan-500 font-semibold text-xl underline">

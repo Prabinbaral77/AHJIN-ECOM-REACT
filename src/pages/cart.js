@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { ShoppingBagIcon, XCircleIcon } from "@heroicons/react/outline";
+import { ShoppingBagIcon } from "@heroicons/react/outline";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useSelector, useDispatch } from "react-redux";
@@ -22,8 +22,7 @@ function Cart() {
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
   const userId = userDetail?.user?.pk;
-  const { currentAccount, tokenBalance, buyAssets, sendEthInReward } =
-    useContext(AjhinContext);
+  const { currentAccount, tokenBalance, buyAssets } = useContext(AjhinContext);
   const cartProductDetails = useSelector((state) => state.products).cart;
   const totalPriceOfCart = () => {
     let price = 0;
@@ -53,7 +52,6 @@ function Cart() {
     // setrender(!render);
     const productsArray = [];
     let dataFormat = {};
-    console.log(cartProductDetails);
     await cartProductDetails.map((singleProduct) => {
       return productsArray.push({
         productChosen: singleProduct?.uniquefeatureIndex,
@@ -128,7 +126,7 @@ function Cart() {
   useEffect(() => {
     formatDataToOrder();
     formatDataToOrderAhjin();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   let config = {
     // replace this key with yours
@@ -140,8 +138,8 @@ function Cart() {
       onSuccess(payload) {
         let data = {
           token: payload.token,
-          // amount: totalPriceOfCart(),
-          amount: 1,
+          amount: totalPriceOfCart(),
+          // amount: 1,
         };
 
         axios
@@ -187,7 +185,7 @@ function Cart() {
   const khaltiCheckoutHandler = async () => {
     let checkout = await new KhaltiCheckout(config);
     const price = await totalPriceOfCart();
-    checkout.show({ amount: 1000 });
+    checkout.show({ amount: price });
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
@@ -206,7 +204,7 @@ function Cart() {
           dispatch(emptyCartProduct());
         })
         .catch((error) => console.log(error));
-    } else if (currentAccount == undefined) {
+    } else if (currentAccount === undefined) {
       ToastsStore.warning("Please connect with your metamask wallet.");
     } else if (tokenBalance < ahjinCoinCalculator(totalPriceOfCart())) {
       ToastsStore.error("Sorry, You does not have sufficient AC.");
@@ -218,7 +216,6 @@ function Cart() {
     dispatch(removeProductFromCart(id));
     ToastsStore.success("Successfully removed from cart.");
   };
-
   return (
     <div className="bg-gray-800 font-Roboto">
       <Toaster />
@@ -272,7 +269,7 @@ function Cart() {
                           <p>
                             RAM:
                             {
-                              product?.unique_feature[uniquefeatureIndex -1 ]
+                              product?.unique_feature[uniquefeatureIndex - 1]
                                 ?.RAM
                             }
                           </p>
@@ -281,18 +278,14 @@ function Cart() {
                           <p>SSD:</p>
                           <p>
                             {
-                              product?.unique_feature[uniquefeatureIndex-1]
+                              product?.unique_feature[uniquefeatureIndex - 1]
                                 ?.SSD
                             }
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p>Color:</p>
-                          <p>
-                            {
-                             selectedColor?selectedColor:"gray"
-                            }
-                          </p>
+                          <p>{selectedColor ? selectedColor : "gray"}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p
@@ -365,15 +358,14 @@ function Cart() {
             <h1 className="uppercase font-semibold border-b border-red-500 text-red-500  max-w-fit my-4">
               order summary
             </h1>
-           
 
             <section className="text-sm flex flex-col space-y-8 ">
-            <a
-              href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn/related"
-              className="text-sm text-red-500 hover:text-red-600 pb-4 cursor-pointer"
-            >
-              Please connect with your metaMask wallet to get reward.
-            </a>
+              <a
+                href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn/related"
+                className="text-sm text-red-500 hover:text-red-600 pb-4 cursor-pointer"
+              >
+                Please connect with your metaMask wallet to get reward.
+              </a>
               <div className="flex items-center text-gray-300 justify-between lg:w-3/4">
                 <h1>Shipping cost</h1>
                 <p>Rs 150</p>
@@ -382,11 +374,14 @@ function Cart() {
                 <h1>Shipping Discount</h1>
                 <p>Rs 10</p>
               </div>
-             
+
               <div className="flex items-center justify-between lg:w-full">
-                <h1 className="text-lg font-bold text-gray-100">Estimated Total</h1>
+                <h1 className="text-lg font-bold text-gray-100">
+                  Estimated Total
+                </h1>
                 <p className="text-lg font-bold text-yellow-500 tracking-wider pr-14">
-                  Rs.{totalPriceOfCart()}
+                  Rs.{totalPriceOfCart()}(
+                  {ahjinCoinCalculator(totalPriceOfCart())}AC)
                 </p>
               </div>
 

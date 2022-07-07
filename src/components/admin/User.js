@@ -17,7 +17,7 @@ function User() {
       setUsers(res.data);
     };
     getUsers();
-  }, [trigger]);
+  }, [trigger]); // eslint-disable-line react-hooks/exhaustive-deps
   const deleteUserHandler = (id) => {
     axios
       .delete(`http://localhost:8000/api/user/allusers/${id}`, {

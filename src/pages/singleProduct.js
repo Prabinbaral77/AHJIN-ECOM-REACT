@@ -22,16 +22,14 @@ function SingleProduct() {
   const [displayImage, setdisplayImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
   const [uniquefea, setuniquefea] = useState(null);
-  const uniquefeatureIndex = useState(1);
+  const [uniquefeatureIndex] = useState(1);
   const [count, setCount] = useState(0);
-
   const [selectedColor, setSelectedColor] = useState("");
+  const [selectedColorElec, setSelectedColorElec] = useState("");
 
   const [size, setSize] = useState("");
-
   const [runUseEffect, setrunUseEffect] = useState(1);
   const { id } = useParams();
-
   // !reviews
   const item = JSON.parse(localStorage.getItem("userDetails"));
   const access_token = item?.access_token;
@@ -73,7 +71,8 @@ function SingleProduct() {
           quantityInput,
           uniquefeatureIndex,
           size,
-          selectedColor
+          selectedColor,
+          uniquefea
         )
       );
       toast.success("Product added to cart.");
@@ -131,12 +130,8 @@ function SingleProduct() {
     getReviews();
   }, [runUseEffect, id]);
 
-  console.log(reviews);
-
   const total = reviews?.reduce((tot, item) => tot + item.rating, 0);
   const averageRating = parseFloat((total / reviews.length).toFixed(2));
-
-  console.log(product);
 
   return (
     <div className="bg-gray-800 select-none">
@@ -270,11 +265,13 @@ function SingleProduct() {
                     uniquefea?.color?.map((m) => (
                       <p
                         onClick={() => {
-                          setSelectedColor(m);
+                          setSelectedColorElec(m);
                         }}
                         style={{ backgroundColor: m }}
                         className={`cursor-pointer h-8 w-8 rounded-md ${
-                          selectedColor === m ? "border-2 border-white" : null
+                          selectedColorElec === m
+                            ? "border-2 border-white"
+                            : null
                         }`}
                       ></p>
                     ))}
