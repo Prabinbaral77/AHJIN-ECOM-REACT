@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { AjhinContext } from "../../context/ahjinContext";
 
@@ -7,16 +7,13 @@ const BuyTokenModal = ({ open, handleModal }) => {
     useContext(AjhinContext);
 
   useEffect(() => {
+    const calculatePrice = () => {
+      let price = parseFloat(tokenAmount * 0.0001);
+      price = price.toFixed(4);
+      setAmountDue(price);
+    };
     calculatePrice();
-  }, [tokenAmount]);
-
-  const calculatePrice = () => {
-    let price = parseFloat(tokenAmount * 0.0001);
-    price = price.toFixed(4);
-    setAmountDue(price);
-  };
-
-  const buyTokenHandler = () => {};
+  }, [tokenAmount]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="bg-[#1F2937]">
       <Modal

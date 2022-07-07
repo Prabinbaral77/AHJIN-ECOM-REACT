@@ -3,13 +3,11 @@ import Navbar from "../components/Navbar";
 import ReactImageZoom from "react-image-zoom";
 import Footer from "../components/Footer";
 import StarRatings from "react-star-ratings";
-import ProgressBar from "react-bootstrap/ProgressBar";
-//! reviews
 import axios from "axios";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import { useParams } from "react-router-dom";
 import { setCartProduct } from "../redux/products/action";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Reviews from "../components/Reviews";
 import { Link } from "react-scroll";
 import Ratings from "../components/Ratings";
@@ -17,7 +15,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 function SingleProduct() {
   const dispatch = useDispatch();
-  const [error, setError] = useState(null)
   const [product, setProduct] = useState();
   const [image, setImage] = useState("");
   const [image2, setImage2] = useState("");
@@ -25,14 +22,13 @@ function SingleProduct() {
   const [displayImage, setdisplayImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
   const [uniquefea, setuniquefea] = useState(null);
-  const [uniquefeatureIndex, setuniquefeatureIndex] = useState(1);
+  const uniquefeatureIndex = useState(1);
   const [count, setCount] = useState(0);
 
   const [selectedColor, setSelectedColor] = useState("");
 
   const [size, setSize] = useState("");
 
-  const [cartData, setCartData] = useState([]);
   const [runUseEffect, setrunUseEffect] = useState(1);
   const { id } = useParams();
 
@@ -67,7 +63,7 @@ function SingleProduct() {
   };
   useEffect(() => {
     fetchProduct();
-  }, [id]);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addToCartHandler = () => {
     try {
@@ -80,9 +76,9 @@ function SingleProduct() {
           selectedColor
         )
       );
-      toast.success("Product added to cart.")
+      toast.success("Product added to cart.");
     } catch (error) {
-      toast.error("Error while adding product to cart. ")
+      toast.error("Error while adding product to cart. ");
     }
   };
 
@@ -121,7 +117,7 @@ function SingleProduct() {
       setreviewInputValue("");
       toast.success("Review added successfully");
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -266,7 +262,7 @@ function SingleProduct() {
                         }}
                         style={{ backgroundColor: m }}
                         className={`cursor-pointer h-8 w-8 rounded-md ${
-                          selectedColor == m ? "border-2 border-white" : null
+                          selectedColor === m ? "border-2 border-white" : null
                         }`}
                       ></p>
                     ))}
@@ -278,7 +274,7 @@ function SingleProduct() {
                         }}
                         style={{ backgroundColor: m }}
                         className={`cursor-pointer h-8 w-8 rounded-md ${
-                          selectedColor == m ? "border-2 border-white" : null
+                          selectedColor === m ? "border-2 border-white" : null
                         }`}
                       ></p>
                     ))}
@@ -313,7 +309,9 @@ function SingleProduct() {
                         setuniquefea(product?.unique_feature[index])
                       }
                       className={`h-auto ${
-                        uniquefea?.RAM == m?.RAM ? "bg-cyan-800" : "bg-gray-800"
+                        uniquefea?.RAM === m?.RAM
+                          ? "bg-cyan-800"
+                          : "bg-gray-800"
                       }  w-32  bg-gray-600 cursor-pointer hover:opacity-80 text-cyan-50 px-3 py-2 space-y-3`}
                     >
                       <p>{m.RAM}GB RAM</p>
