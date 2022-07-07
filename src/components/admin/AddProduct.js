@@ -24,6 +24,9 @@ function AddProduct() {
     available_sizes: [],
     count: 0,
   });
+  const [otherUniqueFeatures, setotherUniqueFeatures] = useState({
+    count: 0,
+  });
   const [uniqueFeatures, setuniqueFeatures] = useState({
     RAM: 0,
     SSD: 0,
@@ -81,7 +84,14 @@ function AddProduct() {
     }
   };
 
-  console.log(clothesUniqueFeatures)
+  const handleOthersChange = (e) => {
+    setotherUniqueFeatures({
+      ...otherUniqueFeatures,
+      [e.target.name]: parseInt(e.target.value)
+    })
+  }
+
+  console.log(otherUniqueFeatures)
 
   // Perform localStorage action
   const item = JSON.parse(localStorage.getItem("userDetails"));
@@ -135,8 +145,11 @@ function AddProduct() {
     } else if (category === "C") {
      
       uniqueFeatureArray.push(clothesUniqueFeatures);
+    }else if (category === "O") {
+     
+      uniqueFeatureArray.push(otherUniqueFeatures);
     }
-    console.log(uniqueFeatureArray);
+    
 
     try {
       const res = await axios.post(
@@ -160,13 +173,16 @@ function AddProduct() {
           },
         }
       );
+      setuniqueFeatureArray([]);
       toast.success("Product added Successfully.");
       console.log(res.data);
-      setuniqueFeatureArray([]);
+
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(uniqueFeatureArray)
   
 
   return (
@@ -255,6 +271,19 @@ function AddProduct() {
             <option value="men">Men</option>
             <option value="women">Women</option>
             <option value="kid">Kid</option>
+          </select>
+        )}
+        {category === "O" && (
+          <select
+            className="form-inputs"
+            name=""
+            id=""
+            onChange={(e) => setd_cat(e.target.value)}
+          >
+            <option className="cursor-not-allowed">Select Item </option>
+            <option value="gym">Gym</option>
+            <option value="makeup">Makeup</option>
+            <option value="home">Home Appliances</option>
           </select>
         )}
         {d_cat === "laptop" && (
@@ -388,6 +417,18 @@ function AddProduct() {
               placeholder="red,yellow,..."
             />
           </div>
+         
+        )}
+
+{category === "O" && (
+         <input
+         type="number"
+         min={0}
+         className="form-inputs w-1/3"
+         placeholder="count"
+        name="count"
+         onChange={handleOthersChange}
+       />
          
         )}
         <div className="flex items-center space-x-3">
