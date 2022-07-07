@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
   let navigate = useNavigate();
@@ -44,13 +44,15 @@ function Login() {
           .then((res) => {
             if (res.data.is_admin) {
               navigate("/admin");
+              toast.success("Logged in successfully")
             } else {
               navigate("/");
+              toast.success("Logged in successfully")
             }
           });
       })
       .catch((error) => {
-        ToastsStore.success("Something went wrong !");
+       toast.error("Incorrect email or password ");
         console.log(error.response?.data);
       });
   };

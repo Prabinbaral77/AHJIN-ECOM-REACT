@@ -12,6 +12,7 @@ import Slider from "../components/Slider";
 function Home({products}) {
   return (
     <div>
+      
       <Navbar />
       <Slider />
       <NewProducts products = {products} />
