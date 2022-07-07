@@ -98,7 +98,7 @@ const OrderCard = ({
   return (
     <div>
       <Toaster />
-      <section className=" relative h-auto bg-gray-600 flex items-center flex-col px-5 py-5 space-y-4">
+      <section className=" relative h-auto bg-gray-700 flex items-center flex-col px-5 py-5 space-y-4">
         {orderProducts.map((singleOrder) => {
           console.log(singleOrder);
           return (
@@ -115,7 +115,7 @@ const OrderCard = ({
                 <p className="text-sm lg:w-80 w-28">{singleOrder?.name}</p>
                 <div className="flex items-center text-sm pl-36 flex-col">
                   <div className="flex  font-semibold ">
-                    <p className="text-white">payment Method: &nbsp;</p>
+                    <p className="text-white">Payment method: &nbsp;</p>
                     {paymentMethod === "K" ? (
                       <span className="text-purple-600">Khalti</span>
                     ) : (
@@ -136,7 +136,7 @@ const OrderCard = ({
           <div className="flex gap-4">
             <p className="text-sm text-yellow-500">Price: Rs {total}</p>
             <QrcodeIcon
-              className="h-6 w-6 cursor-pointer z-40"
+              className="h-6 w-6 cursor-pointer z-40 absolute -bottom-56 -right-3"
               onClick={() => setIsQrCodeShown(!isQrcodeShown)}
             />
             {isQrcodeShown && (

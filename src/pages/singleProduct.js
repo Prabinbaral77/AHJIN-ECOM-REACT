@@ -70,15 +70,20 @@ function SingleProduct() {
   }, [id]);
 
   const addToCartHandler = () => {
-    dispatch(
-      setCartProduct(
-        product,
-        quantityInput,
-        uniquefeatureIndex,
-        size,
-        selectedColor
-      )
-    );
+    try {
+      dispatch(
+        setCartProduct(
+          product,
+          quantityInput,
+          uniquefeatureIndex,
+          size,
+          selectedColor
+        )
+      );
+      toast.success("Product added to cart.")
+    } catch (error) {
+      toast.error("Error while adding product to cart. ")
+    }
   };
 
   const handleQuantityIncrease = () => {

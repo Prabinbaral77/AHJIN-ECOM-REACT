@@ -272,7 +272,7 @@ function Cart() {
                           <p>
                             RAM:
                             {
-                              product?.unique_feature[uniquefeatureIndex - 1]
+                              product?.unique_feature[uniquefeatureIndex -1 ]
                                 ?.RAM
                             }
                           </p>
@@ -281,14 +281,22 @@ function Cart() {
                           <p>SSD:</p>
                           <p>
                             {
-                              product?.unique_feature[uniquefeatureIndex - 1]
+                              product?.unique_feature[uniquefeatureIndex-1]
                                 ?.SSD
                             }
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
+                          <p>Color:</p>
+                          <p>
+                            {
+                             selectedColor?selectedColor:"gray"
+                            }
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
                           <p
-                            className="font-bold text-sm text-red-400 cursor-pointer"
+                            className="font-bold text-sm text-red-600 cursor-pointer"
                             onClick={() =>
                               cartProductRemoveHandler(product?.id)
                             }
@@ -301,7 +309,7 @@ function Cart() {
                     {product?.cat === "C" && (
                       <>
                         <div className="flex items-center space-x-2">
-                          <p className="uppercase">Color: {selectedColor}</p>
+                          <p className="">Color: {selectedColor}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p>Size:</p>
@@ -309,7 +317,7 @@ function Cart() {
                         </div>
                         <div className="flex items-center space-x-2">
                           <p
-                            className="font-bold text-sm text-red-400 cursor-pointer"
+                            className="font-bold text-sm text-red-600 cursor-pointer"
                             onClick={() =>
                               cartProductRemoveHandler(product?.id)
                             }

@@ -50,23 +50,23 @@ function Order() {
       <h1 className="font-bold text-cyan-50 text-2xl my-2 mx-10">
         ALL Orders({orders.length})
       </h1>
-      <div className="relative bg-gray-800 px-4 py-2 flex space-y-3 mt-20 mb-10 max-w-6xl">
+      <div className="relative bg-gray-800 px-4 py-2 flex space-x-3 items-center mt-20 mb-10 max-w-6xl">
         <h1 className="text-cyan-500 font-semibold text-xl underline">
           Filter Orders
         </h1>
-        <div className="flex items-center space-x-4 text-sm ml-10 -mt-4 absolute -top-2 left-[7rem]">
+       
           <select
             onChange={(e) => setFilterString(e.target.value)}
             name=""
             id=""
-            className="bg-gray-700 outline-none text-gray-100 w-full p-2"
+            className="bg-gray-700 outline-none text-gray-100 w-[25%] cursor-pointer text-sm p-2"
           >
             <option value="all">On the basis of delivery</option>
             <option value="delivered">Delivered</option>
             <option value="notdelivered">Not delivered</option>
           </select>
         </div>
-      </div>
+      
       {/* <Fade top> */}
       {filterOrders.length > 0
         ? filterOrders.map((order, index) => (
