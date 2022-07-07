@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 function Login() {
   let navigate = useNavigate();
@@ -56,6 +57,7 @@ function Login() {
 
   return (
     <main>
+       <Toaster/>
       <Navbar />
       <div
         className="w-full h-screen bg-no-repeat bg-cover bg-right flex items-center pt-20 justify-center"

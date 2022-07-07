@@ -40,7 +40,7 @@ function App() {
         <Route path="/categories/electronics" element={<Electronics />} />
         <Route path="/categories/clothes" element={<Clothes />} />
         <Route path="/user/enter-email" element={<AskEmail />} />
-        <Route path="/user/change-password" element={<ChangePassword />} />
+        <Route path="/user/change-password/:id/:token" element={<ChangePassword />} />
       </Routes>
     </div>
   );
