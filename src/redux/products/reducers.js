@@ -39,6 +39,12 @@ export default function (state = initialState, action) {
         refreshOrder: !state?.refreshOrder,
       };
 
+    case "UPDATE_SINGLE_CART_PRODUCTS":
+      return {
+        ...state,
+        cart: action?.payload,
+      };
+
     default:
       return state;
   }

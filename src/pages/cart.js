@@ -13,7 +13,9 @@ import { ahjinCoinCalculator } from "../utils/ahjinCoinCalculator";
 import {
   emptyCartProduct,
   removeProductFromCart,
+  updateCartInput,
 } from "../redux/products/action";
+import { Link } from "react-router-dom";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -189,21 +191,26 @@ function Cart() {
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
-  const ahjinCoinBurnHandler = async () => {
+  const ahjinCoinBurnHandler = () => {
     if (currentAccount) {
-      await buyAssets(2);
-      axios
-        .post("http://0.0.0.0:8000/api/orders/", orderItemArrayAhjin, {
-          headers: {
-            authorization: `Bearer ${accessToken}`,
-          },
-        })
+      buyAssets(2)
         .then((res) => {
-          console.log(res);
-          toast.success("Ordered successful using AC.");
-          dispatch(emptyCartProduct());
+          if (res.code === 40001) {
+            axios
+              .post("http://0.0.0.0:8000/api/orders/", orderItemArrayAhjin, {
+                headers: {
+                  authorization: `Bearer ${accessToken}`,
+                },
+              })
+              .then((res) => {
+                console.log(res);
+                toast.success("Ordered successful using AC.");
+                dispatch(emptyCartProduct());
+              })
+              .catch((error) => console.log(error));
+          }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => toast.error("Something went wrong"));
     } else if (currentAccount === undefined) {
       ToastsStore.warning("Please connect with your metamask wallet.");
     } else if (tokenBalance < ahjinCoinCalculator(totalPriceOfCart())) {
@@ -215,6 +222,32 @@ function Cart() {
     console.log(id);
     dispatch(removeProductFromCart(id));
     ToastsStore.success("Successfully removed from cart.");
+  };
+
+  const handleQuantityIncrease = (id) => {
+    let updateCartProduct = cartProductDetails.filter((cart) => {
+      return cart?.product?.id === id;
+    });
+    const nonUpdateCartProduct = cartProductDetails.filter((cart) => {
+      return cart?.product?.id !== id;
+    });
+
+    updateCartProduct[0].quantity = updateCartProduct[0].quantity + 1;
+    let sendingDetails = [...updateCartProduct, ...nonUpdateCartProduct];
+    dispatch(updateCartInput(sendingDetails));
+  };
+
+  const handleQuantityDecrease = (id) => {
+    let updateCartProduct = cartProductDetails.filter((cart) => {
+      return cart?.product?.id === id;
+    });
+    const nonUpdateCartProduct = cartProductDetails.filter((cart) => {
+      return cart?.product?.id !== id;
+    });
+
+    updateCartProduct[0].quantity = updateCartProduct[0].quantity - 1;
+    let sendingDetails = [...updateCartProduct, ...nonUpdateCartProduct];
+    dispatch(updateCartInput(sendingDetails));
   };
   return (
     <div className="bg-gray-800 font-Roboto">
@@ -258,9 +291,11 @@ function Cart() {
                     />
                   </div>
                   <div className="pr-2 flex flex-col space-y-2 py-2">
-                    <h1 className="font-bold lg:w-60 w-44 text-left text-cyan-100 pb-3">
-                      {product?.name}
-                    </h1>
+                    <Link to={`/product/${product?.id}`}>
+                      <h1 className="font-bold lg:w-60 w-44 text-left text-cyan-100 pb-3">
+                        {product?.name}
+                      </h1>
+                    </Link>
                     {/* //todo:check d_cat */}
 
                     {product?.d_cat === "laptop" && (
@@ -323,7 +358,26 @@ function Cart() {
                   </div>
                 </div>
                 <div className="flex items-center justify-between lg:col-span-4 col-span-5 text-xs lg:text-sm ">
-                  <h1 className="pl-10">{quantity}</h1>
+                  <div className="flex flex-col space-y-2 scale-75 -ml-5 ">
+                    <div className="flex">
+                      <p
+                        onClick={() => handleQuantityDecrease(product?.id)}
+                        className="bg-gray-600 cursor-pointer h-8 w-10 text-gray-100 text-center pt-1 text-sm"
+                      >
+                        -
+                      </p>
+
+                      <label className="text-gray-100 bg-gray-800  w-12 h-8 text-center pt-1">
+                        {quantity}
+                      </label>
+                      <p
+                        onClick={() => handleQuantityIncrease(product?.id)}
+                        className="bg-gray-600 h-8 cursor-pointer  w-10 text-gray-100 text-center pt-1 text-sm"
+                      >
+                        +
+                      </p>
+                    </div>
+                  </div>
                   <h1 className="pl-3">
                     Rs.
                     {product?.price_m -
