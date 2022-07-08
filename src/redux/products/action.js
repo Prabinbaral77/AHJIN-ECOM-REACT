@@ -37,3 +37,10 @@ export const triggerOrderAfterReward = () => async (dispatch) => {
     type: "TRIGGER_ORDER",
   });
 };
+
+export const updateCartInput = (product) => async (dispatch) => {
+  dispatch({
+    type: "UPDATE_SINGLE_CART_PRODUCTS",
+    payload: product,
+  });
+};

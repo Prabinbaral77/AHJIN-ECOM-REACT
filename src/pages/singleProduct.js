@@ -7,7 +7,7 @@ import axios from "axios";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import { useParams } from "react-router-dom";
 import { setCartProduct } from "../redux/products/action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Reviews from "../components/Reviews";
 import { Link } from "react-scroll";
 import Ratings from "../components/Ratings";
@@ -15,6 +15,8 @@ import toast, { Toaster } from "react-hot-toast";
 
 function SingleProduct() {
   const dispatch = useDispatch();
+  const [cartIds, setCartIds] = useState([]);
+
   const [product, setProduct] = useState();
   const [image, setImage] = useState("");
   const [image2, setImage2] = useState("");
@@ -43,6 +45,13 @@ function SingleProduct() {
     setRating(rate);
   };
 
+  const cartProductDetails = useSelector((state) => state.products).cart;
+  useEffect(() => {
+    cartProductDetails.map((singleProduct) => {
+      setCartIds((prevData) => [...prevData, singleProduct?.product?.id]);
+    });
+  }, [cartProductDetails?.length]);
+
   const fetchProduct = async () => {
     axios
       .get(`http://0.0.0.0:8000/api/products/${id}`)
@@ -64,20 +73,26 @@ function SingleProduct() {
   }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addToCartHandler = () => {
-    try {
-      dispatch(
-        setCartProduct(
-          product,
-          quantityInput,
-          uniquefeatureIndex,
-          size,
-          selectedColor,
-          uniquefea
-        )
-      );
-      toast.success("Product added to cart.");
-    } catch (error) {
-      toast.error("Error while adding product to cart. ");
+    setCartIds((prevData) => [...prevData, product?.id]);
+    const availableId = [...new Set(cartIds)];
+    if (availableId.includes(product?.id)) {
+      toast.error("Product already in cart. ");
+    } else {
+      try {
+        dispatch(
+          setCartProduct(
+            product,
+            quantityInput,
+            uniquefeatureIndex,
+            size,
+            selectedColor,
+            uniquefea
+          )
+        );
+        toast.success("Product added to cart.");
+      } catch (error) {
+        toast.error("Error while adding product to cart. ");
+      }
     }
   };
 

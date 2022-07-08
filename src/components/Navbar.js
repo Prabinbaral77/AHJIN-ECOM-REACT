@@ -13,6 +13,7 @@ import {
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const Navbar = () => {
   const [userInfo, setuserInfo] = useState(false);
@@ -25,6 +26,7 @@ const Navbar = () => {
   const logOutHandler = () => {
     localStorage.removeItem("userDetails");
     localStorage.removeItem("isUserPresent");
+    toast.success("Logout Succesfully");
   };
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
