@@ -186,8 +186,9 @@ function Cart() {
   };
   const khaltiCheckoutHandler = async () => {
     let checkout = await new KhaltiCheckout(config);
+    // eslint-disable-next-line
     const price = await totalPriceOfCart();
-    checkout.show({ amount: price });
+    checkout.show({ amount: 10 * 100 });
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
@@ -225,13 +226,20 @@ function Cart() {
   };
 
   const handleQuantityIncrease = (id) => {
+    let product;
     let updateCartProduct = cartProductDetails.filter((cart) => {
+      product = cart;
       return cart?.product?.id === id;
     });
+
     const nonUpdateCartProduct = cartProductDetails.filter((cart) => {
       return cart?.product?.id !== id;
     });
-
+    const availableQuantity =
+      product?.product?.unique_feature[product?.uniquefeatureIndex - 1]?.count;
+    if (updateCartProduct[0].quantity === availableQuantity) {
+      return;
+    }
     updateCartProduct[0].quantity = updateCartProduct[0].quantity + 1;
     let sendingDetails = [...updateCartProduct, ...nonUpdateCartProduct];
     dispatch(updateCartInput(sendingDetails));
@@ -245,6 +253,9 @@ function Cart() {
       return cart?.product?.id !== id;
     });
 
+    if (updateCartProduct[0].quantity === 1) {
+      return ToastsStore.error("Sorry, You cannot decrease futhermore.");
+    }
     updateCartProduct[0].quantity = updateCartProduct[0].quantity - 1;
     let sendingDetails = [...updateCartProduct, ...nonUpdateCartProduct];
     dispatch(updateCartInput(sendingDetails));
