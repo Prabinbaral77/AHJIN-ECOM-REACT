@@ -14,6 +14,7 @@ import axios from "axios";
 import AskEmail from "./pages/user/AskEmail";
 import ChangePassword from "./pages/user/ChangePassword";
 import { Toaster } from "react-hot-toast";
+import PrivateRoute from "./privateRoute/PrivateRoute";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -28,7 +29,7 @@ function App() {
 
   return (
     <div className="bg-gray-800">
-      <Toaster/>
+      <Toaster />
       <Routes>
         <Route path="/" element={<Home products={products} />} />
         <Route path={`/product/:id`} element={<SingleProduct />} />
@@ -37,12 +38,21 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/account" element={<Account />} />
 
-        <Route path="/admin" element={<Admin />} />
-
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <Admin />
+            </PrivateRoute>
+          }
+        />
         <Route path="/categories/electronics" element={<Electronics />} />
         <Route path="/categories/clothes" element={<Clothes />} />
         <Route path="/user/enter-email" element={<AskEmail />} />
-        <Route path="/user/change-password/:id/:token" element={<ChangePassword />} />
+        <Route
+          path="/user/change-password/:id/:token"
+          element={<ChangePassword />}
+        />
       </Routes>
     </div>
   );

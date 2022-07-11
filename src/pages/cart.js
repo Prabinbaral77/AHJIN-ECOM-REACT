@@ -114,6 +114,10 @@ function Cart() {
         image: singleProduct?.product?.image,
         name: singleProduct?.product?.name,
         phoneNumber: userDetail?.user?.phone_number,
+        price:
+          singleProduct?.product?.price_m -
+          singleProduct?.product?.price_m *
+            (singleProduct?.product?.discount / 100),
       });
     });
     dataFormat.products = await productsArray;
@@ -196,20 +200,19 @@ function Cart() {
     if (currentAccount) {
       buyAssets(2)
         .then((res) => {
-          if (res.code === 40001) {
-            axios
-              .post("http://0.0.0.0:8000/api/orders/", orderItemArrayAhjin, {
-                headers: {
-                  authorization: `Bearer ${accessToken}`,
-                },
-              })
-              .then((res) => {
-                console.log(res);
-                toast.success("Ordered successful using AC.");
-                dispatch(emptyCartProduct());
-              })
-              .catch((error) => console.log(error));
-          }
+          // if (res === undefined) return;
+          axios
+            .post("http://0.0.0.0:8000/api/orders/", orderItemArrayAhjin, {
+              headers: {
+                authorization: `Bearer ${accessToken}`,
+              },
+            })
+            .then((res) => {
+              console.log(res);
+              toast.success("Ordered successful using AC.");
+              dispatch(emptyCartProduct());
+            })
+            .catch((error) => console.log(error));
         })
         .catch((error) => toast.error("Something went wrong"));
     } else if (currentAccount === undefined) {

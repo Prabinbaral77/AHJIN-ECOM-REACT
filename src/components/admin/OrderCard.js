@@ -100,6 +100,7 @@ const OrderCard = ({
       <Toaster />
       <section className=" relative h-auto bg-gray-700 flex items-center flex-col px-5 py-5 space-y-4">
         {orderProducts.map((singleOrder) => {
+          console.log(singleOrder, orderProducts);
           return (
             <div className="flex items-center justify-between   w-full ">
               <div className="flex items-center space-x-4 flex-1 ">
