@@ -44,22 +44,22 @@ function Login() {
           .then((res) => {
             if (res.data.is_admin) {
               navigate("/admin");
-              toast.success("Logged in successfully")
+              toast.success("Logged in successfully");
             } else {
               navigate("/");
-              toast.success("Logged in successfully")
+              toast.success("Logged in successfully");
             }
           });
       })
       .catch((error) => {
-       toast.error("Incorrect email or password ");
+        toast.error("Incorrect email or password ");
         console.log(error.response?.data);
       });
   };
 
   return (
     <main>
-       <Toaster/>
+      <Toaster />
       <Navbar />
       <div
         className="w-full h-screen bg-no-repeat bg-cover bg-right flex items-center pt-20 justify-center"
@@ -95,17 +95,18 @@ function Login() {
           >
             LOGIN
           </button>
-          <Link className="self-start" to={'/user/enter-email'}>
-          <p className=" cursor-pointer text-sm font-light text-gray-100">
-            FORGET PASSWORD?
-          </p>
+          <Link className="self-start" to={"/user/enter-email"}>
+            <p className=" cursor-pointer text-sm font-light text-gray-100">
+              FORGET PASSWORD?
+            </p>
           </Link>
-          <p
+          <Link
+            to="/register"
             className="self-start cursor-pointer text-sm font-light text-gray-100"
             // onClick={createNewAccoutHandler}
           >
             CREATE A NEW ACCOUNT
-          </p>
+          </Link>
         </div>
       </div>
       <ToastsContainer store={ToastsStore} />

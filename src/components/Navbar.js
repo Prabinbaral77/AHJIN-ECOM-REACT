@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Fade } from "react-reveal";
 import {
   MenuIcon,
@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { AjhinContext } from "../context/ahjinContext";
 
 const Navbar = () => {
   const [userInfo, setuserInfo] = useState(false);
@@ -41,6 +42,7 @@ const Navbar = () => {
     getProducts();
   }, []);
 
+  const { connectWallet } = useContext(AjhinContext);
   const filteredProducts = products.filter((m) => {
     return m.name.toLowerCase().includes(searchInput.toLowerCase());
   });
@@ -114,7 +116,7 @@ const Navbar = () => {
                     <ul className="flex flex-col justify-center space-y-4">
                       <div
                         className="flex items-center space-x-2 hover:bg-yellow-600 px-2 py-1 transition-all"
-                        //  onClick={connectWalletHandler}
+                        onClick={connectWallet}
                       >
                         <CashIcon className="h-6 w-6 cursor-pointer text-gray-100" />
                         <p>Connect Wallet</p>

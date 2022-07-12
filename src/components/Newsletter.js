@@ -28,9 +28,16 @@ function Newsletter() {
             " h-full rounded-l-xl pl-2 outline-none w-screen bg-gray-700 text-gray-100 "
           }
         />
-        <button type="submit">
+        <a
+          target="_blank"
+          // rel="noopener noreferrer"
+          href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSBmzhGwpLMpztTbhjMRcZsdTcDMRWcHXfkJlBbdFwBKhfwxTClGfNRVfLzxQGmzkBWnCsvg"
+          send
+          mail
+          // onClick={sendMail}
+        >
           <PaperAirplaneIcon className="h-10 w-10 p-1 rotate-90 bg-green-700 text-gray-200 rounded-t-lg cursor-pointer " />
-        </button>
+        </a>
       </form>
     </div>
   );

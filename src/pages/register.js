@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register() {
   let navigate = useNavigate();
@@ -167,12 +167,13 @@ function Register() {
               CREATE
             </button>
           </form>
-          <div
+          <Link
+            to="/login"
             className="text-white text-[0.8rem] cursor-pointer"
-            onClick={RedirectLoginHandler}
+            // onClick={RedirectLoginHandler}
           >
             Already have an account? Login
-          </div>
+          </Link>
         </div>
       </div>
     </main>
