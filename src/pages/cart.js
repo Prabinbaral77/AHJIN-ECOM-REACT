@@ -237,13 +237,13 @@ function Cart() {
       return cart?.product?.id === id;
     });
 
-    // console.log(updateCartProduct);
+    console.log(updateCartProduct, "updateCartProduct");
 
     const nonUpdateCartProduct = cartProductDetails.filter((cart) => {
       return cart?.product?.id !== id;
     });
-    const availableQuantity =
-      product?.product?.unique_feature[product?.uniquefeatureIndex - 1]?.count;
+    const availableQuantity = updateCartProduct[0]?.product?.count;
+    // product?.product?.unique_feature[product?.uniquefeatureIndex - 1]?.count;
     if (updateCartProduct[0].quantity === availableQuantity) {
       return;
     }
