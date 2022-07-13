@@ -73,17 +73,16 @@ const OrderCard = ({
   };
 
   useEffect(() => {
-    let data = [];
     orderProducts.forEach((element) => {
-      data.push([
+      setSingleOrder((prevData) => [
+        ...prevData,
         {
           productName: element?.name,
           quantity: element?.quantity,
-          user: element?.user - 1,
+          user: element?.user,
         },
       ]);
     });
-    setSingleOrder(data);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const data = {
@@ -92,15 +91,26 @@ const OrderCard = ({
     paymentMethod: paymentMethod === "K" ? "Khalti" : "AC",
     phoneNumber: orderProducts[0]?.phoneNumber
       ? orderProducts[0]?.phoneNumber
-      : "No Phone Number Provided",
+      : "Not Provided",
   };
+
+  let string = `
+  Product Name = ${data.name[0]?.productName}  ${
+    data.name[1]?.productName ? data.name[1]?.productName : ""
+  }
+  Quantity = ${data?.name[0]?.quantity}, ${
+    data?.name[1]?.quantity ? data?.name[1]?.quantity : ""
+  } 
+  Price = ${data?.price} 
+  Payment Method = ${data?.paymentMethod} 
+  Phone Number = ${data?.phoneNumber}`;
 
   return (
     <div>
       <Toaster />
       <section className=" relative h-auto bg-gray-700 flex items-center flex-col px-5 py-5 space-y-4">
         {orderProducts.map((singleOrder) => {
-          console.log(singleOrder, orderProducts);
+          // console.log(singleOrder, orderProducts);
           return (
             <div className="flex items-center justify-between   w-full ">
               <div className="flex items-center space-x-4 flex-1 ">
@@ -141,7 +151,12 @@ const OrderCard = ({
             />
             {isQrcodeShown && (
               <div style={{ zIndex: 99 }} className="p-2 bg-purple-200">
-                <QRCode value={JSON.stringify(data)} className="" />
+                {/* <p>
+                  {data.name.forEach((e) =>
+                    e.forEach((eSecond) => console.log(eSecond.productName))
+                  )}
+                </p> */}
+                <QRCode value={string} className="" />
                 <p className="text-black flex items-center justify-center py-2 underline">
                   Order Details
                 </p>
