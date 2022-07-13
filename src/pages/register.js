@@ -59,7 +59,9 @@ function Register() {
       .then((res) => {
         console.log(res);
         navigate("/login");
-        toast.success("registered successfully.");
+        toast.success(
+          "registered successfully verification link send in your mail."
+        );
       })
       .catch((err) => {
         if (err) {

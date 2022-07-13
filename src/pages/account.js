@@ -241,6 +241,7 @@ function Account() {
                       {userDetails?.user?.email
                         ? userDetails?.user?.email
                         : "  Not Provided."}
+
                     </p>
                   </div>
                   <div className="flex flex-col space-y-4  max-w-fit px-10 py-10 items-cente ">

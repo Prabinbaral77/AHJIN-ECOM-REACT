@@ -20,6 +20,9 @@ import { Link } from "react-router-dom";
 function Cart() {
   const dispatch = useDispatch();
   const [orderFormatKhalti, setOrderFormatKhalti] = useState();
+  const [address, setAddress] = useState("");
+  const [isAddressPresent, setIsAddressPresent] = useState(false);
+  const [showAddressInput, setShowAddressInput] = useState(false);
   const [orderItemArrayAhjin, setOrderItemArrayAhjin] = useState();
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
@@ -89,6 +92,7 @@ function Cart() {
   //   console.log(dataFormat);
   // };
 
+  console.log(cartProductDetails);
   const formatDataToOrderAhjin = async () => {
     // cartProductDetails.forEach((singleProduct) => {
     //   setOrderItemArrayAhjin((prevData) => [
@@ -160,11 +164,11 @@ function Cart() {
                   },
                 })
                 .then((res) => {
-                  console.log(res);
+                  console.log(res, "orderd");
                   toast.success("Order successful using Khalti.");
                   dispatch(emptyCartProduct());
                 })
-                .catch((error) => console.log(error));
+                .catch((error) => console.log(error, "not orderd"));
             }
           })
           .catch((error) => {
@@ -189,16 +193,21 @@ function Cart() {
     ],
   };
   const khaltiCheckoutHandler = async () => {
-    let checkout = await new KhaltiCheckout(config);
-    // eslint-disable-next-line
-    const price = await totalPriceOfCart();
-    checkout.show({ amount: 10 * 100 });
+    if (isAddressPresent) {
+      let checkout = await new KhaltiCheckout(config);
+      // eslint-disable-next-line
+      const price = await totalPriceOfCart();
+      checkout.show({ amount: price * 100 });
+    } else {
+      setShowAddressInput(true);
+    }
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
   const ahjinCoinBurnHandler = () => {
     if (currentAccount) {
-      buyAssets(2)
+      let priceInRs = totalPriceOfCart();
+      buyAssets(ahjinCoinCalculator(priceInRs))
         .then((res) => {
           // if (res === undefined) return;
           axios
@@ -235,11 +244,13 @@ function Cart() {
       return cart?.product?.id === id;
     });
 
+    console.log(updateCartProduct, "updateCartProduct");
+
     const nonUpdateCartProduct = cartProductDetails.filter((cart) => {
       return cart?.product?.id !== id;
     });
-    const availableQuantity =
-      product?.product?.unique_feature[product?.uniquefeatureIndex - 1]?.count;
+    const availableQuantity = updateCartProduct[0]?.product?.count;
+    // product?.product?.unique_feature[product?.uniquefeatureIndex - 1]?.count;
     if (updateCartProduct[0].quantity === availableQuantity) {
       return;
     }
@@ -284,13 +295,7 @@ function Cart() {
             </div>
           </div>
           {cartProductDetails.map(
-            ({
-              product,
-              quantity,
-              uniquefeatureIndex,
-              size,
-              selectedColor,
-            }) => (
+            ({ product, quantity, uniquefea, size, selectedColor }) => (
               <div
                 key={product?.id}
                 className=" relative text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  "
@@ -304,6 +309,7 @@ function Cart() {
                       alt="product"
                     />
                   </div>
+                  {console.log(product, "FJDLKFJDSJLK")}
                   <div className="pr-2 flex flex-col space-y-2 py-2">
                     <Link to={`/product/${product?.id}`}>
                       <h1 className="font-bold lg:w-60 w-44 text-left text-cyan-100 pb-3">
@@ -317,20 +323,12 @@ function Cart() {
                         <div className="flex items-center space-x-2">
                           <p>
                             RAM:
-                            {
-                              product?.unique_feature[uniquefeatureIndex - 1]
-                                ?.RAM
-                            }
+                            {uniquefea?.RAM}
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p>SSD:</p>
-                          <p>
-                            {
-                              product?.unique_feature[uniquefeatureIndex - 1]
-                                ?.SSD
-                            }
-                          </p>
+                          <p>{uniquefea?.SSD}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p>Color:</p>
@@ -453,6 +451,20 @@ function Cart() {
                 </p>
               </div>
 
+              {showAddressInput && (
+                <div>
+                  <input
+                    className="form-inputs"
+                    type="text"
+                    name="address"
+                    value={address}
+                    onChange={(e) => {
+                      setAddress(e.target.value);
+                      setIsAddressPresent(true);
+                    }}
+                  />
+                </div>
+              )}
               <button
                 className="bg-red-500 py-3 hover:bg-red-600 transition-all active:scale-90 duration-500 ease-in-out "
                 onClick={khaltiCheckoutHandler}
