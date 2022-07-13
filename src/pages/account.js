@@ -232,7 +232,7 @@ function Account() {
                     <p className="text-sm font-semibold">
                       {userDetails?.user?.username
                         ? userDetails?.user?.username
-                        : "No userName Provided."}
+                        : "Not Provided."}
                     </p>
                   </div>
                   <div className="flex flex-col space-y-4  max-w-fit  px-10 py-10 items-cente ">
@@ -240,7 +240,7 @@ function Account() {
                     <p className="text-sm font-semibold">
                       {userDetails?.user?.email
                         ? userDetails?.user?.email
-                        : " Email Not Provided."}
+                        : "  Not Provided."}
                     </p>
                   </div>
                   <div className="flex flex-col space-y-4  max-w-fit px-10 py-10 items-cente ">
@@ -248,7 +248,7 @@ function Account() {
                     <p className="text-sm font-semibold">
                       {userDetails?.user?.phone_number
                         ? userDetails?.user?.phone_number
-                        : "PhoneNumber not Provided."}
+                        : "Not Provided."}
                     </p>
                   </div>
                   <div className="flex flex-col space-y-4 items-center max-w-fit px-10 py-10 ">
