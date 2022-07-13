@@ -10,6 +10,7 @@ const UpdateOrderStatus = ({
   paymentMethod,
   setTrigger,
   trigger,
+  shippingAddress,
 }) => {
   const [isDelivered, setIsDelivered] = useState(true);
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
@@ -21,6 +22,7 @@ const UpdateOrderStatus = ({
         {
           paymentMethod: paymentMethod,
           delivered: isDelivered,
+          shippingAddress: shippingAddress,
         },
         {
           headers: {

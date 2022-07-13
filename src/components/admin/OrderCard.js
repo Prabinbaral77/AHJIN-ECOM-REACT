@@ -214,6 +214,7 @@ const OrderCard = ({
         paymentMethod={paymentMethod}
         trigger={trigger}
         setTrigger={setTrigger}
+        shippingAddress={shippingAddress}
       />
     </div>
   );
