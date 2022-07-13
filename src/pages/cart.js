@@ -20,6 +20,9 @@ import { Link } from "react-router-dom";
 function Cart() {
   const dispatch = useDispatch();
   const [orderFormatKhalti, setOrderFormatKhalti] = useState();
+  const [address, setAddress] = useState("");
+  const [isAddressPresent, setIsAddressPresent] = useState(false);
+  const [showAddressInput, setShowAddressInput] = useState(false);
   const [orderItemArrayAhjin, setOrderItemArrayAhjin] = useState();
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
@@ -190,10 +193,14 @@ function Cart() {
     ],
   };
   const khaltiCheckoutHandler = async () => {
-    let checkout = await new KhaltiCheckout(config);
-    // eslint-disable-next-line
-    const price = await totalPriceOfCart();
-    checkout.show({ amount: price * 100 });
+    if (isAddressPresent) {
+      let checkout = await new KhaltiCheckout(config);
+      // eslint-disable-next-line
+      const price = await totalPriceOfCart();
+      checkout.show({ amount: price * 100 });
+    } else {
+      setShowAddressInput(true);
+    }
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
@@ -444,6 +451,20 @@ function Cart() {
                 </p>
               </div>
 
+              {showAddressInput && (
+                <div>
+                  <input
+                    className="form-inputs"
+                    type="text"
+                    name="address"
+                    value={address}
+                    onChange={(e) => {
+                      setAddress(e.target.value);
+                      setIsAddressPresent(true);
+                    }}
+                  />
+                </div>
+              )}
               <button
                 className="bg-red-500 py-3 hover:bg-red-600 transition-all active:scale-90 duration-500 ease-in-out "
                 onClick={khaltiCheckoutHandler}
