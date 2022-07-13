@@ -13,7 +13,7 @@ function Order() {
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
   const ProductDetails = useSelector((state) => state.products);
-  console.log(ProductDetails);
+  console.log(orders, "ordersorders");
 
   useEffect(() => {
     const getOrders = async () => {
@@ -80,6 +80,7 @@ function Order() {
               paymentMethod={order?.paymentMethod}
               ethAccountAddress={order?.currentAccount}
               isRewarded={order?.isRewarded}
+              shippingAddress={order?.shippingAddress}
             />
           ))
         : orders.map((order, index) => (

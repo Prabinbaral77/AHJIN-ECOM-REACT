@@ -17,6 +17,7 @@ const OrderCard = ({
   trigger,
   paymentMethod,
   ethAccountAddress,
+  shippingAddress,
   isRewarded,
 }) => {
   const dispatch = useDispatch();
@@ -27,6 +28,8 @@ const OrderCard = ({
   const handleModal = () => {
     setOpenModal(!openModal);
   };
+
+  // console.log(orderProducts, "orderProductsorderProducts");
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
   const deleteOrderHandler = (id) => {
@@ -95,15 +98,13 @@ const OrderCard = ({
   };
 
   let string = `
-  Product Name = ${data.name[0]?.productName}  ${
-    data.name[1]?.productName ? data.name[1]?.productName : ""
-  }
-  Quantity = ${data?.name[0]?.quantity}, ${
-    data?.name[1]?.quantity ? data?.name[1]?.quantity : ""
-  } 
-  Price = ${data?.price} 
+  Order Id = ${id}
+  Price = ${data?.price}
   Payment Method = ${data?.paymentMethod} 
-  Phone Number = ${data?.phoneNumber}`;
+  Phone Number = ${data?.phoneNumber}
+  Shipping Address = ${shippingAddress}
+  Email = ${userDetail?.user?.email}
+  `;
 
   return (
     <div>

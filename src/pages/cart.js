@@ -41,20 +41,6 @@ function Cart() {
   };
 
   const formatDataToOrder = async () => {
-    // await cartProductDetails.map((singleProduct) => {
-    //   setOrderItemArray((prevData) => [
-    //     ...prevData,
-    //     {
-    //       productChosen: singleProduct?.uniquefeatureIndex,
-    //       quantity: singleProduct?.quantity,
-    //       product: singleProduct?.product?.id,
-    //       user: userId,
-    //       image: singleProduct?.product?.image,
-    //       name: singleProduct?.product?.name,
-    //     },
-    //   ]);
-    // });
-    // setrender(!render);
     const productsArray = [];
     let dataFormat = {};
     await cartProductDetails.map((singleProduct) => {
@@ -75,38 +61,13 @@ function Cart() {
     dataFormat.products = await productsArray;
     dataFormat.delivered = false;
     dataFormat.paymentMethod = "K";
-
+    dataFormat.shippingAddress = address;
     dataFormat.currentAccount = currentAccount;
     dataFormat.total = totalPriceOfCart();
     setOrderFormatKhalti(dataFormat);
   };
 
-  // const formatToOrder = async () => {
-  //   let dataFormat = {};
-  //   if (orderItemArray.length >= 1) {
-  //     dataFormat.products = orderItemArray;
-  //     dataFormat.delivered = false;
-  //     dataFormat.paymentMethod = "K";
-  //     dataFormat.total = totalPriceOfCart();
-  //   }
-  //   console.log(dataFormat);
-  // };
-
-  console.log(cartProductDetails);
   const formatDataToOrderAhjin = async () => {
-    // cartProductDetails.forEach((singleProduct) => {
-    //   setOrderItemArrayAhjin((prevData) => [
-    //     ...prevData,
-    //     {
-    //       productChosen: singleProduct?.uniquefeatureIndex,
-    //       quantity: singleProduct?.quantity,
-    //       paymentMethod: "A",
-    //       delivered: false,
-    //       product: singleProduct?.product?.id,
-    //       user: userId,
-    //     },
-    //   ]);
-    // });
     const productsArray = [];
     let dataFormat = {};
     await cartProductDetails.map((singleProduct) => {
@@ -127,7 +88,7 @@ function Cart() {
     dataFormat.products = await productsArray;
     dataFormat.delivered = false;
     dataFormat.paymentMethod = "A";
-
+    dataFormat.shippingAddress = address;
     dataFormat.currentAccount = currentAccount;
     dataFormat.total = totalPriceOfCart();
     setOrderItemArrayAhjin(dataFormat);
@@ -136,7 +97,7 @@ function Cart() {
   useEffect(() => {
     formatDataToOrder();
     formatDataToOrderAhjin();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [address]); // eslint-disable-line react-hooks/exhaustive-deps
 
   let config = {
     // replace this key with yours
@@ -205,29 +166,33 @@ function Cart() {
 
   //DO NOT DELETE THIS WHOLE FUNCTION
   const ahjinCoinBurnHandler = () => {
-    if (currentAccount) {
-      let priceInRs = totalPriceOfCart();
-      buyAssets(ahjinCoinCalculator(priceInRs))
-        .then((res) => {
-          // if (res === undefined) return;
-          axios
-            .post("http://0.0.0.0:8000/api/orders/", orderItemArrayAhjin, {
-              headers: {
-                authorization: `Bearer ${accessToken}`,
-              },
-            })
-            .then((res) => {
-              console.log(res);
-              toast.success("Ordered successful using AC.");
-              dispatch(emptyCartProduct());
-            })
-            .catch((error) => console.log(error));
-        })
-        .catch((error) => toast.error("Something went wrong"));
-    } else if (currentAccount === undefined) {
-      ToastsStore.warning("Please connect with your metamask wallet.");
-    } else if (tokenBalance < ahjinCoinCalculator(totalPriceOfCart())) {
-      ToastsStore.error("Sorry, You does not have sufficient AC.");
+    if (isAddressPresent) {
+      if (currentAccount) {
+        let priceInRs = totalPriceOfCart();
+        buyAssets(ahjinCoinCalculator(priceInRs))
+          .then((res) => {
+            // if (res === undefined) return;
+            axios
+              .post("http://0.0.0.0:8000/api/orders/", orderItemArrayAhjin, {
+                headers: {
+                  authorization: `Bearer ${accessToken}`,
+                },
+              })
+              .then((res) => {
+                console.log(res);
+                toast.success("Ordered successful using AC.");
+                dispatch(emptyCartProduct());
+              })
+              .catch((error) => console.log(error));
+          })
+          .catch((error) => toast.error("Something went wrong"));
+      } else if (currentAccount === undefined) {
+        ToastsStore.warning("Please connect with your metamask wallet.");
+      } else if (tokenBalance < ahjinCoinCalculator(totalPriceOfCart())) {
+        ToastsStore.error("Sorry, You does not have sufficient AC.");
+      }
+    } else {
+      setShowAddressInput(true);
     }
   };
 
@@ -457,6 +422,7 @@ function Cart() {
                     className="form-inputs"
                     type="text"
                     name="address"
+                    placeholder="Shipping Address"
                     value={address}
                     onChange={(e) => {
                       setAddress(e.target.value);
