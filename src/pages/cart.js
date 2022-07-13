@@ -89,6 +89,7 @@ function Cart() {
   //   console.log(dataFormat);
   // };
 
+  console.log(cartProductDetails);
   const formatDataToOrderAhjin = async () => {
     // cartProductDetails.forEach((singleProduct) => {
     //   setOrderItemArrayAhjin((prevData) => [
@@ -160,11 +161,11 @@ function Cart() {
                   },
                 })
                 .then((res) => {
-                  console.log(res);
+                  console.log(res, "orderd");
                   toast.success("Order successful using Khalti.");
                   dispatch(emptyCartProduct());
                 })
-                .catch((error) => console.log(error));
+                .catch((error) => console.log(error, "not orderd"));
             }
           })
           .catch((error) => {
@@ -192,13 +193,14 @@ function Cart() {
     let checkout = await new KhaltiCheckout(config);
     // eslint-disable-next-line
     const price = await totalPriceOfCart();
-    checkout.show({ amount: 10 * 100 });
+    checkout.show({ amount: price * 100 });
   };
 
   //DO NOT DELETE THIS WHOLE FUNCTION
   const ahjinCoinBurnHandler = () => {
     if (currentAccount) {
-      buyAssets(2)
+      let priceInRs = totalPriceOfCart();
+      buyAssets(ahjinCoinCalculator(priceInRs))
         .then((res) => {
           // if (res === undefined) return;
           axios
@@ -234,6 +236,8 @@ function Cart() {
       product = cart;
       return cart?.product?.id === id;
     });
+
+    // console.log(updateCartProduct);
 
     const nonUpdateCartProduct = cartProductDetails.filter((cart) => {
       return cart?.product?.id !== id;
@@ -284,13 +288,7 @@ function Cart() {
             </div>
           </div>
           {cartProductDetails.map(
-            ({
-              product,
-              quantity,
-              uniquefeatureIndex,
-              size,
-              selectedColor,
-            }) => (
+            ({ product, quantity, uniquefea, size, selectedColor }) => (
               <div
                 key={product?.id}
                 className=" relative text-sm grid grid-cols-10 pl-2 my-4 border-b py-4  "
@@ -304,6 +302,7 @@ function Cart() {
                       alt="product"
                     />
                   </div>
+                  {console.log(product, "FJDLKFJDSJLK")}
                   <div className="pr-2 flex flex-col space-y-2 py-2">
                     <Link to={`/product/${product?.id}`}>
                       <h1 className="font-bold lg:w-60 w-44 text-left text-cyan-100 pb-3">
@@ -317,20 +316,12 @@ function Cart() {
                         <div className="flex items-center space-x-2">
                           <p>
                             RAM:
-                            {
-                              product?.unique_feature[uniquefeatureIndex - 1]
-                                ?.RAM
-                            }
+                            {uniquefea?.RAM}
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p>SSD:</p>
-                          <p>
-                            {
-                              product?.unique_feature[uniquefeatureIndex - 1]
-                                ?.SSD
-                            }
-                          </p>
+                          <p>{uniquefea?.SSD}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <p>Color:</p>

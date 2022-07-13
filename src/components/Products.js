@@ -3,7 +3,7 @@ import React from "react";
 import ProductCard from "./ProductCard";
 import { shuffle } from "lodash";
 
-function Products({products}) {
+function Products({ products }) {
   console.log(products);
 
   return (
@@ -19,6 +19,7 @@ function Products({products}) {
             discount={product.discount}
             rating={product.rating}
             img={product.image}
+            reviews={product?.reviews}
           />
         ))}
       </main>

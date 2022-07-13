@@ -3,10 +3,19 @@ import StarRatings from "react-star-ratings";
 import { Link } from "react-router-dom";
 import { ahjinCoinCalculator } from "../utils/ahjinCoinCalculator";
 
-function ProductCard({ img, name, price_m, price_a, discount, rating, id }) {
+function ProductCard({
+  img,
+  name,
+  price_m,
+  price_a,
+  discount,
+  rating,
+  id,
+  reviews,
+}) {
   const stock = true;
 
-  console.log(rating)
+  console.log(rating);
 
   return (
     <Link
@@ -26,14 +35,14 @@ function ProductCard({ img, name, price_m, price_a, discount, rating, id }) {
         </h1>
         <div className="flex items-center space-x-1">
           <StarRatings
-            rating={4.5}
+            rating={rating ? parseInt(rating) : 0}
             starRatedColor="goldenrod"
             readonly={true}
             starDimension="12px"
             starSpacing="2px"
           />
           <p className="text-gray-500  text-xs mt-1 tracking-widest cursor-pointer hover:text-orange-400 transition-colors">
-            (1)
+            ({reviews?.length})
           </p>
         </div>
 

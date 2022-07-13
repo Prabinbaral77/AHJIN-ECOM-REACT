@@ -24,11 +24,11 @@ function SingleProduct() {
   const [displayImage, setdisplayImage] = useState("");
   const [quantityInput, setquantityInput] = useState(1);
   const [uniquefea, setuniquefea] = useState(null);
-  const [uniquefeatureIndex] = useState(1);
+  const [uniquefeatureIndex, setUniquefeatureIndex] = useState(0);
   const [count, setCount] = useState(0);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedColorElec, setSelectedColorElec] = useState("");
-
+  console.log(uniquefea);
   const [size, setSize] = useState("");
   const [runUseEffect, setrunUseEffect] = useState(1);
   const { id } = useParams();
