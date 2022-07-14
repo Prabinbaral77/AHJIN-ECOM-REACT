@@ -58,9 +58,11 @@ function Categories() {
             <h1 className="text-gray-100 font-bold text-4xl font-mono opacity-100">
               OTHERS
             </h1>
-            <button className="bg-cyan-600 py-2 max-w-fit px-4 text-gray-100 hover:bg-cyan-700 transition-all duration-300">
-              Shop Now
-            </button>
+            <a href={"/categories/others"}>
+              <button className="bg-cyan-600 py-2 max-w-fit px-4 text-gray-100 hover:bg-cyan-700 transition-all duration-300">
+                Shop Now
+              </button>
+            </a>
           </div>
         </section>
       </div>
