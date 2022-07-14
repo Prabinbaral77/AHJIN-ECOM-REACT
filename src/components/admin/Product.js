@@ -344,7 +344,7 @@ function Product() {
               {product?.cat == "O" && "Others"}
             </p>
             <p className="col-span-2">{product.d_cat}</p>
-            <p className="col-span-1 text-yellow-500">${product?.price_m}</p>
+            <p className="col-span-1 text-yellow-500">RS {product?.price_m}</p>
             <div className="flex space-x-3 pl-8 w-full py-4">
               <button
                 onClick={() =>
