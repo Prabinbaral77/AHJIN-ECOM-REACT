@@ -68,21 +68,28 @@ function Order() {
 
       {/* <Fade top> */}
       {filterOrders.length > 0
-        ? filterOrders.map((order, index) => (
-            <OrderCard
-              key={index + 1}
-              delivered={order?.delivered}
-              orderProducts={order?.products}
-              total={order?.total}
-              id={order?.id}
-              trigger={trigger}
-              setTrigger={setTrigger}
-              paymentMethod={order?.paymentMethod}
-              ethAccountAddress={order?.currentAccount}
-              isRewarded={order?.isRewarded}
-              shippingAddress={order?.shippingAddress}
-            />
-          ))
+        ? filterOrders.map((order, index) => {
+            console.log(order?.shippingAddress, "mugi");
+            return (
+              <OrderCard
+                key={index + 1}
+                delivered={order?.delivered}
+                orderProducts={order?.products}
+                total={order?.total}
+                id={order?.id}
+                trigger={trigger}
+                setTrigger={setTrigger}
+                paymentMethod={order?.paymentMethod}
+                ethAccountAddress={order?.currentAccount}
+                isRewarded={order?.isRewarded}
+                shippingAddress={
+                  order?.shippingAddress == undefined
+                    ? "no address found"
+                    : order?.shippingAddress
+                }
+              />
+            );
+          })
         : orders.map((order, index) => (
             <OrderCard
               key={index + 1}
@@ -95,6 +102,11 @@ function Order() {
               paymentMethod={order?.paymentMethod}
               ethAccountAddress={order?.currentAccount}
               isRewarded={order?.isRewarded}
+              shippingAddress={
+                order?.shippingAddress == undefined
+                  ? "no address found"
+                  : order?.shippingAddress
+              }
             />
           ))}
     </main>

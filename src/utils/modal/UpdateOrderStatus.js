@@ -12,6 +12,7 @@ const UpdateOrderStatus = ({
   trigger,
   shippingAddress,
 }) => {
+  console.log(shippingAddress, "shippingAddress mugi");
   const [isDelivered, setIsDelivered] = useState(true);
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;

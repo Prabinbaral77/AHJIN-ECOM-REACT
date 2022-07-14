@@ -28,7 +28,6 @@ const OrderCard = ({
   const handleModal = () => {
     setOpenModal(!openModal);
   };
-
   // console.log(orderProducts, "orderProductsorderProducts");
   const userDetail = JSON.parse(localStorage.getItem("userDetails"));
   const accessToken = userDetail?.access_token;
@@ -59,6 +58,7 @@ const OrderCard = ({
         {
           paymentMethod: paymentMethod,
           isRewarded: true,
+          shippingAddress: shippingAddress,
         },
         {
           headers: {
@@ -110,10 +110,13 @@ const OrderCard = ({
     <div>
       <Toaster />
       <section className=" relative h-auto bg-gray-700 flex items-center flex-col px-5 py-5 space-y-4">
-        {orderProducts.map((singleOrder) => {
+        {orderProducts.map((singleOrder, index) => {
           // console.log(singleOrder, orderProducts);
           return (
-            <div className="flex items-center justify-between   w-full ">
+            <div
+              key={index}
+              className="flex items-center justify-between   w-full "
+            >
               <div className="flex items-center space-x-4 flex-1 ">
                 <div className="h-20 w-20 ">
                   <img

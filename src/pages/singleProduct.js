@@ -255,14 +255,24 @@ function SingleProduct() {
           </div>
           <p className="text-gray-300 text-sm ">{product?.description}</p>
           {/* //!category anusar change hune thau */}
-          <div className="flex flex-col justify-center space-y-3">
+          <div
+            className={`flex flex-col justify-center space-y-3  ${
+              product?.cat === "O" && "hidden"
+            }`}
+          >
             <h1 className="text-lg font-bold text-gray-100">
               Available Options
             </h1>
 
             <main className="flex flex-col md:flex-row md:items-center md:justify-between px-3 space-y-4 ">
               <div className="flex flex-col space-y-2">
-                <h1 className="text-gray-100 text-sm">Color</h1>
+                <h1
+                  className={`text-gray-100 text-sm ${
+                    product?.cat === "O" && "hidden"
+                  }`}
+                >
+                  Color
+                </h1>
                 <div className="flex items-center space-x-2">
                   {product?.cat === "C" &&
                     product?.unique_feature[0]?.available_colors?.map((m) => (

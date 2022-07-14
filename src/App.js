@@ -15,6 +15,7 @@ import AskEmail from "./pages/user/AskEmail";
 import ChangePassword from "./pages/user/ChangePassword";
 import { Toaster } from "react-hot-toast";
 import PrivateRoute from "./privateRoute/PrivateRoute";
+import Others from "./pages/categories/Others";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -37,7 +38,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/account" element={<Account />} />
-
+        <Route path="/categories/others" element={<Others />} />
         <Route
           path="/admin"
           element={

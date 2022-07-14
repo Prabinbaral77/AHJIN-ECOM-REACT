@@ -77,9 +77,12 @@ const Navbar = () => {
           >
             <li>Clothes</li>
           </Link>
-          <div className="relative flex flex-col items-center justify-center h-14 cursor-pointer">
+          <Link
+            to="/categories/others"
+            className="relative flex flex-col items-center justify-center h-14 cursor-pointer"
+          >
             <li>Others</li>
-          </div>
+          </Link>
 
           {!isUserPresent ? (
             <div className="flex items-center space-x-10">
